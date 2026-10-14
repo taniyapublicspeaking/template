@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Quick usage guide for the site's global typography CSS, font system, responsive text, and design variables.">
+  <title>Quick Usage Guide | Global Typography CSS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-heading: 'Caveat', cursive;
+      --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+      --navy: #172554;
+      --navy-dark: #0f172a;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --sky: #eff6ff;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --yellow: #facc15;
+      --white: #ffffff;
+      --off-white: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 24px;
+      --radius-small: 14px;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+      --container: 1160px;
+      --text-xs: 0.8rem;
+      --text-sm: 0.9rem;
+      --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+      --text-leading: 1.75;
+      --text-leading-tight: 1.5;
+      --text-width-sm: 45ch;
+      --text-width-md: 60ch;
+      --text-width-lg: 70ch;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--off-white);
+      line-height: var(--text-leading);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--blue); }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    .page-header {
+      padding: clamp(2.5rem, 7vw, 5.5rem) 1.25rem 3rem;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--container));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 .5rem;
+      color: var(--yellow);
+      font-size: .8rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      font-family: var(--font-heading);
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+
+    h1 {
+      margin-bottom: .75rem;
+      font-size: clamp(3rem, 6vw, 5.6rem);
+      color: var(--white);
+    }
+
+    h2 {
+      margin-bottom: .75rem;
+      font-size: clamp(2.25rem, 4vw, 3.7rem);
+      color: var(--navy);
+    }
+
+    h3 {
+      margin-bottom: .5rem;
+      font-size: 1.7rem;
+      color: var(--navy);
+    }
+
+    .page-header p {
+      max-width: 65ch;
+      margin: 0;
+      color: rgba(255,255,255,.88);
+      font-size: clamp(1rem, .95rem + .2vw, 1.125rem);
+    }
+
+    main { padding-block: 2.5rem 4rem; }
+
+    .intro {
+      max-width: 70ch;
+      margin: 0 0 2rem;
+      color: var(--muted);
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .guide-card {
+      min-width: 0;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .point-number {
+      display: inline-grid;
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: .65rem;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--orange);
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
+    .guide-card p, .guide-card li {
+      color: var(--muted);
+      font-size: .96rem;
+    }
+
+    .guide-card p { margin: 0 0 .75rem; }
+    .guide-card ul { margin: .5rem 0 0; padding-left: 1.25rem; }
+    .guide-card li + li { margin-top: .35rem; }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      overflow-wrap: anywhere;
+      padding: .1rem .3rem;
+      border-radius: 5px;
+      color: var(--navy);
+      background: var(--sky);
+      font-size: .88em;
+    }
+
+    pre {
+      max-width: 100%;
+      margin: .75rem 0 0;
+      padding: 1rem;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      background: #f8fafc;
+      color: var(--navy-dark);
+      font-size: .82rem;
+      line-height: 1.6;
+      tab-size: 2;
+    }
+
+    .font-demo {
+      display: grid;
+      gap: .35rem;
+      padding: 1rem;
+      margin-top: .75rem;
+      border-radius: var(--radius-small);
+      background: var(--sky);
+    }
+
+    .font-demo .handwritten {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      line-height: 1.15;
+      color: var(--navy);
+    }
+
+    .font-demo .body-sample { font-family: var(--font-body); }
+
+    .note {
+      padding: 1rem 1.1rem;
+      border-left: 4px solid var(--orange);
+      border-radius: 0 var(--radius-small) var(--radius-small) 0;
+      background: var(--orange-light);
+      color: var(--navy-dark);
+    }
+
+    .note p { margin: 0; }
+
+    .site-footer {
+      padding: 1.5rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: .875rem;
+    }
+
+    @media (max-width: 768px) {
+      .guide-grid { grid-template-columns: 1fr; }
+      main { padding-block: 1.5rem 2.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page-header { padding: 1.5rem; background: #fff; color: #111; }
+      .page-header h1, .page-header p { color: #111; }
+      .guide-card { box-shadow: none; break-inside: avoid; }
+      .guide-grid { grid-template-columns: 1fr 1fr; }
+      a { color: #111; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Site Help · CSS Guide</p>
+      <h1>Global Typography CSS</h1>
+      <p>A practical, nine-point quick guide to using the site's fonts, typography variables, text widths, and color tokens.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="intro">Use this page as a reference while building or updating pages. Examples assume your global CSS defines the variables and utility classes shown below.</p>
+
+    <div class="guide-grid">
+      <section class="guide-card" id="fonts">
+        <span class="point-number">1</span>
+        <h2>Font Usage</h2>
+        <p>Use Caveat for handwritten headings and decorative accents. Use Inter for paragraphs, buttons, and form controls.</p>
+        <div class="font-demo">
+          <span class="handwritten">Caveat — headings & accents</span>
+          <span class="body-sample">Inter — readable body text</span>
+        </div>
+        <pre><code>&lt;h1&gt;Main Heading&lt;/h1&gt;
+&lt;p&gt;Regular paragraph text.&lt;/p&gt;
+&lt;span class="accent-text"&gt;Made with care&lt;/span&gt;</code></pre>
+      </section>
+
+      <section class="guide-card" id="font-variables">
+        <span class="point-number">2</span>
+        <h2>Font Variables</h2>
+        <p>Change the font family once in <code>:root</code> to update the site consistently.</p>
+        <pre><code>--font-heading: 'Caveat', cursive;
+--font-body: 'Inter', 'Segoe UI', Arial, sans-serif;</code></pre>
+        <ul>
+          <li><code>--font-heading</code> controls headings and accent text.</li>
+          <li><code>--font-body</code> controls the default reading font.</li>
+        </ul>
+      </section>
+
+      <section class="guide-card" id="heading-sizes">
+        <span class="point-number">3</span>
+        <h2>Responsive Heading Sizes</h2>
+        <p>The <code>clamp()</code> function lets headings scale with the viewport while respecting minimum and maximum sizes.</p>
+        <ul>
+          <li><code>h1</code>: <code>clamp(3rem, 6vw, 5.6rem)</code></li>
+          <li><code>h2</code>: <code>clamp(2.25rem, 4vw, 3.7rem)</code></li>
+          <li><code>h3</code>: <code>1.4rem</code></li>
+        </ul>
+        <p>Pixel equivalents assume a 16px root font size.</p>
+      </section>
+
+      <section class="guide-card" id="body-sizes">
+        <span class="point-number">4</span>
+        <h2>Body Text Sizes</h2>
+        <p>Apply utility classes to adjust text size without creating new CSS rules.</p>
+        <pre><code>&lt;p class="text-xs"&gt;Extra-small text&lt;/p&gt;
+&lt;p class="text-sm"&gt;Small text&lt;/p&gt;
+&lt;p class="text-base"&gt;Regular text&lt;/p&gt;
+&lt;p class="text-lg"&gt;Large text&lt;/p&gt;</code></pre>
+        <ul>
+          <li><code>.text-xs</code>: 0.8rem</li>
+          <li><code>.text-sm</code>: 0.9rem</li>
+          <li><code>.text-base</code>: responsive 1rem–1.125rem</li>
+          <li><code>.text-lg</code>: responsive 1.125rem–1.25rem</li>
+        </ul>
+      </section>
+
+      <section class="guide-card" id="text-widths">
+        <span class="point-number">5</span>
+        <h2>Text Block Widths</h2>
+        <p>Use width utilities to keep text lines comfortable to read.</p>
+        <pre><code>&lt;div class="text-block-sm"&gt;Narrow content&lt;/div&gt;
+&lt;div class="text-block"&gt;Standard content&lt;/div&gt;
+&lt;div class="text-block-lg"&gt;Wide content&lt;/div&gt;</code></pre>
+        <ul>
+          <li><code>.text-block-sm</code>: 45ch</li>
+          <li><code>.text-block</code>: 60ch</li>
+          <li><code>.text-block-lg</code>: 70ch</li>
+        </ul>
+        <p>These classes limit container width; they do not automatically center it.</p>
+      </section>
+
+      <section class="guide-card" id="line-height">
+        <span class="point-number">6</span>
+        <h2>Line Height</h2>
+        <p>Line height controls the vertical space between lines of text.</p>
+        <pre><code>--text-leading: 1.75;
+--text-leading-tight: 1.5;</code></pre>
+        <ul>
+          <li><code>--text-leading</code>: comfortable paragraph spacing.</li>
+          <li><code>--text-leading-tight</code>: compact text, such as <code>small</code>.</li>
+        </ul>
+      </section>
+
+      <section class="guide-card" id="colors">
+        <span class="point-number">7</span>
+        <h2>Colors</h2>
+        <p>Use your shared color variables instead of repeating hex values across component styles.</p>
+        <pre><code>color: var(--text);
+color: var(--muted);
+background: var(--navy);
+border-color: var(--border);</code></pre>
+        <ul>
+          <li><code>--text</code>: primary text</li>
+          <li><code>--muted</code>: secondary text</li>
+          <li><code>--navy</code>: dark blue</li>
+          <li><code>--orange</code>: accent</li>
+          <li><code>--white</code>: white</li>
+        </ul>
+      </section>
+
+      <section class="guide-card" id="font-loading">
+        <span class="point-number">8</span>
+        <h2>Font Loading</h2>
+        <p>Load Caveat and Inter in the HTML <code>&lt;head&gt;</code>. Fallback fonts are used if the web fonts cannot load.</p>
+        <pre><code>&lt;link rel="preconnect"
+  href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect"
+  href="https://fonts.gstatic.com" crossorigin&gt;
+
+&lt;link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap"
+  rel="stylesheet"&gt;</code></pre>
+      </section>
+
+      <section class="guide-card" id="important-rules">
+        <span class="point-number">9</span>
+        <h2>Important Rules</h2>
+        <ul>
+          <li>Keep shared variables in <code>:root</code>.</li>
+          <li>Keep core typography in <code>global.css</code>.</li>
+          <li>Avoid duplicate font declarations in component styles.</li>
+          <li>Check component-specific CSS if a font looks incorrect.</li>
+          <li>Use Caveat sparingly for decorative text; use Inter for long paragraphs.</li>
+        </ul>
+        <div class="note">
+          <p><strong>Recommended structure:</strong> Keep variables, resets, and typography in <code>global.css</code>, and use separate files for buttons, layout, and components.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">Global Typography CSS · Quick Usage Guide</div>
+  </footer>
+</body>
+</html>
