@@ -1,0 +1,92 @@
+/* ================= NOTE BEGIN ===============
+
+:root represents the top-level element of the HTML document, usually the <html> element.
+CSS variables defined inside :root are available globally throughout your CSS.
+
+DEFINITION
+:root {
+    --blue: #2563eb;
+}
+
+USAGE
+button {
+    background-color: var(--blue);
+}
+
+CSS variables defined in :root can be accessed from different CSS files, 
+as long as those CSS files are loaded into the same HTML document. 
+
+
+Important: load order
+It's best to load the variable definitions before the CSS files that use them:
+
+fallback example:
+
+button {
+    background: var(--blue, blue);
+}
+
+================ NOTE END ============== */
+
+
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+
+:root {
+
+    /* Typography */
+    --font-family: 'Caveat', cursive;;
+
+    /* Colours */
+    --navy: #172554;
+    --navy-dark: #0f172a;
+
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --sky: #eff6ff;
+
+    --orange: #f97316;
+    --orange-light: #ffedd5;
+
+    --yellow: #facc15;
+
+    --white: #ffffff;
+    --off-white: #f8fafc;
+
+    --text: #172033;
+    --muted: #64748b;
+    --border: #e2e8f0;
+
+    /* Corners */
+    --radius: 24px;
+    --radius-small: 14px;
+
+    /* Shadows */
+    --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+
+    /* Layout */
+    --container: 1160px;
+}
+
+
+/* =========================================================
+   GLOBAL FONT
+========================================================= */
+
+body {
+    font-family: var(--font-family);
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
