@@ -8,7 +8,7 @@
     --font-heading: 'Caveat', cursive;
     --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
 
-    /* Body Font Sizes */
+    /* Responsive Font Sizes */
     --text-xs: 0.8rem;
     --text-sm: 0.9rem;
     --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
@@ -56,12 +56,21 @@
 
 
 /* =========================================================
-   GLOBAL BASE STYLES
+   RESET & BASE STYLES
 ========================================================= */
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
+    margin: 0;
     font-family: var(--font-body);
     color: var(--text);
+    line-height: var(--text-leading);
+    -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -71,23 +80,29 @@ select {
     font: inherit;
 }
 
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+img,
+video {
+    height: auto;
+}
+
 
 /* =========================================================
-   TYPOGRAPHY
+   HEADINGS
 ========================================================= */
 
 h1,
 h2,
-h3,
-p {
-    margin-top: 0;
-}
-
-/* Headings: Handwritten Style */
-
-h1,
-h2,
 h3 {
+    margin-top: 0;
     font-family: var(--font-heading);
     line-height: 1.12;
     letter-spacing: -0.035em;
@@ -105,22 +120,23 @@ h3 {
     font-size: 1.4rem;
 }
 
-/* Body Text */
+
+/* =========================================================
+   BODY TYPOGRAPHY
+========================================================= */
 
 p {
     max-width: var(--text-width-md);
+    margin-top: 0;
+    color: var(--muted);
     font-size: var(--text-base);
     line-height: var(--text-leading);
-    color: var(--muted);
 }
 
-/* Decorative Text */
 
-.accent-text {
-    font-family: var(--font-heading);
-}
-
-/* Text Blocks */
+/* =========================================================
+   TEXT BLOCKS
+========================================================= */
 
 .text-block {
     width: 100%;
@@ -135,7 +151,10 @@ p {
     max-width: var(--text-width-lg);
 }
 
-/* Text Size Utilities */
+
+/* =========================================================
+   TEXT SIZE UTILITIES
+========================================================= */
 
 .text-xs {
     font-size: var(--text-xs);
@@ -153,19 +172,41 @@ p {
     font-size: var(--text-lg);
 }
 
-/* Compact Text */
+
+/* =========================================================
+   ACCENT & COMPACT TEXT
+========================================================= */
+
+.accent-text {
+    font-family: var(--font-heading);
+}
 
 small {
     font-size: var(--text-sm);
     line-height: var(--text-leading-tight);
 }
 
-/* Responsive Text Widths */
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    width: min(calc(100% - 40px), var(--container));
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   RESPONSIVE ADJUSTMENTS
+========================================================= */
 
 @media (max-width: 768px) {
+
     :root {
         --text-width-sm: 100%;
         --text-width-md: 100%;
         --text-width-lg: 100%;
     }
+
 }
