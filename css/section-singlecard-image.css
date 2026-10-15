@@ -1,0 +1,268 @@
+/* =====================================================
+   SINGLE-CARD SECTION
+====================================================== */
+
+.single-card-section {
+    padding: clamp(3rem, 7vw, 5rem) 1.5rem;
+}
+
+
+/* =====================================================
+   SECTION HEADER
+====================================================== */
+
+.single-card-section .section-header {
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+}
+
+.single-card-section .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.12;
+    margin-bottom: 1rem;
+}
+
+.single-card-section .section-description {
+    max-width: 60ch;
+    margin-inline: auto;
+
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+}
+
+
+/* =====================================================
+   SINGLE-CARD WRAPPER
+====================================================== */
+
+.single-card-wrapper {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+
+/* =====================================================
+   BASE CARD
+====================================================== */
+
+.single-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 1.5rem;
+
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.single-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 55px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =====================================================
+   OPTIONAL VISUAL AREA
+====================================================== */
+
+.single-card-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 100%;
+}
+
+
+/* =====================================================
+   ICON VARIANT
+====================================================== */
+
+.single-card--icon .single-card-visual {
+    justify-content: flex-start;
+}
+
+.single-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 16px;
+
+    background-color: var(--blue-light);
+    color: var(--blue);
+
+    font-size: 2rem;
+    line-height: 1;
+}
+
+
+/* =====================================================
+   IMAGE VARIANT
+====================================================== */
+
+.single-card--image {
+    overflow: hidden;
+    padding: 0;
+}
+
+.single-card--image .single-card-visual {
+    display: block;
+}
+
+.single-card-image {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.single-card--image .single-card-content {
+    padding: 0 clamp(1.5rem, 4vw, 2.5rem)
+             clamp(1.5rem, 4vw, 2.5rem);
+}
+
+
+/* =====================================================
+   TEXT-ONLY VARIANT
+====================================================== */
+
+.single-card--text .single-card-visual {
+    display: none;
+}
+
+
+/* =====================================================
+   CARD CONTENT
+====================================================== */
+
+.single-card-content {
+    width: 100%;
+    max-width: 65ch;
+}
+
+.single-card-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.2;
+
+    margin: 0 0 1rem;
+
+    color: var(--text);
+}
+
+.single-card-description {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+
+    color: var(--muted);
+
+    margin: 0 0 1.5rem;
+}
+
+
+/* =====================================================
+   CARD LINK
+====================================================== */
+
+.single-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-family: var(--font-body);
+    font-weight: 600;
+
+    color: var(--blue);
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.single-card-link:hover {
+    color: var(--navy);
+}
+
+.single-card-link:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+====================================================== */
+
+@media (max-width: 640px) {
+
+    .single-card-section {
+        padding: 3rem 1.25rem;
+    }
+
+    .single-card-section .section-header {
+        margin-bottom: 2rem;
+    }
+
+    .single-card {
+        padding: 1.5rem;
+        border-radius: var(--radius-small);
+    }
+
+    .single-card-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.75rem;
+    }
+
+    .single-card--image {
+        padding: 0;
+    }
+
+    .single-card--image .single-card-content {
+        padding: 0 1.5rem 1.5rem;
+    }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .single-card,
+    .single-card-link {
+        transition: none;
+    }
+
+    .single-card:hover {
+        transform: none;
+    }
+
+}
