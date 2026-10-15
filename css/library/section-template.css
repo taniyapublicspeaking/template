@@ -1,14 +1,14 @@
 /* ===================================================
-   CONTENT SECTION
+SECTION RELATED CLASSES 
 ====================================================== */
 
-.content-section {
+.section-definition {
     padding: 4rem 1.5rem;
 }
 
 /* Container */
 
-.container {
+.section-container {
     width: 100%;
     max-width: 1200px;
     margin-inline: auto;
