@@ -1,8 +1,3 @@
-<!-- =====================================================
-     RESPONSIVE NAVIGATION + ACTIVE SECTION TRACKING
-====================================================== -->
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
 
     /* =================================================
@@ -345,6 +340,3 @@ document.addEventListener("DOMContentLoaded", function () {
     activateInitialSection();
 
 });
-</script>
-
-<!-- END RESPONSIVE NAVIGATION SCRIPT -->
