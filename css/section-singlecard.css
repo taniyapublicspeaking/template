@@ -1,0 +1,180 @@
+/* =====================================================
+   SINGLE CARD SECTION
+====================================================== */
+
+.single-card-section {
+    padding: clamp(3rem, 7vw, 5rem) 1.5rem;
+}
+
+
+/* =====================================================
+   SECTION HEADER
+====================================================== */
+
+.single-card-section .section-header {
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+}
+
+.single-card-section .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.12;
+    margin-bottom: 1rem;
+}
+
+.single-card-section .section-description {
+    max-width: 60ch;
+    margin-inline: auto;
+
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+}
+
+
+/* =====================================================
+   SINGLE CARD WRAPPER
+====================================================== */
+
+.single-card-wrapper {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+
+/* =====================================================
+   SINGLE CARD
+====================================================== */
+
+.single-card {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Card Hover Effect */
+
+.single-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 55px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =====================================================
+   CARD CONTENT
+====================================================== */
+
+.single-card-content {
+    max-width: 65ch;
+}
+
+
+/* Card Title */
+
+.single-card-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.2;
+
+    margin: 0 0 1rem;
+
+    color: var(--text);
+}
+
+
+/* Card Description */
+
+.single-card-description {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+
+    color: var(--muted);
+
+    margin: 0 0 1.5rem;
+}
+
+
+/* =====================================================
+   CARD LINK
+====================================================== */
+
+.single-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-family: var(--font-body);
+    font-weight: 600;
+
+    color: var(--blue);
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.single-card-link:hover {
+    color: var(--navy);
+}
+
+
+/* Keyboard Accessibility */
+
+.single-card-link:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+====================================================== */
+
+@media (max-width: 640px) {
+
+    .single-card-section {
+        padding: 3rem 1.25rem;
+    }
+
+    .single-card-section .section-header {
+        margin-bottom: 2rem;
+    }
+
+    .single-card {
+        padding: 1.5rem;
+        border-radius: var(--radius-small);
+    }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION ACCESSIBILITY
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .single-card,
+    .single-card-link {
+        transition: none;
+    }
+
+    .single-card:hover {
+        transform: none;
+    }
+
+}
