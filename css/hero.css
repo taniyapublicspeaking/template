@@ -1,0 +1,288 @@
+/* =====================================================
+   HERO SECTION
+====================================================== */
+
+.hero-section {
+    padding: clamp(3rem, 8vw, 7rem) 1.5rem;
+
+    overflow: hidden;
+}
+
+/* Hero Container */
+
+.hero-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(0, 0.9fr);
+
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+}
+
+/* =====================================================
+   HERO CONTENT
+====================================================== */
+
+.hero-content {
+    min-width: 0;
+}
+
+/* Eyebrow Text */
+
+.hero-eyebrow {
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+
+    margin: 0 0 1rem;
+
+    color: #2563eb;
+}
+
+/* Main Heading */
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+
+    font-weight: 700;
+    line-height: 1.1;
+
+    margin: 0 0 1.5rem;
+
+    overflow-wrap: break-word;
+}
+
+/* Highlighted Heading Text */
+
+.hero-highlight {
+    display: inline-block;
+
+    color: #2563eb;
+}
+
+/* Description */
+
+.hero-description {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+
+    line-height: 1.8;
+
+    max-width: 550px;
+
+    margin: 0 0 2rem;
+}
+
+/* =====================================================
+   HERO BUTTONS
+====================================================== */
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+    gap: 1rem;
+
+    margin-bottom: 1.5rem;
+}
+
+/* Shared Button Styles */
+
+.hero-btn {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    min-height: 48px;
+    padding: 0.85rem 1.5rem;
+
+    border: 2px solid transparent;
+    border-radius: 8px;
+
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* Primary Button */
+
+.hero-btn-primary {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.hero-btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Secondary Button */
+
+.hero-btn-secondary {
+    background-color: transparent;
+    color: #2563eb;
+
+    border-color: #2563eb;
+}
+
+.hero-btn-secondary:hover {
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+}
+
+/* Keyboard Accessibility */
+
+.hero-btn:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 4px;
+}
+
+/* Supporting Text */
+
+.hero-note {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+
+    line-height: 1.6;
+
+    margin: 0;
+    opacity: 0.75;
+}
+
+/* =====================================================
+   HERO VISUAL
+====================================================== */
+
+.hero-visual {
+    width: 100%;
+    min-width: 0;
+}
+
+.hero-image {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+
+    border-radius: 16px;
+}
+
+/* =====================================================
+   TABLET RESPONSIVE
+====================================================== */
+
+@media (max-width: 900px) {
+
+    .hero-container {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 0.85fr);
+
+        gap: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5.5vw, 3.8rem);
+    }
+
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+====================================================== */
+
+@media (max-width: 640px) {
+
+    .hero-section {
+        padding: 3rem 1.25rem;
+    }
+
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 10vw, 3.5rem);
+    }
+
+    .hero-description {
+        margin-inline: auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        max-width: 500px;
+        margin-inline: auto;
+    }
+
+}
+
+/* =====================================================
+   SMALL MOBILE DEVICES
+====================================================== */
+
+@media (max-width: 380px) {
+
+    .hero-section {
+        padding: 2.5rem 1rem;
+    }
+
+    .hero-title {
+        font-size: 2.3rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+/* =====================================================
+   REDUCED MOTION ACCESSIBILITY
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-btn {
+        transition: none;
+    }
+
+    .hero-btn:hover {
+        transform: none;
+    }
+
+}
