@@ -1,0 +1,144 @@
+/*
+Place the following in your component stylesheet or at the end of your existing global.css.
+
+*/
+
+
+
+/* =================================
+   CARD SECTION
+================================= */
+
+.card-section {
+    padding: 5rem 1.5rem;
+}
+
+.card-section .container {
+    width: 100%;
+    max-width: var(--card-section-width);
+    margin-inline: auto;
+}
+
+
+/* =================================
+   SECTION HEADER
+================================= */
+
+.section-header {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-family: var(--font-heading);
+    color: var(--navy);
+}
+
+.section-header p {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+    color: var(--muted);
+}
+
+
+/* =================================
+   RESPONSIVE CARD GRID
+================================= */
+
+.card-grid {
+    display: grid;
+
+    grid-template-columns: repeat(
+        var(--card-columns),
+        minmax(0, 1fr)
+    );
+
+    gap: var(--card-gap);
+}
+
+
+/* =================================
+   BASE CARD COMPONENT
+================================= */
+
+.single-card {
+    min-width: 0;
+    padding: var(--card-padding);
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.single-card h3 {
+    font-family: var(--font-heading);
+    color: var(--navy);
+    font-size: 1.6rem;
+}
+
+.single-card p {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+    color: var(--muted);
+}
+
+.single-card a {
+    margin-top: auto;
+    padding-top: 1rem;
+
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.single-card a:hover {
+    text-decoration: underline;
+}
+
+.single-card-icon {
+    display: grid;
+    place-items: center;
+
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1.25rem;
+
+    background: var(--blue-light);
+    color: var(--blue);
+    border-radius: var(--radius-small);
+
+    font-size: 1.5rem;
+}
+
+
+/* =================================
+   RESPONSIVE BREAKPOINTS
+================================= */
+
+@media (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .card-section {
+        padding: 3rem 1rem;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .single-card {
+        padding: 1.25rem;
+    }
+}
