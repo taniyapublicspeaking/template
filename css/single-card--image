@@ -1,0 +1,18 @@
+The single-card class provides the shared design, such as:
+
+Background and border
+Rounded corners
+Shadow
+Spacing
+Typography
+Hover effects
+
+This is your base component.Your card component should reuse these variables instead of defining its own competing colors, fonts, and design values.
+
+This creates three clear layers:
+
+Global design tokens define your site's colors, typography, spacing, and other shared values.
+The base component uses those tokens to establish the common card appearance.
+Modifier classes adjust the card's layout or presentation for specific purposes.
+
+In short: build the card once, then use classes such as single-card--icon, single-card--image, single-card--text, and single-card--horizontal to adapt it to different situations. This keeps your HTML reusable, your CSS organized, and your website visually consistent.
