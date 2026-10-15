@@ -1,0 +1,21 @@
+:root {
+    /* =================================
+       CARD LAYOUT SETTINGS
+    ================================= */
+
+    /* Number of cards per row on desktop */
+    --card-columns: 3;
+
+    /* Maximum width of the card section */
+    --card-section-width: 1160px;
+
+    /* Space between cards */
+    --card-gap: 1.5rem;
+
+    /* Minimum card width */
+    --card-min-width: 260px;
+
+    /* Card appearance */
+    --card-padding: 1.75rem;
+    --card-radius: var(--radius);
+}
