@@ -1,0 +1,15 @@
+/* Buttons */
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: #fff;
+}
