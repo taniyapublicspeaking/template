@@ -43,3 +43,20 @@ Different browsers can have slightly different default styles. A CSS reset helps
 ========================================================= */
 
 /* Define buttons, cards, and navigation */
+
+========================================================================
+
+Recommended HTML Section Pattern
+
+For consistency across your website, follow this structure:
+
+HTML element	Purpose
+<section>	Defines an independent page section
+<div class="container">	Controls content width and alignment
+<header>	Groups the section heading and introduction
+<h2>	Defines the section's main heading
+<p>	Provides descriptive text
+<div class="section-content">	Groups related content
+<article>	Represents an independent content item or card
+<footer>	Groups optional section actions or concluding content
+
