@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A self-contained quick guide to reusable website sections, section layouts, spacing, modifiers, and responsive behavior.">
+  <title>Website Sections — Quick Usage Guide</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =====================================================
+       SELF-CONTAINED TOKENS
+       Matches the site's global.css design direction.
+    ====================================================== */
+    :root {
+      --font-heading: 'Caveat', cursive;
+      --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+      --navy: #172554;
+      --navy-dark: #0f172a;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --sky: #eff6ff;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --yellow: #facc15;
+      --white: #ffffff;
+      --off-white: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+
+      --radius: 24px;
+      --radius-small: 14px;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+      --container: 1080px;
+
+      --text-xs: 0.8rem;
+      --text-sm: 0.9rem;
+      --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+      --text-leading: 1.75;
+      --text-leading-tight: 1.5;
+
+      /* Section defaults */
+      --section-padding-block: 4.5rem;
+      --section-padding-inline: 1.25rem;
+      --section-content-width: 1160px;
+      --section-heading-width: 700px;
+      --section-gap: 2rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+
+    body {
+      margin: 0;
+      background: var(--off-white);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--text-leading);
+    }
+
+    a { color: var(--blue); }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      padding: 1rem 1.25rem;
+      color: var(--white);
+      background: var(--navy-dark);
+    }
+    .header-inner {
+      max-width: var(--container);
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      margin: 0;
+      color: var(--white);
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      line-height: 1;
+    }
+    .header-label { margin: 0; color: #cbd5e1; font-size: var(--text-sm); }
+
+    .hero {
+      padding: clamp(3rem, 8vw, 6rem) 1.25rem 3.5rem;
+      background: linear-gradient(135deg, var(--sky), var(--white));
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-inner, main, .footer-inner {
+      width: min(100% - 2rem, var(--container));
+      margin-inline: auto;
+    }
+    .eyebrow {
+      margin: 0 0 0.5rem;
+      color: var(--blue);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: var(--navy);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+    h1, h2 { font-family: var(--font-heading); letter-spacing: 0; }
+    h1 { max-width: 850px; margin-bottom: 1rem; font-size: clamp(3rem, 8vw, 5.25rem); }
+    h2 { margin-bottom: 0.75rem; font-size: clamp(2.1rem, 4.5vw, 3.25rem); }
+    h3 { margin-bottom: 0.6rem; font-size: 1.2rem; }
+    p { margin-top: 0; }
+    .hero p { max-width: 74ch; color: var(--muted); }
+    .hero strong { color: var(--navy); }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+      padding-block: 3rem 4rem;
+    }
+    .toc {
+      position: sticky;
+      top: 1rem;
+      padding: 1.25rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+    }
+    .toc h2 {
+      margin-bottom: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+    .toc ul { list-style: none; padding: 0; margin: 0; }
+    .toc li + li { margin-top: 0.35rem; }
+    .toc a {
+      display: block;
+      padding: 0.3rem 0;
+      color: var(--muted);
+      font-size: var(--text-sm);
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--blue); text-decoration: underline; }
+
+    .guide-section {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 1rem;
+    }
+    .guide-section:last-child { border-bottom: 0; }
+    .lead { max-width: 74ch; color: var(--muted); }
+
+    .note {
+      margin: 1.25rem 0;
+      padding: 1rem 1.1rem;
+      background: var(--sky);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius-small) var(--radius-small) 0;
+    }
+    .note p:last-child { margin-bottom: 0; }
+    .warning { background: var(--orange-light); border-left-color: var(--orange); }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 1rem 0;
+      padding: 1.1rem;
+      color: #e2e8f0;
+      background: #0f172a;
+      border-radius: var(--radius-small);
+      font: 0.88rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 2;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    :not(pre) > code {
+      padding: 0.12rem 0.35rem;
+      color: var(--navy);
+      background: var(--blue-light);
+      border-radius: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      font-size: var(--text-sm);
+    }
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--navy); background: var(--sky); }
+
+    /* Live section examples */
+    .demo-frame {
+      margin: 1.25rem 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    .sample-section {
+      padding: var(--section-padding-block) var(--section-padding-inline);
+      background: var(--white);
+    }
+    .sample-section--soft { background: var(--sky); }
+    .sample-section--dark { background: var(--navy-dark); color: #e2e8f0; }
+    .sample-section--dark h2, .sample-section--dark h3 { color: var(--white); }
+    .sample-section--dark p { color: #cbd5e1; }
+    .sample-inner { max-width: var(--section-content-width); margin-inline: auto; }
+    .section-heading {
+      max-width: var(--section-heading-width);
+      margin: 0 auto var(--section-gap);
+      text-align: center;
+    }
+    .section-heading p { color: var(--muted); }
+    .sample-section--dark .section-heading p { color: #cbd5e1; }
+    .sample-label {
+      margin: 0 0 0.75rem;
+      color: var(--blue);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .sample-section--dark .sample-label { color: #93c5fd; }
+
+    .sample-columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .sample-item {
+      padding: 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      background: var(--white);
+      color: var(--text);
+    }
+    .sample-item h3 { font-family: var(--font-heading); font-size: 1.6rem; }
+    .sample-item p { margin-bottom: 0; color: var(--muted); font-size: var(--text-sm); }
+    .sample-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+    .sample-button {
+      display: inline-block;
+      padding: 0.7rem 1rem;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: var(--text-sm);
+    }
+    .sample-button--outline {
+      color: var(--blue);
+      background: transparent;
+      border: 1px solid var(--blue);
+    }
+
+    .site-footer { padding: 2rem 1.25rem; color: #cbd5e1; background: var(--navy-dark); }
+    .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+    .footer-inner p { margin: 0; font-size: var(--text-sm); }
+    .back-top { color: var(--white); }
+
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1fr; }
+      .toc { position: static; }
+      .toc ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+      .sample-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .hero { padding-top: 3rem; }
+      .header-label { display: none; }
+      .toc ul { grid-template-columns: 1fr; }
+      .sample-columns { grid-template-columns: 1fr; }
+      .sample-section { padding: 3rem 1rem; }
+      th, td { padding: 0.6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <p class="brand">Design System Help</p>
+      <p class="header-label">Quick Usage Guide · Website Sections</p>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">HTML + CSS reference</p>
+      <h1>How to Build Reusable Website Sections</h1>
+      <p>
+        A practical guide to building page sections that share a consistent structure
+        while allowing different content, backgrounds, layouts, and spacing.
+      </p>
+      <p><strong>Core idea:</strong> create a repeatable section pattern, then customize it with modifier classes and content-specific components.</p>
+    </div>
+  </section>
+
+  <main class="page-layout">
+    <aside class="toc" aria-label="Table of contents">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#section-structure">1. Basic structure</a></li>
+        <li><a href="#inner-header">2. Why a section header?</a></li>
+        <li><a href="#global-settings">3. Global settings</a></li>
+        <li><a href="#add-section">4. Add a new section</a></li>
+        <li><a href="#modifiers">5. Section modifiers</a></li>
+        <li><a href="#content-layouts">6. Content layouts</a></li>
+        <li><a href="#cards">7. Sections with cards</a></li>
+        <li><a href="#responsive">8. Responsive behavior</a></li>
+        <li><a href="#accessibility">9. Accessibility</a></li>
+        <li><a href="#troubleshooting">10. Troubleshooting</a></li>
+        <li><a href="#checklist">11. Quick checklist</a></li>
+      </ul>
+    </aside>
+
+    <div class="guide-content">
+      <section class="guide-section" id="section-structure">
+        <h2>1. Start with a reusable section structure</h2>
+        <p class="lead">Most content sections need a section wrapper, an inner container, an optional heading area, and a content area.</p>
+        <pre><code>&lt;section class="content-section" id="about"&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="section-header"&gt;
+      &lt;p class="section-eyebrow"&gt;Who we are&lt;/p&gt;
+      &lt;h2&gt;About Us&lt;/h2&gt;
+      &lt;p&gt;A short introduction to this section.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="section-content"&gt;
+      &lt;!-- Add text, images, cards, lists, or other content --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <p>Use a unique <code>id</code> when the section should be reachable from navigation links. The <code>.container</code> keeps content aligned with the rest of your site.</p>
+        <div class="note">
+          <p><strong>Important:</strong> a section can contain any suitable content. The section pattern is reusable; the content inside it does not have to be the same on every page.</p>
+        </div>
+      </section>
+
+      <section class="guide-section" id="inner-header">
+        <h2>2. Why use a header inside a section?</h2>
+        <p>The page-level <code>&lt;header&gt;</code> often contains the site logo and navigation. A separate <code>&lt;header class="section-header"&gt;</code> inside a section groups that section's own heading, subtitle, and introduction.</p>
+        <pre><code>&lt;section id="features"&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="section-header"&gt;
+      &lt;h2&gt;Our Features&lt;/h2&gt;
+      &lt;p&gt;What makes the service useful.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="section-content"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <p>The section header is optional. If a section does not need a title or introduction, you can omit it. Using <code>&lt;header&gt;</code> inside a section does not replace or duplicate the main site header; it describes the section's own introductory content.</p>
+      </section>
+
+      <section class="guide-section" id="global-settings">
+        <h2>3. Define global section settings</h2>
+        <p>Add section variables to the existing <code>:root</code> block in <code>global.css</code>. These values become defaults that your section components can reuse.</p>
+        <pre><code>:root {
+  --section-padding-block: 4.5rem;
+  --section-padding-inline: 1.25rem;
+  --section-content-width: 1160px;
+  --section-heading-width: 700px;
+  --section-gap: 2rem;
+}</code></pre>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Controls</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><code>--section-padding-block</code></td><td>Space above and below a section.</td><td><code>4.5rem</code></td></tr>
+              <tr><td><code>--section-padding-inline</code></td><td>Space at the left and right edges.</td><td><code>1.25rem</code></td></tr>
+              <tr><td><code>--section-content-width</code></td><td>Maximum width of the section's inner content.</td><td><code>1160px</code></td></tr>
+              <tr><td><code>--section-heading-width</code></td><td>Maximum width of the title and introduction.</td><td><code>700px</code></td></tr>
+              <tr><td><code>--section-gap</code></td><td>Space between the section header and content.</td><td><code>2rem</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Reuse existing global tokens for colors, fonts, borders, radius, and shadows rather than defining unrelated values in every section.</p>
+      </section>
+
+      <section class="guide-section" id="add-section">
+        <h2>4. Add a new section to your page</h2>
+        <p>Copy the section structure, give it a unique ID, then replace the heading and content. A unique ID is helpful for navigation, skip links, and scroll-based active-section highlighting.</p>
+        <pre><code>&lt;section class="content-section" id="resources"&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="section-header"&gt;
+      &lt;h2&gt;Resources&lt;/h2&gt;
+      &lt;p&gt;Helpful links and downloads.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="section-content"&gt;
+      &lt;p&gt;Place the section's content here.&lt;/p&gt;
+      &lt;a href="/help"&gt;Visit the help center&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <p>Make sure any navigation link to this section uses the matching fragment, for example <code>&lt;a href="#resources"&gt;Resources&lt;/a&gt;</code>.</p>
+      </section>
+
+      <section class="guide-section" id="modifiers">
+        <h2>5. Use modifier classes for section variations</h2>
+        <p>Keep a shared base class and add an optional modifier when one section needs a different background, alignment, or spacing. This avoids building a completely separate component for every variation.</p>
+        <pre><code>/* Shared base */
+.content-section {
+  padding: var(--section-padding-block)
+           var(--section-padding-inline);
+}
+
+/* Optional variations */
+.content-section--soft {
+  background: var(--sky);
+}
+
+.content-section--dark {
+  color: var(--white);
+  background: var(--navy-dark);
+}
+
+.content-section--compact {
+  padding-block: 2.5rem;
+}
+
+.content-section--wide .container {
+  max-width: 1400px;
+}
+
+.content-section--centered {
+  text-align: center;
+}</code></pre>
+        <p>Use the modifier in HTML like this:</p>
+        <pre><code>&lt;section class="content-section content-section--soft" id="about"&gt;
+  ...
+&lt;/section&gt;
+
+&lt;section class="content-section content-section--compact" id="updates"&gt;
+  ...
+&lt;/section&gt;</code></pre>
+
+        <div class="demo-frame">
+          <section class="sample-section sample-section--soft">
+            <div class="sample-inner">
+              <header class="section-heading">
+                <p class="sample-label">Modifier example</p>
+                <h2>Soft Background Section</h2>
+                <p>This section variation changes the background while preserving the same basic structure.</p>
+              </header>
+              <div class="sample-actions">
+                <a class="sample-button" href="#content-layouts">Explore layouts</a>
+                <a class="sample-button sample-button--outline" href="#global-settings">View settings</a>
+              </div>
+            </div>
+          </section>
+        </div>
+        <p><strong>Class naming convention:</strong> <code>content-section</code> is the base component; <code>content-section--soft</code> is a modifier. The double hyphen is a naming convention, not special CSS syntax.</p>
+      </section>
+
+      <section class="guide-section" id="content-layouts">
+        <h2>6. Choose a content layout</h2>
+        <p>The section wrapper controls spacing and background. A child layout class controls how the content inside is arranged.</p>
+        <h3>Two-column layout example</h3>
+        <pre><code>&lt;section class="content-section" id="about"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="content-layout content-layout--two-column"&gt;
+      &lt;div&gt;
+        &lt;h2&gt;Our Story&lt;/h2&gt;
+        &lt;p&gt;Text content goes here.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;img src="images/team.jpg" alt="Our team"&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <pre><code>.content-layout--two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  align-items: center;
+}
+
+.content-layout img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+@media (max-width: 700px) {
+  .content-layout--two-column {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+        <p>Other useful inner layouts include a text column, media-and-text layout, list, feature grid, quote, or call-to-action. Use the layout that fits the content rather than forcing every section into the same arrangement.</p>
+      </section>
+
+      <section class="guide-section" id="cards">
+        <h2>7. Put reusable cards inside a section</h2>
+        <p>Sections and cards are separate reusable layers: the section sets the overall space and context, while the card grid arranges individual items.</p>
+        <pre><code>&lt;section class="content-section content-section--soft" id="features"&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="section-header"&gt;
+      &lt;h2&gt;Our Features&lt;/h2&gt;
+      &lt;p&gt;Explore the key features.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="card-grid"&gt;
+      &lt;article class="single-card"&gt;
+        &lt;h3&gt;Feature One&lt;/h3&gt;
+        &lt;p&gt;A short description.&lt;/p&gt;
+      &lt;/article&gt;
+
+      &lt;article class="single-card"&gt;
+        &lt;h3&gt;Feature Two&lt;/h3&gt;
+        &lt;p&gt;A short description.&lt;/p&gt;
+      &lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <p>For more details on card counts, column settings, icon/image modifiers, and card layouts, use your separate <strong>Card Sections — Quick Usage Guide</strong>.</p>
+      </section>
+
+      <section class="guide-section" id="responsive">
+        <h2>8. Make sections responsive</h2>
+        <p>Use a flexible content width, reasonable side padding, and media queries for layouts that need to change on smaller screens.</p>
+        <pre><code>.content-section {
+  padding: var(--section-padding-block)
+           var(--section-padding-inline);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--section-content-width);
+  margin-inline: auto;
+}
+
+@media (max-width: 700px) {
+  .content-section {
+    padding-block: 3rem;
+    padding-inline: 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+}</code></pre>
+        <p>Preview your page at desktop, tablet, and mobile widths. Check for long headings, wide images, buttons that wrap, and layouts that become too cramped.</p>
+      </section>
+
+      <section class="guide-section" id="accessibility">
+        <h2>9. Accessibility and semantic HTML</h2>
+        <ul>
+          <li>Use <code>&lt;section&gt;</code> for a distinct thematic area of the page. Give it a heading where appropriate.</li>
+          <li>Use heading levels in a meaningful order: usually one page-level <code>h1</code>, followed by section <code>h2</code> headings and nested <code>h3</code> headings.</li>
+          <li>Give important sections unique IDs if they are linked from the navigation.</li>
+          <li>Use descriptive link text such as “Read the documentation” rather than “Click here”.</li>
+          <li>Add useful <code>alt</code> text to meaningful images; use <code>alt=""</code> for decorative images.</li>
+          <li>Keep text contrast strong, and make sure keyboard focus is visible.</li>
+        </ul>
+      </section>
+
+      <section class="guide-section" id="troubleshooting">
+        <h2>10. Common issues and fixes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Issue</th><th>Likely cause</th><th>What to check</th></tr></thead>
+            <tbody>
+              <tr><td>Section content touches screen edges.</td><td>Missing horizontal padding.</td><td>Check section padding and the inner container width.</td></tr>
+              <tr><td>Section is wider than the page.</td><td>A child element has a fixed or oversized width.</td><td>Use <code>max-width: 100%</code> and responsive images.</td></tr>
+              <tr><td>Navigation link does not scroll to a section.</td><td>The link fragment and section ID do not match.</td><td>For <code>href="#about"</code>, the target must have <code>id="about"</code>.</td></tr>
+              <tr><td>Background modifier does not apply.</td><td>Class is missing or selector is overridden.</td><td>Check that both the base and modifier classes are on the section.</td></tr>
+              <tr><td>Section title looks too wide.</td><td>Heading container has no max-width.</td><td>Set a readable width and center it if appropriate.</td></tr>
+              <tr><td>Content does not stack on mobile.</td><td>Responsive rule is missing or overridden.</td><td>Check the relevant media query and grid selector.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="guide-section" id="checklist">
+        <h2>11. Quick checklist</h2>
+        <ul>
+          <li>Use a reusable <code>&lt;section&gt;</code> wrapper and an inner <code>.container</code>.</li>
+          <li>Add a section heading and introduction when they help explain the content.</li>
+          <li>Set global spacing and width values in the existing <code>:root</code> block.</li>
+          <li>Use a base section class plus optional modifiers for backgrounds and spacing.</li>
+          <li>Keep inner layout classes separate from the outer section styles.</li>
+          <li>Use a unique ID when a section needs a navigation link.</li>
+          <li>Test all sections at desktop, tablet, and mobile widths.</li>
+          <li>Use semantic headings, accessible link text, and suitable image alt text.</li>
+        </ul>
+        <div class="note warning">
+          <p><strong>Keep responsibilities separate:</strong> the section controls the surrounding layout and spacing; inner components such as cards, images, forms, and buttons control their own content presentation.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Website Sections — Quick Usage Guide</p>
+      <p>Built to match the Caveat + Inter design direction.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
