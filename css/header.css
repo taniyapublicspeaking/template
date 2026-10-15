@@ -421,3 +421,58 @@ Add this code to your existing global.css file.
     }
 
 }
+
+/* =====================================================
+   SCROLL-BASED ACTIVE NAVIGATION
+====================================================== */
+
+/* Active Navigation Link */
+
+.nav-link.active {
+    color: var(--nav-accent);
+    font-weight: 600;
+}
+
+/* Active Link Underline - Desktop */
+
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* Smooth Scrolling */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent Section Headings from Hiding Behind
+   the Header When Navigating to Anchors */
+
+section[id] {
+    scroll-margin-top: 1.5rem;
+}
+
+/* Mobile Active Link */
+
+@media (max-width: 768px) {
+
+    .nav-link.active {
+        background-color: #eff6ff;
+        border-radius: 6px;
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+}
+
+/* Respect Reduced Motion Preferences */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+}
