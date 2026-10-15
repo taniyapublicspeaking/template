@@ -1,0 +1,423 @@
+/* =====================================================
+   GLOBAL NAVIGATION VARIABLES
+
+Add this code to your existing global.css file.
+====================================================== */
+
+:root {
+    --nav-height: 76px;
+    --nav-background: #ffffff;
+    --nav-text: #334155;
+    --nav-accent: #2563eb;
+    --nav-accent-hover: #1d4ed8;
+    --nav-border: #e2e8f0;
+    --nav-container-width: 1200px;
+}
+
+
+/* =====================================================
+   SITE HEADER
+====================================================== */
+
+.site-header {
+    position: relative;
+    z-index: 1000;
+
+    width: 100%;
+    background-color: var(--nav-background);
+
+    border-bottom: 1px solid var(--nav-border);
+}
+
+
+/* =====================================================
+   NAVIGATION CONTAINER
+====================================================== */
+
+.nav-container {
+    width: 100%;
+    max-width: var(--nav-container-width);
+
+    min-height: var(--nav-height);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2rem;
+}
+
+
+/* =====================================================
+   BRAND / LOGO
+====================================================== */
+
+.site-logo {
+    flex-shrink: 0;
+
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: var(--nav-text);
+
+    text-decoration: none;
+}
+
+.logo-highlight {
+    color: var(--nav-accent);
+}
+
+
+/* =====================================================
+   DESKTOP NAVIGATION
+====================================================== */
+
+.primary-navigation {
+    margin-left: auto;
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+
+    gap: clamp(1rem, 2vw, 2rem);
+
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Navigation Links */
+
+.nav-link {
+    position: relative;
+
+    display: inline-block;
+
+    padding-block: 0.5rem;
+
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+
+    color: var(--nav-text);
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--nav-accent);
+}
+
+
+/* Animated Underline */
+
+.nav-link::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: var(--nav-accent);
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+
+/* =====================================================
+   NAVIGATION CTA BUTTON
+====================================================== */
+
+.nav-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    min-height: 44px;
+    padding: 0.7rem 1.2rem;
+
+    border: 2px solid transparent;
+    border-radius: 8px;
+
+    background-color: var(--nav-accent);
+    color: #ffffff;
+
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nav-cta:hover {
+    background-color: var(--nav-accent-hover);
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   HAMBURGER BUTTON
+====================================================== */
+
+.nav-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    padding: 10px;
+
+    border: 1px solid var(--nav-border);
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--nav-text);
+
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.hamburger-line {
+    display: block;
+
+    width: 22px;
+    height: 2px;
+
+    border-radius: 2px;
+
+    background-color: currentColor;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.2s ease;
+}
+
+
+/* Hamburger Changes to X */
+
+.nav-toggle.is-open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.is-open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* =====================================================
+   KEYBOARD FOCUS
+====================================================== */
+
+.site-header a:focus-visible,
+.nav-toggle:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 4px;
+}
+
+
+/* =====================================================
+   TABLET NAVIGATION
+====================================================== */
+
+@media (max-width: 900px) {
+
+    .nav-container {
+        gap: 1rem;
+    }
+
+    .nav-list {
+        gap: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+
+    .nav-cta {
+        padding-inline: 0.9rem;
+        font-size: 0.9rem;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE NAVIGATION
+====================================================== */
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        min-height: 68px;
+
+        padding-inline: 1.25rem;
+
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    /* Show Hamburger */
+
+    .nav-toggle {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+    /* Mobile Dropdown Panel */
+
+    .primary-navigation {
+        display: none;
+
+        width: 100%;
+
+        margin: 0;
+
+        border-top: 1px solid var(--nav-border);
+    }
+
+    .primary-navigation.is-open {
+        display: block;
+    }
+
+    /* Stack Navigation Links */
+
+    .nav-list {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 0;
+
+        padding-block: 0.75rem 1rem;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    /* Full-width Navigation Links */
+
+    .nav-link {
+        display: block;
+
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 0.85rem 0.5rem;
+
+        font-size: 1rem;
+    }
+
+    /* Remove Desktop Underline */
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background-color: #eff6ff;
+
+        border-radius: 6px;
+    }
+
+    /* Mobile CTA */
+
+    .nav-cta-item {
+        padding-top: 0.75rem;
+    }
+
+    .nav-cta {
+        display: flex;
+
+        width: 100%;
+        min-height: 48px;
+
+        box-sizing: border-box;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE DEVICES
+====================================================== */
+
+@media (max-width: 380px) {
+
+    .nav-container {
+        padding-inline: 1rem;
+    }
+
+    .site-logo {
+        font-size: 1.75rem;
+    }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION ACCESSIBILITY
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nav-link,
+    .nav-link::after,
+    .nav-cta,
+    .hamburger-line {
+        transition: none;
+    }
+
+    .nav-cta:hover {
+        transform: none;
+    }
+
+}
