@@ -111,6 +111,138 @@ SECTION RELATED CLASSES
     color: var(--text-muted-on-dark);
 }
 
+/* ========================================================
+   GLASS SECTION EFFECT
+======================================================== */
+
+.section--glass {
+    /* Transparent glass background */
+    background: rgba(255, 255, 255, 0.65);
+
+    /* Glass blur */
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+
+    /* Subtle glass border */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+
+    /* Soft shadow */
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+
+    /* Rounded corners */
+    border-radius: var(--radius);
+
+    /* Text colour */
+    color: var(--text);
+}
+
+/* ========================================================
+   GLASS PANEL
+======================================================== */
+
+.glass-panel {
+    max-width: 800px;
+    margin-inline: auto;
+    padding: clamp(2rem, 5vw, 4rem);
+
+    /* Glass surface */
+    background: rgba(255, 255, 255, 0.55);
+
+    /* Background blur */
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+
+    /* Glass edges */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius);
+
+    /* Depth */
+    box-shadow: var(--shadow);
+
+    /* Text */
+    color: var(--text);
+}
+
+.glass-panel h2 {
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+}
+
+.glass-panel p {
+    max-width: var(--text-width-md);
+}
+
+/* Glass button */
+
+.glass-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.85rem 1.5rem;
+
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.7);
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-small);
+
+    text-decoration: none;
+    font-weight: 600;
+
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.glass-button:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+}
+
+/* add background behind panel*/
+
+.section--glass-background {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.25),
+            transparent 40%
+        ),
+        linear-gradient(
+            135deg,
+            var(--navy-dark),
+            var(--blue)
+        );
+}
+
+/* Light glass */
+
+.glass--light {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--text);
+}
+
+/* Dark glass */
+
+.glass--dark {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--white);
+}
+
+.glass--dark h2,
+.glass--dark h3 {
+    color: var(--white);
+}
+
+.glass--dark p {
+    color: #e2e8f0;
+}
+
+/*=================================================*/
+
+
+
 /* Responsive Layout */
 
 @media (max-width: 768px) {
