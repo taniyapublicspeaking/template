@@ -82,16 +82,17 @@ body {
     line-height: var(--text-leading);
     -webkit-font-smoothing: antialiased;
 
-/*
 
-    background-image: url("images/background.jpg");
+
+    background-image: url("images/bk.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
 
-*/
 
+
+   /*
 
    background:
         linear-gradient(
@@ -100,7 +101,7 @@ body {
         ),
         url("images/background.jpg") center / cover no-repeat fixed;
    
-
+*/
    
 }
 
