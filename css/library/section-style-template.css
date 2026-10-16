@@ -163,7 +163,7 @@ SECTION RELATED CLASSES
 
 
 /* ========================================================
-   GLASS PANEL
+   GLASS PANEL - BEGIN 
 ======================================================== */
 
 .glass-panel {
@@ -198,33 +198,18 @@ SECTION RELATED CLASSES
     max-width: var(--text-width-md);
 }
 
-/* Glass button */
+/* ========================================================
+   GLASS PANEL - END 
+======================================================== */
 
-.glass-button {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 0.85rem 1.5rem;
 
-    color: var(--navy);
-    background: rgba(255, 255, 255, 0.7);
 
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: var(--radius-small);
-
-    text-decoration: none;
-    font-weight: 600;
-
-    transition:
-        background-color 0.25s ease,
-        transform 0.25s ease;
-}
-
-.glass-button:hover {
-    background: var(--white);
-    transform: translateY(-2px);
-}
 
 /* add background behind panel*/
+
+/* ========================================================
+   ADD BACKGROUND BEHIND PANEL - BEGIN 
+======================================================== */
 
 .section--glass-background {
     background:
@@ -263,7 +248,45 @@ SECTION RELATED CLASSES
     color: #e2e8f0;
 }
 
+/* ========================================================
+   ADD BACKGROUND BEHIND PANEL - END 
+======================================================== */
 
+
+
+
+
+/* ========================================================
+   GLASS BUTTON - BEGIN 
+======================================================== */
+
+.glass-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.85rem 1.5rem;
+
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.7);
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-small);
+
+    text-decoration: none;
+    font-weight: 600;
+
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.glass-button:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+}
+
+/* ========================================================
+   GLASS BUTTON - END
+======================================================== */
 
 
 
