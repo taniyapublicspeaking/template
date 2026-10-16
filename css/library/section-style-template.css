@@ -162,6 +162,44 @@ SECTION RELATED CLASSES
 
 
 
+/* ========================================================
+   GLASS SECTION OVER BACKGROUND IMAGE - BEGIN 
+======================================================== */
+
+.section--glass-image {
+    position: relative;
+    isolation: isolate;
+
+    /* Background image */
+    background-image:
+        linear-gradient(
+            rgba(15, 23, 42, 0.40),
+            rgba(15, 23, 42, 0.55)
+        ),
+        url("images/hero-background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Section spacing */
+    padding-block: clamp(4rem, 9vw, 8rem);
+    padding-inline: 1.25rem;
+
+    /* Default text colour */
+    color: var(--white);
+}
+
+
+/* ========================================================
+   GLASS SECTION OVER BACKGROUND IMAGE - END 
+======================================================== */
+
+
+
+
+
+
 .glass-panel100 {
     background: rgba(255, 255, 255, 0.10);
     -webkit-backdrop-filter: blur(5px);
