@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Quick guide to section background colours, background images, overlays and glass effects.">
+<title>Section Backgrounds & Glass Effects — Quick Guide</title>
+<style>
+:root{
+  --navy:#172554;--navy-dark:#0f172a;--blue:#2563eb;--blue-light:#dbeafe;
+  --sky:#eff6ff;--white:#fff;--off-white:#f8fafc;--text:#172033;--muted:#64748b;
+  --border:#e2e8f0;--radius:24px;--radius-small:14px;
+  --shadow:0 20px 50px rgba(15,23,42,.08);--container:1080px;
+  --font-heading:"Caveat","Segoe Print",cursive;
+  --font-body:Inter,"Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;background:var(--off-white);color:var(--text);font:1rem/1.7 var(--font-body)}
+a{color:var(--blue)}
+h1,h2,h3{line-height:1.15;letter-spacing:-.025em;margin:0 0 .8rem}
+h1{font-size:clamp(2.3rem,6vw,4.4rem)}h2{font-size:clamp(1.65rem,3.5vw,2.3rem)}h3{font-size:1.2rem}
+p{color:var(--muted);margin:0 0 1rem}
+code,pre{font-family:Consolas,"Courier New",monospace}
+code{overflow-wrap:anywhere;background:#eef2ff;color:#1e3a8a;padding:.1rem .3rem;border-radius:5px;font-size:.92em}
+pre{overflow-x:auto;white-space:pre;background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:12px;font-size:.87rem;line-height:1.6;margin:.6rem 0 1rem}
+pre code{background:none;color:inherit;padding:0}
+.wrap{width:min(calc(100% - 2rem),var(--container));margin-inline:auto}
+.nav{position:sticky;top:0;z-index:5;background:rgba(15,23,42,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:white}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem 0}
+.brand{color:white;text-decoration:none;font-weight:800}
+.links{display:flex;flex-wrap:wrap;gap:.8rem}.links a{color:#e2e8f0;text-decoration:none;font-size:.9rem}.links a:hover{color:white;text-decoration:underline}
+.hero{padding:clamp(3rem,8vw,6rem) 0;color:white;background:radial-gradient(circle at 85% 20%,rgba(37,99,235,.3),transparent 33%),linear-gradient(135deg,var(--navy-dark),var(--navy))}
+.hero p{color:#dbeafe;max-width:72ch;font-size:1.08rem}
+.eyebrow{display:inline-block;color:#93c5fd;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem}
+.pill{display:inline-block;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:999px;padding:.35rem .75rem;color:#e2e8f0;font-size:.9rem}
+main{padding:1.5rem 0 4rem}
+.panel{padding:clamp(1.25rem,4vw,2.5rem);margin:1.25rem 0;background:white;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 26px rgba(15,23,42,.04);scroll-margin-top:6rem}
+.callout{margin-top:1rem;padding:1rem 1.1rem;border-left:4px solid var(--blue);background:var(--sky);border-radius:0 12px 12px 0}
+.callout p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.swatch{min-height:115px;border-radius:14px;padding:1rem;display:flex;align-items:end;font-weight:700}
+.swatch span{background:rgba(255,255,255,.85);padding:.2rem .45rem;border-radius:6px}
+.white{background:white;border:1px solid var(--border)}.light{background:var(--sky)}.dark{background:var(--navy);color:white}.dark span{background:rgba(15,23,42,.7);color:white}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.tile{padding:1rem;border:1px solid var(--border);border-radius:14px;min-width:0}.tile h3{margin-bottom:.4rem}.tile p{margin:0}
+.preview{min-height:270px;padding:1.25rem;display:grid;place-items:center;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 20% 25%,#60a5fa,transparent 30%),radial-gradient(circle at 80% 70%,#f97316,transparent 28%),linear-gradient(135deg,#1e3a8a,#0f172a 55%,#0e7490)}
+.preview-glass{width:min(100%,620px);padding:clamp(1.25rem,4vw,2.25rem);background:rgba(15,23,42,.62);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.4);border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,.2);color:white}
+.preview-glass h3{font-size:1.7rem;color:white}.preview-glass p{color:#f1f5f9;margin:0}
+ul{padding-left:1.3rem}li{margin:.4rem 0}
+footer{background:var(--navy-dark);color:#cbd5e1;padding:2rem 0}footer p{color:#cbd5e1;margin:0}
+@media(max-width:720px){.nav-inner{align-items:flex-start}.links{gap:.65rem}.grid,.two{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Guide navigation"><div class="wrap nav-inner">
+<a class="brand" href="#top">CSS Backgrounds Guide</a>
+<div class="links"><a href="#colours">Colours</a><a href="#image">Images</a><a href="#overlay">Overlay</a><a href="#glass">Glass effect</a><a href="#fixes">Troubleshooting</a></div>
+</div></nav>
+<header class="hero" id="top"><div class="wrap">
+<span class="eyebrow">Self-contained HTML help file</span>
+<h1>Section Backgrounds<br>to Glass Effects</h1>
+<p>A copy-and-paste guide for section colours, page and section background images, contrast overlays, and readable glass panels—designed to fit a reusable CSS design system.</p>
+<span class="pill">No external CSS, JavaScript, or image needed for this guide</span>
+</div></header>
+<main class="wrap">
+<section class="panel">
+<h2>Start with the right structure</h2>
+<p>Keep reusable design tokens in <code>global.css</code>. Use base classes for shared layout and modifier classes for appearance. The HTML chooses the classes; CSS defines how they look.</p>
+<div class="two">
+<div class="tile"><h3><code>global.css</code></h3><p>Variables, typography, section styles, background images, overlays and glass styles.</p></div>
+<div class="tile"><h3><code>index.html</code></h3><p>Section markup and class choices. Avoid repeating inline styles for every section.</p></div>
+</div>
+</section>
+
+<section class="panel" id="colours">
+<h2>1. Section background and text colours</h2>
+<p>Add only variables you don't already have in your <code>:root</code>.</p>
+<pre><code>:root {
+    --bg-section: #ffffff;
+    --bg-section-alt: #eff6ff;
+    --bg-section-dark: #172554;
+
+    --text: #172033;
+    --text-muted: #64748b;
+    --text-heading: #172554;
+    --text-on-dark: #ffffff;
+    --text-muted-on-dark: #cbd5e1;
+}</code></pre>
+<p>Define a base section and reusable variants:</p>
+<pre><code>.section {
+    padding-block: clamp(3rem, 7vw, 6rem);
+    padding-inline: 1.25rem;
+    background-color: var(--bg-section);
+    color: var(--text);
+    scroll-margin-top: 90px;
+}
+
+.section--white { background: var(--bg-section); color: var(--text); }
+.section--light { background: var(--bg-section-alt); color: var(--text); }
+.section--dark  { background: var(--bg-section-dark); color: var(--text-on-dark); }
+
+.section--dark h2,
+.section--dark h3 { color: var(--text-on-dark); }
+
+.section--dark p { color: var(--text-muted-on-dark); }</code></pre>
+<div class="grid"><div class="swatch white"><span>White section</span></div><div class="swatch light"><span>Light section</span></div><div class="swatch dark"><span>Dark section</span></div></div>
+<pre><code>&lt;section class="section section--light" id="services"&gt;
+    &lt;div class="container"&gt;
+        &lt;h2&gt;Our Services&lt;/h2&gt;
+        &lt;p&gt;Discover what we offer.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+</section>
+
+<section class="panel" id="image">
+<h2>2. Add a background image to the body</h2>
+<p>Use this when the image should sit behind the whole page. CSS image paths are relative to the stylesheet location.</p>
+<pre><code>body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--text);
+    background-color: var(--navy-dark);
+    background-image: url("images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}</code></pre>
+<div class="callout"><p><strong>Path tip:</strong> If <code>global.css</code> and the <code>images</code> folder are both in the project root, use <code>url("images/background.jpg")</code>. If <code>global.css</code> is inside a <code>css/</code> folder and <code>images/</code> is next to it, use <code>url("../images/background.jpg")</code>.</p></div>
+<p>To apply an image to only one section, use a modifier class instead:</p>
+<pre><code>.section--image {
+    background-image: url("images/section-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}</code></pre>
+<pre><code>&lt;section class="section section--image" id="about"&gt;
+    &lt;div class="container"&gt;
+        &lt;h2&gt;About Us&lt;/h2&gt;
+        &lt;p&gt;Content for this section.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+</section>
+
+<section class="panel" id="overlay">
+<h2>3. Add a dark overlay for contrast</h2>
+<p>A photograph can be too bright or busy behind text. Place a gradient before the image in the background list; the first layer is drawn on top.</p>
+<pre><code>.section--image-overlay {
+    background-image:
+        linear-gradient(
+            rgba(15, 23, 42, 0.45),
+            rgba(15, 23, 42, 0.60)
+        ),
+        url("images/section-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+}
+
+.section--image-overlay h2,
+.section--image-overlay h3 { color: #ffffff; }
+
+.section--image-overlay p { color: #f1f5f9; }</code></pre>
+<p>Increase overlay opacity for a darker image; reduce it to reveal more of the photo. Always check text contrast against the actual image.</p>
+</section>
+
+<section class="panel" id="glass">
+<h2>4. Add a glass panel over the image</h2>
+<p>Glassmorphism uses a translucent surface, backdrop blur, a subtle border and a shadow. The blur is visible only when something is behind the panel.</p>
+<h3>Reusable glass CSS</h3>
+<pre><code>.glass-panel {
+    width: 100%;
+    max-width: 800px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+
+    background: rgba(15, 23, 42, 0.62);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    color: #ffffff;
+}
+
+.glass-panel h1,
+.glass-panel h2,
+.glass-panel h3 {
+    color: #ffffff;
+    font-family: var(--font-heading);
+}
+
+.glass-panel p {
+    color: #f1f5f9;
+    line-height: var(--text-leading, 1.75);
+    max-width: var(--text-width-md, 60ch);
+}</code></pre>
+<h3>HTML example</h3>
+<pre><code>&lt;section class="section section--image-overlay" id="welcome"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="glass-panel"&gt;
+            &lt;span class="section-eyebrow"&gt;Welcome&lt;/span&gt;
+            &lt;h2&gt;Design with clarity&lt;/h2&gt;
+            &lt;p&gt;A translucent panel keeps content readable
+               while allowing the background image to show through.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+<h3>Visual preview</h3>
+<div class="preview"><div class="preview-glass"><span class="eyebrow">Glass panel preview</span><h3>Readable text over a layered background</h3><p>The dark translucent surface and blur separate the content from the colourful background.</p></div></div>
+<div class="callout"><p><strong>Readability tip:</strong> Blur alone does not guarantee readable text. For a busy image, increase panel opacity (for example, from <code>0.48</code> to <code>0.65</code>) or strengthen the overlay.</p></div>
+</section>
+
+<section class="panel" id="fixes">
+<h2>5. Troubleshooting checklist</h2>
+<ul>
+<li><strong>Image missing:</strong> check the file exists and the URL is relative to <code>global.css</code>, not the HTML file.</li>
+<li><strong>Filename mismatch:</strong> check spelling, extension and letter case.</li>
+<li><strong>Image is covered:</strong> inspect <code>main</code>, wrappers and sections for opaque backgrounds.</li>
+<li><strong>Background unexpectedly disappears:</strong> a later rule like <code>body { background: var(--off-white); }</code> resets the background image too. Combine declarations or remove the conflicting shorthand.</li>
+<li><strong>Blur is not visible:</strong> ensure the panel is translucent and has an image or colour behind it.</li>
+<li><strong>Text is hard to read:</strong> increase the overlay or panel opacity and use high-contrast text. Test on mobile.</li>
+<li><strong>Fixed background behaves badly on mobile:</strong> omit <code>background-attachment: fixed</code> unless you have tested it on target devices.</li>
+</ul>
+</section>
+
+<section class="panel" id="summary">
+<h2>6. Quick reference: class responsibilities</h2>
+<div class="two">
+<div class="tile"><h3><code>.section</code></h3><p>Shared spacing, default colours and anchor offset.</p></div>
+<div class="tile"><h3><code>.section--light</code> / <code>.section--dark</code></h3><p>Section colour themes and readable text colours.</p></div>
+<div class="tile"><h3><code>.section--image-overlay</code></h3><p>Image background, crop behaviour and contrast overlay.</p></div>
+<div class="tile"><h3><code>.glass-panel</code></h3><p>Translucency, blur, border, radius, shadow and panel text.</p></div>
+</div>
+<div class="callout"><p><strong>Recommended approach:</strong> Keep design variables in <code>global.css</code>, choose section themes with modifier classes, and keep glass-panel styling separate from section layout. This makes the system reusable and easier to maintain.</p></div>
+</section>
+</main>
+<footer><div class="wrap"><p>Section Backgrounds &amp; Glass Effects — Quick Guide</p><p style="font-size:.9rem">Self-contained help page. Save this file and open it in a browser, or upload it to your site's help folder.</p></div></footer>
+</body>
+</html>
