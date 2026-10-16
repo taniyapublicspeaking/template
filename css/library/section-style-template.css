@@ -11,12 +11,8 @@ SECTION RELATED CLASSES
     display: none !important;
 }
 
-.section--transparent {
-    background-color: transparent;
-}
-
 /* ========================================================
-   SECTION BASE
+   SECTION BASE - BEGIN 
 ======================================================== */
 
 .section-definition {
@@ -83,8 +79,19 @@ SECTION RELATED CLASSES
     margin-top: 2.5rem;
 }
 
+
+.section--transparent {
+    background-color: transparent;
+}
+
 /* ========================================================
-   SECTION COLOUR VARIATIONS
+   SECTION BASE - END
+======================================================== */
+
+
+
+/* ========================================================
+   SECTION COLOUR VARIATIONS - BEGIN 
 ========================================================= */
 
 /* White section */
@@ -106,7 +113,7 @@ SECTION RELATED CLASSES
 }
 
 /* Dark section headings */
-.section--dark h2,
+.section--dark h2, 
 .section--dark h3 {
     color: var(--text-on-dark);
 }
@@ -116,8 +123,16 @@ SECTION RELATED CLASSES
     color: var(--text-muted-on-dark);
 }
 
+
 /* ========================================================
-   GLASS SECTION EFFECT
+   SECTION COLOUR VARIATIONS - END
+========================================================= */
+
+
+
+
+/* ========================================================
+   GLASS SECTION EFFECT - BEGIN 
 ======================================================== */
 
 .section--glass {
@@ -140,6 +155,12 @@ SECTION RELATED CLASSES
     /* Text colour */
     color: var(--text);
 }
+
+/* ========================================================
+   GLASS SECTION EFFECT - END
+======================================================== */
+
+
 
 /* ========================================================
    GLASS PANEL
