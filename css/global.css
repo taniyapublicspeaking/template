@@ -81,6 +81,27 @@ body {
     color: var(--text);
     line-height: var(--text-leading);
     -webkit-font-smoothing: antialiased;
+
+/*
+
+    background-image: url("images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+*/
+
+
+   background:
+        linear-gradient(
+            rgba(15, 23, 42, 0.45),
+            rgba(15, 23, 42, 0.45)
+        ),
+        url("images/background.jpg") center / cover no-repeat fixed;
+   
+
+   
 }
 
 button,
