@@ -23,25 +23,35 @@
     --text-width-md: 60ch;
     --text-width-lg: 70ch;
 
-    /* Colours */
+    /* Brand Colours */
     --navy: #172554;
     --navy-dark: #0f172a;
-
     --blue: #2563eb;
     --blue-light: #dbeafe;
     --sky: #eff6ff;
-
     --orange: #f97316;
     --orange-light: #ffedd5;
-
     --yellow: #facc15;
-
     --white: #ffffff;
     --off-white: #f8fafc;
-
     --text: #172033;
     --muted: #64748b;
     --border: #e2e8f0;
+   
+    /* Background Colours */
+    --bg-page: #f8fafc;
+    --bg-section: #ffffff;
+    --bg-section-alt: #eff6ff;
+    --bg-section-dark: #172554;
+    --bg-card: #ffffff;
+
+    /* Text Colours */
+    --text: #172033;
+    --text-muted: #64748b;
+    --text-heading: #172554;
+    --text-on-dark: #ffffff;
+    --text-muted-on-dark: #cbd5e1;
+   
 
     /* Corners */
     --radius: 24px;
