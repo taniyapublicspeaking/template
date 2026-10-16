@@ -10,6 +10,10 @@ SECTION RELATED CLASSES
     display: none !important;
 }
 
+.section--transparent {
+    background-color: transparent;
+}
+
 /* ========================================================
    SECTION BASE
 ======================================================== */
@@ -407,6 +411,20 @@ SECTION RELATED CLASSES
     color: var(--blue);
 }
 
+
+
+/*====================tested=======================*/
+
+
+glass-panel100 {
+    background: rgba(255, 255, 255, 0.20);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
 
 /*=================================================*/
 
