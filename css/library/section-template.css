@@ -2,9 +2,31 @@
 SECTION RELATED CLASSES 
 ====================================================== */
 
+
+/* ========================================================
+   SECTION BASE
+======================================================== */
+
 .section-definition {
-    padding: 4rem 1.5rem;
+    /* Spacing */
+    padding-block: clamp(3rem, 7vw, 6rem);
+    padding-inline: 1.25rem;
+
+    /* Default colours */
+    background-color: var(--bg-section);
+    color: var(--text);
+
+    /* Layout and positioning */
+    position: relative;
+
+    /* Prevent decorative child elements from escaping */
+    /* Enable only if the design requires it */
+    /* overflow: hidden; */
+
+    /* Anchor navigation offset */
+    scroll-margin-top: 90px;
 }
+
 
 /* Container */
 
