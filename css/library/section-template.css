@@ -382,6 +382,30 @@ SECTION RELATED CLASSES
     }
 }
 
+.glass-panel--light {
+    background: rgba(255, 255, 255, 0.78);
+
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
+    color: var(--text);
+}
+
+.glass-panel--light h1,
+.glass-panel--light h2,
+.glass-panel--light h3 {
+    color: var(--navy-dark);
+}
+
+.glass-panel--light p {
+    color: #334155;
+}
+
+.glass-panel--light .section-eyebrow {
+    color: var(--blue);
+}
 
 
 /*=================================================*/
