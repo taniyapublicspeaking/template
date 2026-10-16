@@ -49,7 +49,38 @@ SECTION RELATED CLASSES
     margin-top: 2.5rem;
 }
 
+/* ========================================================
+   SECTION COLOUR VARIATIONS
+========================================================= */
 
+/* White section */
+.section--white {
+    background-color: var(--bg-section);
+    color: var(--text);
+}
+
+/* Light blue section */
+.section--light {
+    background-color: var(--bg-section-alt);
+    color: var(--text);
+}
+
+/* Dark navy section */
+.section--dark {
+    background-color: var(--bg-section-dark);
+    color: var(--text-on-dark);
+}
+
+/* Dark section headings */
+.section--dark h2,
+.section--dark h3 {
+    color: var(--text-on-dark);
+}
+
+/* Dark section paragraphs */
+.section--dark p {
+    color: var(--text-muted-on-dark);
+}
 
 /* Responsive Layout */
 
