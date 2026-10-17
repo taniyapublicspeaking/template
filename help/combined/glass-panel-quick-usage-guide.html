@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Quick guide to the reusable glass-panel CSS component and modifiers.">
+<title>Glass Panel — Quick Usage Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#172554; --navy-dark:#0f172a; --blue:#2563eb; --blue-light:#dbeafe;
+  --sky:#eff6ff; --orange:#f97316; --orange-light:#ffedd5; --yellow:#facc15;
+  --white:#fff; --off-white:#f8fafc; --text:#172033; --muted:#64748b;
+  --border:#e2e8f0; --radius:24px; --radius-small:14px;
+  --shadow:0 20px 50px rgba(15,23,42,.08); --container:1080px;
+  --font-heading:'Caveat',cursive; --font-body:'Inter','Segoe UI',Arial,sans-serif;
+  --text-sm:.9rem; --text-base:clamp(1rem,.95rem + .2vw,1.125rem);
+  --text-lg:clamp(1.125rem,1.05rem + .3vw,1.25rem); --text-leading:1.75;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;background:var(--off-white);color:var(--text);font-family:var(--font-body);font-size:var(--text-base);line-height:var(--text-leading)}
+a{color:var(--blue)}
+a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.container{width:min(calc(100% - 2rem),var(--container));margin-inline:auto}
+.page-header{padding:clamp(3rem,8vw,6rem) 0 2.5rem;color:var(--white);background:radial-gradient(circle at 85% 15%,rgba(249,115,22,.35),transparent 28rem),linear-gradient(135deg,var(--navy-dark),var(--navy) 55%,#1d4ed8)}
+.eyebrow{margin:0 0 .65rem;color:#bfdbfe;font-size:var(--text-sm);font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+h1,h2,h3,h4{margin-top:0;color:var(--navy);font-family:var(--font-heading);font-weight:700;line-height:1.12;letter-spacing:-.02em}
+h1{max-width:18ch;margin-bottom:1rem;color:var(--white);font-size:clamp(3rem,7vw,5.4rem)}
+h2{margin-bottom:.75rem;font-size:clamp(2.1rem,4vw,3.2rem)}
+h3{margin-bottom:.6rem;font-size:clamp(1.65rem,3vw,2.2rem)}
+h4{margin-bottom:.5rem;font-size:1.5rem}
+p{margin-top:0;color:var(--muted)}
+.page-header p{max-width:68ch;margin-bottom:0;color:#e2e8f0;font-size:var(--text-lg)}
+/* Shared navigation used by all help guides */
+.help-nav{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--border);box-shadow:0 4px 16px rgba(15,23,42,.04)}
+.help-nav-inner{width:min(calc(100% - 2rem),var(--container));min-height:58px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.help-nav-label{margin:0;color:var(--muted);font-size:var(--text-sm);font-weight:700}
+.help-nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem}
+.help-nav-links a{display:inline-block;padding:.4rem .7rem;border:1px solid transparent;border-radius:999px;color:var(--navy);font-size:var(--text-sm);font-weight:600;text-decoration:none}
+.help-nav-links a:hover{background:var(--sky);color:var(--blue)}
+.help-nav-links a[aria-current=page]{background:var(--blue-light);border-color:#bfdbfe;color:var(--blue)}
+main{padding:2.5rem 0 4rem}
+.intro{max-width:72ch;margin-bottom:2rem}
+.guide-section{margin-top:2rem;padding:clamp(1.25rem,3vw,2rem);background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(15,23,42,.035)}
+.section-lead{max-width:70ch}
+.callout{margin-top:1rem;padding:1rem 1.1rem;border-left:4px solid var(--blue);border-radius:0 var(--radius-small) var(--radius-small) 0;background:var(--sky)}
+.callout p:last-child,.note p:last-child{margin-bottom:0}
+.note{padding:1rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:var(--radius-small)}
+.code-wrap{overflow-x:auto;margin:1rem 0;border-radius:var(--radius-small);background:#0f172a}
+pre{margin:0;padding:1.1rem 1.2rem;color:#e2e8f0;font:.88rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2;white-space:pre}
+code{padding:.12rem .32rem;border-radius:5px;background:var(--sky);color:var(--navy);font-size:.9em}
+pre code{padding:0;background:transparent;color:inherit}
+.table-wrap{overflow-x:auto;margin-top:1rem}
+table{width:100%;border-collapse:collapse;text-align:left;font-size:var(--text-sm)}
+th,td{padding:.8rem .75rem;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--sky);color:var(--navy);font-weight:700}
+td code{overflow-wrap:anywhere}
+.demo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.25rem}
+.demo-stage{display:grid;align-content:center;min-height:230px;padding:1.25rem;overflow:hidden;border-radius:var(--radius-small);background:radial-gradient(circle at 20% 15%,rgba(249,115,22,.9),transparent 35%),radial-gradient(circle at 85% 75%,rgba(96,165,250,.95),transparent 38%),linear-gradient(135deg,#172554,#2563eb)}
+.demo-stage--warm{background:radial-gradient(circle at 80% 20%,rgba(250,204,21,.9),transparent 35%),linear-gradient(135deg,#7c2d12,#ea580c)}
+.demo-stage--cool{background:radial-gradient(circle at 15% 80%,rgba(34,211,238,.8),transparent 35%),linear-gradient(135deg,#0f172a,#1d4ed8)}
+/* Glass panel component */
+.glass-panel{position:relative;min-width:0;padding:1.25rem;background:rgba(255,255,255,.65);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.55);border-radius:var(--radius-small);box-shadow:var(--shadow);color:var(--text);transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .25s ease}
+.glass-panel--light{background:rgba(255,255,255,.65);border-color:rgba(255,255,255,.65)}
+.glass-panel--dark{background:rgba(15,23,42,.76);border-color:rgba(255,255,255,.18);color:var(--white)}
+.glass-panel--blue{background:rgba(37,99,235,.18);border-color:rgba(255,255,255,.35)}
+.glass-panel--navy{background:rgba(23,37,84,.84);border-color:rgba(255,255,255,.2);color:var(--white)}
+.glass-panel--orange{background:rgba(249,115,22,.2);border-color:rgba(255,255,255,.35)}
+.glass-panel--blur-sm{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.glass-panel--blur-md{-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.glass-panel--blur-lg{-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px)}
+.glass-panel--compact{padding:.85rem}
+.glass-panel--spacious{padding:clamp(1.25rem,3vw,2rem)}
+.glass-panel--rounded{border-radius:var(--radius)}
+.glass-panel--pill{border-radius:999px}
+.glass-panel--shadow-none{box-shadow:none}
+.glass-panel--shadow-soft{box-shadow:0 8px 24px rgba(15,23,42,.08)}
+.glass-panel--shadow-strong{box-shadow:0 24px 60px rgba(15,23,42,.2)}
+.glass-panel--interactive{cursor:pointer;text-decoration:none}
+.glass-panel--interactive:hover{background-color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(15,23,42,.16);transform:translateY(-3px)}
+.glass-panel--interactive:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.glass-panel__title{margin:0 0 .55rem;color:inherit;font-family:var(--font-heading);font-size:clamp(1.65rem,2.5vw,2rem);line-height:1.12}
+.glass-panel__text{margin:0;color:inherit;font-size:var(--text-sm);line-height:1.6}
+.glass-panel__icon{display:inline-grid;place-items:center;width:2.7rem;height:2.7rem;margin-bottom:.7rem;border-radius:12px;background:rgba(37,99,235,.14);color:var(--blue);font-size:1.35rem}
+.glass-panel--dark .glass-panel__icon,.glass-panel--navy .glass-panel__icon{background:rgba(255,255,255,.15);color:var(--white)}
+.checklist{padding-left:1.25rem}
+.checklist li{margin:.45rem 0;color:var(--muted)}
+.page-footer{padding:1.75rem 0;background:var(--navy-dark);color:#cbd5e1;font-size:var(--text-sm)}
+.page-footer p{margin:0;color:inherit}
+@media(max-width:760px){.demo-grid{grid-template-columns:1fr}.demo-stage{min-height:200px}}
+@media(max-width:640px){.help-nav-inner{align-items:flex-start;flex-direction:column;justify-content:center;padding-block:.65rem;gap:.35rem}.help-nav-links{gap:.15rem}.help-nav-links a{padding:.35rem .5rem}.guide-section{border-radius:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.glass-panel{transition:none}.glass-panel--interactive:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="page-header"><div class="container">
+  <p class="eyebrow">Component Help Guide</p>
+  <h1>Glass Panel — Quick Usage Guide</h1>
+  <p>Use one reusable glass-panel base class with small, predictable modifiers for tint, blur, spacing, corners, shadows, and interaction.</p>
+</div></header>
+
+<nav class="help-nav" aria-label="Help guides"><div class="help-nav-inner">
+  <p class="help-nav-label">Help Guides</p>
+  <div class="help-nav-links">
+    <a href="global-typography-quick-guide.html">Typography Guide</a>
+    <a href="website-sections-quick-usage-guide.html">Sections Guide</a>
+    <a href="card-sections-quick-usage-guide.html">Card Guide</a>
+    <a href="glass-panel-quick-usage-guide.html" aria-current="page">Glass Panel Guide</a>
+  </div>
+</div></nav>
+
+<main class="container">
+<div class="intro">
+  <h2>At a glance</h2>
+  <p>The base class provides the shared glass surface. Add modifier classes only when a panel needs a variation. The component uses the same navy, blue, orange, typography, radius, and shadow tokens as the rest of the site.</p>
+  <div class="callout"><p><strong>Core rule:</strong> start with <code>.glass-panel</code>, then add modifiers such as <code>.glass-panel--blue</code> or <code>.glass-panel--compact</code>. Use <code>__</code> classes for content inside the panel.</p></div>
+</div>
+
+<section class="guide-section" id="preview">
+<h2>1. Visual examples</h2>
+<p class="section-lead">The blur effect is easiest to see over a colorful background. These previews use CSS gradients, so no image assets are required.</p>
+<div class="demo-grid">
+  <div class="demo-stage"><div class="glass-panel glass-panel--light"><h3 class="glass-panel__title">Light Glass</h3><p class="glass-panel__text">A neutral, translucent surface for general content.</p></div></div>
+  <div class="demo-stage demo-stage--cool"><div class="glass-panel glass-panel--dark"><h3 class="glass-panel__title">Dark Glass</h3><p class="glass-panel__text">A darker surface for hero overlays and contrast.</p></div></div>
+  <div class="demo-stage demo-stage--warm"><div class="glass-panel glass-panel--blue glass-panel--spacious"><h3 class="glass-panel__title">Blue Glass</h3><p class="glass-panel__text">A subtle tinted panel for feature blocks.</p></div></div>
+</div>
+<div class="note" style="margin-top:1rem"><p><strong>Tip:</strong> On a plain white page, glass may look like a translucent card. Put it over a gradient, image, or colored section to make backdrop blur visible.</p></div>
+</section>
+
+<section class="guide-section" id="base">
+<h2>2. Base class</h2>
+<p class="section-lead">The base class defines padding, translucency, backdrop blur, border, corner radius, shadow, text color, and transitions. Keep shared styles here rather than repeating them for every variation.</p>
+<div class="code-wrap"><pre><code>.glass-panel {
+  position: relative;
+  min-width: 0;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.65);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-small, 14px);
+  box-shadow: var(--shadow, 0 20px 50px rgba(15, 23, 42, 0.08));
+  color: var(--text, #172033);
+  transition: background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              transform 0.25s ease;
+}</code></pre></div>
+<p>Fallback values in <code>var()</code> keep the component working if a global token is missing.</p>
+</section>
+
+<section class="guide-section" id="modifiers">
+<h2>3. Modifier classes</h2>
+<p class="section-lead">Modifiers change one aspect of the base component. Combine them as needed, but avoid combinations that make text difficult to read.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Modifier</th><th>What it changes</th><th>Good for</th></tr></thead>
+<tbody>
+<tr><td><code>.glass-panel--light</code></td><td>Light translucent background</td><td>General content panels</td></tr>
+<tr><td><code>.glass-panel--dark</code></td><td>Dark surface and light text</td><td>Hero overlays, media panels</td></tr>
+<tr><td><code>.glass-panel--blue</code></td><td>Blue-tinted surface</td><td>Feature highlights</td></tr>
+<tr><td><code>.glass-panel--navy</code></td><td>Navy surface and light text</td><td>Strong branded panels</td></tr>
+<tr><td><code>.glass-panel--orange</code></td><td>Orange-tinted surface</td><td>Accent callouts</td></tr>
+<tr><td><code>.glass-panel--blur-sm</code></td><td>6px backdrop blur</td><td>Subtle effect</td></tr>
+<tr><td><code>.glass-panel--blur-md</code></td><td>16px backdrop blur</td><td>Balanced default effect</td></tr>
+<tr><td><code>.glass-panel--blur-lg</code></td><td>28px backdrop blur</td><td>Strongly softened background</td></tr>
+<tr><td><code>.glass-panel--compact</code></td><td>Reduced padding</td><td>Small notices or dense layouts</td></tr>
+<tr><td><code>.glass-panel--spacious</code></td><td>Responsive larger padding</td><td>Feature and hero panels</td></tr>
+<tr><td><code>.glass-panel--rounded</code></td><td>Uses <code>--radius</code></td><td>Large soft corners</td></tr>
+<tr><td><code>.glass-panel--pill</code></td><td>999px corner radius</td><td>Short pill-shaped content</td></tr>
+<tr><td><code>.glass-panel--shadow-none</code></td><td>Removes shadow</td><td>Flat layered interfaces</td></tr>
+<tr><td><code>.glass-panel--shadow-soft</code></td><td>Subtle shadow</td><td>Low-elevation panels</td></tr>
+<tr><td><code>.glass-panel--shadow-strong</code></td><td>Prominent shadow</td><td>Elevated overlays</td></tr>
+<tr><td><code>.glass-panel--interactive</code></td><td>Hover lift and focus styling</td><td>Clickable links or controls</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="guide-section" id="content">
+<h2>4. Content helper classes</h2>
+<p>Use these optional classes to keep headings, body text, and icons consistent inside the panel.</p>
+<div class="table-wrap"><table><thead><tr><th>Class</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>.glass-panel__title</code></td><td>Heading using Caveat and a tight line-height.</td></tr>
+<tr><td><code>.glass-panel__text</code></td><td>Body copy with consistent line-height.</td></tr>
+<tr><td><code>.glass-panel__icon</code></td><td>Square icon container for a symbol or inline icon.</td></tr>
+</tbody></table></div>
+<div class="code-wrap"><pre><code>&lt;div class="glass-panel"&gt;
+  &lt;span class="glass-panel__icon" aria-hidden="true"&gt;✦&lt;/span&gt;
+  &lt;h3 class="glass-panel__title"&gt;Panel title&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;A short description goes here.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+</section>
+
+<section class="guide-section" id="examples">
+<h2>5. Copy-and-paste examples</h2>
+<h3>Basic panel</h3>
+<div class="code-wrap"><pre><code>&lt;div class="glass-panel"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Welcome&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;A reusable glass surface.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+<h3>Compact blue panel</h3>
+<div class="code-wrap"><pre><code>&lt;div class="glass-panel glass-panel--blue glass-panel--compact"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Quick update&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;A short highlighted message.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+<h3>Dark spacious panel</h3>
+<div class="code-wrap"><pre><code>&lt;div class="glass-panel glass-panel--dark glass-panel--spacious"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Featured content&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;Use over a colorful background for contrast.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+<h3>Clickable panel</h3>
+<p>When the whole panel navigates somewhere, use an anchor instead of a generic <code>div</code>.</p>
+<div class="code-wrap"><pre><code>&lt;a href="/services.html"
+   class="glass-panel glass-panel--light glass-panel--interactive"
+   style="display:block;color:inherit;text-decoration:none;"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Explore services&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;Read about what we offer.&lt;/p&gt;
+&lt;/a&gt;</code></pre></div>
+<div class="callout"><p><strong>Accessibility:</strong> keep visible keyboard focus, ensure text contrast, and use <code>--interactive</code> only when the element performs an action. Do not show a pointer cursor on non-clickable content.</p></div>
+</section>
+
+<section class="guide-section" id="combine">
+<h2>6. Combining modifiers</h2>
+<p>Multiple modifiers can be applied to the same element. CSS rule order and specificity determine which rule wins, not the order of classes in the HTML.</p>
+<div class="code-wrap"><pre><code>&lt;div class="glass-panel glass-panel--blue glass-panel--blur-lg
+            glass-panel--rounded glass-panel--shadow-soft"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Featured content&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;Blue tint, strong blur, rounded corners, soft shadow.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+<p>Use one tint modifier at a time, then combine it with a blur, spacing, shape, or shadow modifier where useful.</p>
+</section>
+
+<section class="guide-section" id="global-css">
+<h2>7. Where to put the CSS</h2>
+<ol class="checklist">
+<li>Keep design tokens in <code>:root</code> in <code>global.css</code>.</li>
+<li>Add the shared <code>.glass-panel</code> rules and modifiers to the component section of <code>global.css</code>.</li>
+<li>Reuse the same class names across the site instead of copying styles into every page.</li>
+<li>Keep page-specific layout rules, such as a panel grid or hero positioning, in the relevant section stylesheet.</li>
+</ol>
+<div class="code-wrap"><pre><code>/* Example page layout — separate from the component */
+.feature-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+@media (max-width: 760px) {
+  .feature-panel-grid { grid-template-columns: 1fr; }
+}</code></pre></div>
+</section>
+
+<section class="guide-section" id="troubleshooting">
+<h2>8. Troubleshooting</h2>
+<div class="table-wrap"><table><thead><tr><th>Problem</th><th>Likely cause</th><th>Solution</th></tr></thead><tbody>
+<tr><td>Blur is not visible</td><td>Backdrop is a flat color or browser support is limited.</td><td>Place panel over an image or gradient; retain the translucent background fallback.</td></tr>
+<tr><td>Text is hard to read</td><td>Insufficient contrast between text and surface.</td><td>Adjust opacity or choose a more suitable tint and text color.</td></tr>
+<tr><td>Panel feels bulky</td><td>Base padding and spacious modifier are both generous.</td><td>Use <code>--compact</code> or adjust the base padding.</td></tr>
+<tr><td>Hover effect distracts</td><td>Movement or shadow is too strong.</td><td>Reduce hover transform/shadow or remove <code>--interactive</code>.</td></tr>
+<tr><td>Rendering feels slow</td><td>Large blurred surfaces or many overlapping layers.</td><td>Use moderate blur and avoid stacking many backdrop-filter layers.</td></tr>
+</tbody></table></div>
+<div class="note" style="margin-top:1rem"><p><strong>Performance note:</strong> large blurred areas can be expensive to render, especially on mobile. Prefer moderate blur and avoid many overlapping glass layers.</p></div>
+</section>
+
+<section class="guide-section" id="checklist">
+<h2>9. Quick checklist</h2>
+<ul class="checklist">
+<li>Start with <code>.glass-panel</code>.</li>
+<li>Choose one tint modifier if the default surface is not suitable.</li>
+<li>Adjust blur, spacing, radius, or shadow only when needed.</li>
+<li>Use <code>__title</code>, <code>__text</code>, and <code>__icon</code> for consistent inner content.</li>
+<li>Place panels over a background that makes the glass effect visible.</li>
+<li>Check text contrast, keyboard focus, reduced motion, and mobile performance.</li>
+<li>Keep the reusable component in <code>global.css</code> and page layout separate.</li>
+</ul>
+</section>
+</main>
+<footer class="page-footer"><div class="container"><p>Glass Panel Quick Usage Guide · Part of the shared website design-system help guides.</p></div></footer>
+</body>
+</html>
