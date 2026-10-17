@@ -128,6 +128,22 @@
     );
 }
 
+.section-definition--gradient-background2 {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.25),
+            transparent 40%
+        ),
+        linear-gradient(
+            135deg,
+            var(--navy-dark),
+            var(--orange)
+        );
+}
+
+
+
 /* Dark section typography */
 
 .section-definition--navy .section-definition__title {
