@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A self-contained guide to configuring reusable card sections with CSS variables, modifier classes, and responsive layouts.">
+  <title>Card Sections — Quick Usage Guide</title>
+
+  <!-- Font imports: the page still has system fallbacks if Google Fonts are unavailable. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =====================================================
+       SELF-CONTAINED DESIGN TOKENS
+       Mirrors the site's global.css style direction.
+    ====================================================== */
+    :root {
+      --font-heading: 'Caveat', cursive;
+      --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+      --navy: #172554;
+      --navy-dark: #0f172a;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --sky: #eff6ff;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --yellow: #facc15;
+      --white: #ffffff;
+      --off-white: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+
+      --radius: 24px;
+      --radius-small: 14px;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+      --container: 1080px;
+
+      --text-xs: 0.8rem;
+      --text-sm: 0.9rem;
+      --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+      --text-leading: 1.75;
+      --text-leading-tight: 1.5;
+
+      /* Card configuration: change these defaults here. */
+      --card-columns: 3;
+      --card-gap: 1.5rem;
+      --card-padding: 1.5rem;
+      --card-min-width: 240px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+
+    body {
+      margin: 0;
+      background: var(--off-white);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--text-leading);
+    }
+
+    a { color: var(--blue); }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      color: var(--white);
+      background: var(--navy-dark);
+      padding: 1rem 1.25rem;
+    }
+
+    .header-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      margin: 0;
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .header-label {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: var(--text-sm);
+    }
+
+
+    /* Shared navigation used by all three help guides */
+    .help-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+    .help-nav-inner {
+      width: min(100% - 2rem, var(--container));
+      min-height: 58px;
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .help-nav-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+    .help-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .help-nav-links a {
+      display: inline-block;
+      padding: 0.45rem 0.8rem;
+      color: var(--navy);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .help-nav-links a:hover {
+      color: var(--blue);
+      background: var(--sky);
+    }
+    .help-nav-links a[aria-current="page"] {
+      color: var(--blue);
+      background: var(--blue-light);
+      border-color: #bfdbfe;
+    }
+
+    .hero {
+      padding: clamp(3rem, 8vw, 6rem) 1.25rem 3.5rem;
+      background: linear-gradient(135deg, var(--sky), var(--white));
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner, main, .site-footer-inner {
+      width: min(100% - 2rem, var(--container));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.5rem;
+      color: var(--blue);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: var(--text-xs);
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: var(--navy);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    h1, h2 { font-family: var(--font-heading); letter-spacing: 0; }
+    h1 { max-width: 850px; margin-bottom: 1rem; font-size: clamp(3rem, 8vw, 5.25rem); }
+    h2 { margin-bottom: 0.75rem; font-size: clamp(2.1rem, 4.5vw, 3.25rem); }
+    h3 { margin-bottom: 0.6rem; font-size: 1.2rem; }
+    p { margin-top: 0; }
+    .hero p { max-width: 72ch; color: var(--muted); }
+    .hero strong { color: var(--navy); }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+      padding-block: 3rem 4rem;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+      padding: 1.25rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+    }
+
+    .toc h2 {
+      margin-bottom: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .toc ul { list-style: none; padding: 0; margin: 0; }
+    .toc li + li { margin-top: 0.35rem; }
+    .toc a {
+      display: block;
+      padding: 0.3rem 0;
+      font-size: var(--text-sm);
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .toc a:hover { color: var(--blue); text-decoration: underline; }
+
+    .guide-section {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 1rem;
+    }
+    .guide-section:last-child { border-bottom: 0; }
+    .lead { max-width: 72ch; color: var(--muted); }
+
+    .note {
+      padding: 1rem 1.1rem;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius-small) var(--radius-small) 0;
+      background: var(--sky);
+      margin: 1.25rem 0;
+    }
+    .note p:last-child { margin-bottom: 0; }
+    .warning { border-left-color: var(--orange); background: var(--orange-light); }
+
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 1rem 0;
+      padding: 1.1rem;
+      color: #e2e8f0;
+      background: #0f172a;
+      border-radius: var(--radius-small);
+      font: 0.88rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 2;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    :not(pre) > code {
+      color: var(--navy);
+      background: var(--blue-light);
+      padding: 0.12rem 0.35rem;
+      border-radius: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      font-size: var(--text-sm);
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+    }
+    th { background: var(--sky); color: var(--navy); }
+    td { color: var(--text); }
+
+    /* Example cards */
+    .demo-panel {
+      padding: 1.25rem;
+      background: #eef2ff;
+      border: 1px dashed #bfdbfe;
+      border-radius: var(--radius);
+      margin: 1.25rem 0;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--card-columns), minmax(0, 1fr));
+      gap: var(--card-gap);
+    }
+
+    .demo-card {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--card-padding);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-small);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+    .demo-card h3 { font-family: var(--font-heading); font-size: 1.65rem; }
+    .demo-card p { color: var(--muted); font-size: var(--text-sm); }
+    .demo-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 0.9rem;
+      border-radius: 12px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 1.3rem;
+    }
+    .demo-card a { margin-top: auto; padding-top: 0.5rem; font-size: var(--text-sm); font-weight: 700; text-decoration: none; }
+    .demo-card a:hover { text-decoration: underline; }
+
+    .demo-grid-two { --card-columns: 2; }
+    .demo-grid-four { --card-columns: 4; }
+    .demo-grid-auto {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min-width)), 1fr));
+    }
+
+    .image-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #dbeafe, #ffedd5);
+      color: var(--navy);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .checklist { padding-left: 1.3rem; }
+    .checklist li { margin: 0.45rem 0; }
+
+    .site-footer {
+      padding: 2rem 1.25rem;
+      background: var(--navy-dark);
+      color: #cbd5e1;
+    }
+    .site-footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .site-footer p { margin: 0; font-size: var(--text-sm); }
+    .back-top { color: var(--white); }
+
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1fr; }
+      .toc { position: static; }
+      .toc ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+      .card-grid, .demo-grid-four { --card-columns: 2; }
+    }
+
+    @media (max-width: 560px) {
+      .hero { padding-top: 3rem; }
+      .header-label { display: none; }
+      .toc ul { grid-template-columns: 1fr; }
+      .card-grid, .demo-grid-two, .demo-grid-four { --card-columns: 1; }
+      .demo-panel { padding: 0.7rem; }
+      .demo-card { padding: 1.1rem; }
+      th, td { padding: 0.6rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <p class="brand">Design System Help</p>
+      <p class="header-label">Quick Usage Guide · Reusable Cards</p>
+    </div>
+  </header>
+  <nav class="help-nav" aria-label="Help guides">
+    <div class="help-nav-inner">
+      <p class="help-nav-label">Help Guides</p>
+      <div class="help-nav-links">
+        <a href="global-typography-quick-guide.html">Typography Guide</a>
+        <a href="website-sections-quick-usage-guide.html">Sections Guide</a>
+        <a href="card-sections-quick-usage-guide.html" aria-current="page">Card Guide</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">HTML + CSS reference</p>
+      <h1>How to Use Reusable Card Sections</h1>
+      <p>
+        Learn how to add cards, control the number of columns, use icon or image areas,
+        and choose different layouts for different sections—all while keeping your
+        site’s design consistent.
+      </p>
+      <p><strong>Core idea:</strong> use one base card component, then change its layout with CSS variables and optional modifier classes.</p>
+    </div>
+  </section>
+
+  <main class="page-layout">
+    <aside class="toc" aria-label="Table of contents">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#overview">1. The basic idea</a></li>
+        <li><a href="#global-settings">2. Global settings</a></li>
+        <li><a href="#add-cards">3. Add more cards</a></li>
+        <li><a href="#columns">4. Set columns</a></li>
+        <li><a href="#section-layouts">5. Different layouts</a></li>
+        <li><a href="#visuals">6. Icons and images</a></li>
+        <li><a href="#responsive">7. Responsive layouts</a></li>
+        <li><a href="#auto-fit">8. Automatic-fit option</a></li>
+        <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+        <li><a href="#checklist">10. Quick checklist</a></li>
+      </ul>
+    </aside>
+
+    <div class="guide-content">
+      <section class="guide-section" id="overview">
+        <h2>1. The basic idea</h2>
+        <p class="lead">A card section has three parts: the section wrapper, a grid container, and one card element for each item.</p>
+        <pre><code>&lt;section class="card-section"&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="section-header"&gt;
+      &lt;h2&gt;Our Features&lt;/h2&gt;
+      &lt;p&gt;A short introduction to this section.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="card-grid"&gt;
+      &lt;article class="single-card"&gt;
+        &lt;h3&gt;Feature One&lt;/h3&gt;
+        &lt;p&gt;A short description.&lt;/p&gt;
+        &lt;a href="#"&gt;Learn more →&lt;/a&gt;
+      &lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <p>The <code>.card-grid</code> arranges cards into columns. Each <code>.single-card</code> is one item. You can add or remove card elements without changing the grid structure.</p>
+        <div class="note">
+          <p><strong>Remember:</strong> CSS controls the layout, not the total number of cards. To show eight cards, include eight card elements—or generate them with JavaScript or a template system.</p>
+        </div>
+      </section>
+
+      <section class="guide-section" id="global-settings">
+        <h2>2. Set global card settings</h2>
+        <p>Put the defaults in the existing <code>:root</code> block in your <code>global.css</code>. Add these variables alongside your current design tokens; do not create a second <code>:root</code> block unless you prefer to keep the settings separated.</p>
+        <pre><code>:root {
+  /* Card layout defaults */
+  --card-columns: 3;
+  --card-gap: 1.5rem;
+  --card-padding: 1.5rem;
+  --card-min-width: 240px;
+}</code></pre>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Purpose</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><code>--card-columns</code></td><td>Default number of columns on wide screens.</td><td><code>3</code></td></tr>
+              <tr><td><code>--card-gap</code></td><td>Space between cards.</td><td><code>1rem</code></td></tr>
+              <tr><td><code>--card-padding</code></td><td>Space inside each card.</td><td><code>1.25rem</code></td></tr>
+              <tr><td><code>--card-min-width</code></td><td>Minimum width for the auto-fit option.</td><td><code>240px</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Keep using your existing tokens such as <code>--blue</code>, <code>--navy</code>, <code>--border</code>, <code>--radius</code>, <code>--shadow</code>, <code>--font-heading</code>, and <code>--font-body</code> for visual consistency.</p>
+      </section>
+
+      <section class="guide-section" id="add-cards">
+        <h2>3. Add more cards</h2>
+        <p>Copy one <code>&lt;article class="single-card"&gt;...&lt;/article&gt;</code> block for each additional card. Change the title, description, icon/image, and link as needed.</p>
+        <pre><code>&lt;div class="card-grid"&gt;
+  &lt;article class="single-card"&gt;
+    &lt;h3&gt;Feature One&lt;/h3&gt;
+    &lt;p&gt;Description for feature one.&lt;/p&gt;
+    &lt;a href="/feature-one"&gt;Learn more →&lt;/a&gt;
+  &lt;/article&gt;
+
+  &lt;article class="single-card"&gt;
+    &lt;h3&gt;Feature Two&lt;/h3&gt;
+    &lt;p&gt;Description for feature two.&lt;/p&gt;
+    &lt;a href="/feature-two"&gt;Learn more →&lt;/a&gt;
+  &lt;/article&gt;
+
+  &lt;!-- Copy another article block to add a third, fourth, etc. --&gt;
+&lt;/div&gt;</code></pre>
+        <p>When there are more cards than fit in one row, CSS Grid automatically wraps the extra cards onto additional rows.</p>
+      </section>
+
+      <section class="guide-section" id="columns">
+        <h2>4. Set the number of columns</h2>
+        <p>Use the global <code>--card-columns</code> value to set the default desktop layout.</p>
+        <pre><code>:root {
+  --card-columns: 4; /* Four cards per row on wide screens */
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--card-columns),
+    minmax(0, 1fr)
+  );
+  gap: var(--card-gap);
+}</code></pre>
+
+        <div class="demo-panel">
+          <p><strong>Example: three columns</strong></p>
+          <div class="card-grid" style="--card-columns: 3;">
+            <article class="demo-card"><div class="demo-icon" aria-hidden="true">★</div><h3>Card One</h3><p>Each card occupies one grid column.</p></article>
+            <article class="demo-card"><div class="demo-icon" aria-hidden="true">◆</div><h3>Card Two</h3><p>Cards wrap automatically to new rows.</p></article>
+            <article class="demo-card"><div class="demo-icon" aria-hidden="true">●</div><h3>Card Three</h3><p>Add more cards in the HTML as needed.</p></article>
+            <article class="demo-card"><div class="demo-icon" aria-hidden="true">✓</div><h3>Card Four</h3><p>This fourth card starts a new row.</p></article>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Column setting</th><th>With 7 cards</th></tr></thead>
+            <tbody>
+              <tr><td><code>--card-columns: 2</code></td><td>2 + 2 + 2 + 1</td></tr>
+              <tr><td><code>--card-columns: 3</code></td><td>3 + 3 + 1</td></tr>
+              <tr><td><code>--card-columns: 4</code></td><td>4 + 3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="guide-section" id="section-layouts">
+        <h2>5. Give each section its own layout</h2>
+        <p>Keep a global default, then use modifier classes when a particular section needs two, three, or four columns.</p>
+        <pre><code>/* Default layout */
+.card-grid {
+  grid-template-columns: repeat(
+    var(--card-columns),
+    minmax(0, 1fr)
+  );
+}
+
+/* Per-section settings */
+.card-section--two   .card-grid { --card-columns: 2; }
+.card-section--three .card-grid { --card-columns: 3; }
+.card-section--four  .card-grid { --card-columns: 4; }</code></pre>
+        <p>Choose the layout in the section's class list:</p>
+        <pre><code>&lt;section class="card-section card-section--four"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="card-grid"&gt;
+      &lt;!-- Put your card elements here --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        <div class="note">
+          <p><strong>Tip:</strong> the modifier sets a layout preference; responsive rules can still reduce the number of columns on smaller screens.</p>
+        </div>
+      </section>
+
+      <section class="guide-section" id="visuals">
+        <h2>6. Use an icon or image area</h2>
+        <p>The same card content can include an icon or image. Use a modifier class to identify the variation, and keep the same base card class.</p>
+        <h3>Icon card</h3>
+        <pre><code>&lt;article class="single-card single-card--icon"&gt;
+  &lt;div class="single-card-visual"&gt;
+    &lt;span class="single-card-icon" aria-hidden="true"&gt;★&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="single-card-content"&gt;
+    &lt;h3&gt;Our Services&lt;/h3&gt;
+    &lt;p&gt;Explore the services we offer.&lt;/p&gt;
+    &lt;a href="/services"&gt;Learn more →&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+        <h3>Image card</h3>
+        <pre><code>&lt;article class="single-card single-card--image"&gt;
+  &lt;div class="single-card-visual"&gt;
+    &lt;img
+      class="single-card-image"
+      src="images/services.jpg"
+      alt="Our team working together"
+      loading="lazy"
+    &gt;
+  &lt;/div&gt;
+  &lt;div class="single-card-content"&gt;
+    &lt;h3&gt;Our Services&lt;/h3&gt;
+    &lt;p&gt;Discover how we can help.&lt;/p&gt;
+    &lt;a href="/services"&gt;Learn more →&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+        <p>For a text-only card, omit the visual block or use a <code>single-card--text</code> modifier if your CSS is written to hide it. Use descriptive <code>alt</code> text for meaningful images, and <code>alt=""</code> for decorative images.</p>
+      </section>
+
+      <section class="guide-section" id="responsive">
+        <h2>7. Make the grid responsive</h2>
+        <p>A four-column desktop grid is usually too cramped on a phone. Use breakpoints to reduce the columns as the available space gets smaller.</p>
+        <pre><code>/* Wide screens: use the configured default */
+.card-grid {
+  grid-template-columns: repeat(
+    var(--card-columns),
+    minmax(0, 1fr)
+  );
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+        <ul>
+          <li><strong>Desktop:</strong> uses the global or section-specific column count.</li>
+          <li><strong>Tablet:</strong> displays two columns.</li>
+          <li><strong>Mobile:</strong> displays one column for comfortable reading.</li>
+        </ul>
+        <p>Adjust the breakpoint values to suit the actual width and content of your cards.</p>
+      </section>
+
+      <section class="guide-section" id="auto-fit">
+        <h2>8. Optional: let CSS choose the column count</h2>
+        <p>If you prefer columns to adjust automatically according to available space, use <code>auto-fit</code> and <code>minmax()</code> instead of a fixed column count.</p>
+        <pre><code>.card-grid--auto {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, var(--card-min-width)), 1fr)
+  );
+  gap: var(--card-gap);
+}</code></pre>
+        <div class="demo-panel">
+          <p><strong>Auto-fit example</strong></p>
+          <div class="card-grid demo-grid-auto">
+            <article class="demo-card"><h3>Flexible One</h3><p>Cards aim to stay at least as wide as the configured minimum when space permits.</p></article>
+            <article class="demo-card"><h3>Flexible Two</h3><p>The browser fits as many columns as the available width allows.</p></article>
+            <article class="demo-card"><h3>Flexible Three</h3><p>Resize the browser to see the number of columns change.</p></article>
+          </div>
+        </div>
+        <div class="note">
+          <p><strong>Choose one strategy per grid:</strong> use fixed <code>--card-columns</code> when you want an exact number of columns, or <code>auto-fit</code> when you want the browser to choose based on space.</p>
+        </div>
+      </section>
+
+      <section class="guide-section" id="troubleshooting">
+        <h2>9. Common issues and fixes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Issue</th><th>Likely cause</th><th>What to check</th></tr></thead>
+            <tbody>
+              <tr><td>Changing the variable has no effect.</td><td>A more specific CSS rule or media query overrides it.</td><td>Inspect the computed <code>grid-template-columns</code> in browser developer tools.</td></tr>
+              <tr><td>Cards look too narrow.</td><td>Too many columns for the section width.</td><td>Reduce the column count, gap, or card padding.</td></tr>
+              <tr><td>Cards do not appear.</td><td>The card HTML is missing or malformed.</td><td>Make sure every card is inside the correct <code>.card-grid</code>.</td></tr>
+              <tr><td>Images look stretched.</td><td>The image lacks sizing/cropping rules.</td><td>Use <code>width: 100%</code>, a suitable <code>aspect-ratio</code>, and <code>object-fit: cover</code>.</td></tr>
+              <tr><td>Every section has the same columns.</td><td>No section modifier is applied, or the selector is incorrect.</td><td>Check classes such as <code>card-section--two</code> on the section element.</td></tr>
+              <tr><td>Font looks different offline.</td><td>Web fonts could not load.</td><td>System fallbacks are used; host fonts locally if offline consistency is required.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="guide-section" id="checklist">
+        <h2>10. Quick checklist</h2>
+        <ul class="checklist">
+          <li>Add card variables to the existing <code>:root</code> block in <code>global.css</code>.</li>
+          <li>Use one <code>.card-grid</code> around the card elements in each section.</li>
+          <li>Use <code>.single-card</code> for the shared card foundation.</li>
+          <li>Add one card element per item you want to show.</li>
+          <li>Change <code>--card-columns</code> for the global desktop default.</li>
+          <li>Use section modifiers when different sections need different column counts.</li>
+          <li>Use icon/image modifiers only where those visuals are needed.</li>
+          <li>Test desktop, tablet, and mobile widths.</li>
+          <li>Use JavaScript or a template system only if you want cards generated from data automatically.</li>
+        </ul>
+        <div class="note warning">
+          <p><strong>Keep the responsibility clear:</strong> CSS variables control appearance and layout. HTML supplies the cards. JavaScript or server-side templates can generate cards from data when you need that extra automation.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>Card Sections — Quick Usage Guide</p>
+      <p>Built to match the Caveat + Inter design direction.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
