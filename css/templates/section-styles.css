@@ -1,0 +1,251 @@
+/* ========================================================
+   SECTION DEFINITION — BASE COMPONENT
+========================================================= */
+
+.section-definition {
+    /* Layout */
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-width: 0;
+
+    /* Spacing */
+    padding-block: clamp(3rem, 7vw, 6rem);
+    padding-inline: clamp(1rem, 4vw, 2rem);
+
+    /* Appearance */
+    background: var(--white, #ffffff);
+    color: var(--text, #172033);
+
+    /* Typography */
+    font-family: var(--font-body, 'Inter', 'Segoe UI', Arial, sans-serif);
+
+    /* Prevent unexpected overflow */
+    overflow-wrap: break-word;
+}
+
+/* ========================================================
+   SECTION INNER CONTAINER
+========================================================= */
+
+.section-definition__container {
+    width: 100%;
+    max-width: var(--container, 1160px);
+    margin-inline: auto;
+    min-width: 0;
+}
+
+/* ========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-definition__header {
+    max-width: var(--text-width-lg, 70ch);
+    margin: 0 auto clamp(2rem, 4vw, 3.5rem);
+    text-align: center;
+}
+
+.section-definition__eyebrow {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+
+    color: var(--blue, #2563eb);
+    font-size: var(--text-sm, 0.9rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.section-definition__title {
+    margin: 0 0 1rem;
+
+    color: var(--navy, #172554);
+    font-family: var(--font-heading, 'Caveat', cursive);
+    font-size: clamp(2.25rem, 4.5vw, 3.7rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+}
+
+.section-definition__description {
+    max-width: var(--text-width-md, 60ch);
+    margin: 0 auto;
+
+    color: var(--muted, #64748b);
+    font-size: var(--text-base, 1rem);
+    line-height: var(--text-leading, 1.75);
+}
+
+/* ========================================================
+   SECTION CONTENT
+========================================================= */
+
+.section-definition__content {
+    width: 100%;
+    min-width: 0;
+}
+
+.section-definition__content > :last-child {
+    margin-bottom: 0;
+}
+
+/* ========================================================
+   MODIFIERS — BACKGROUNDS
+========================================================= */
+
+.section-definition--white {
+    background: var(--white, #ffffff);
+}
+
+.section-definition--light {
+    background: var(--off-white, #f8fafc);
+}
+
+.section-definition--blue {
+    background: var(--sky, #eff6ff);
+}
+
+.section-definition--navy {
+    background: var(--navy-dark, #0f172a);
+    color: var(--white, #ffffff);
+}
+
+.section-definition--gradient {
+    background: linear-gradient(
+        135deg,
+        var(--sky, #eff6ff),
+        var(--blue-light, #dbeafe),
+        var(--white, #ffffff)
+    );
+}
+
+/* Dark section typography */
+
+.section-definition--navy .section-definition__title {
+    color: var(--white, #ffffff);
+}
+
+.section-definition--navy .section-definition__description {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.section-definition--navy .section-definition__eyebrow {
+    color: var(--yellow, #facc15);
+}
+
+/* ========================================================
+   MODIFIERS — SPACING
+========================================================= */
+
+.section-definition--compact {
+    padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.section-definition--spacious {
+    padding-block: clamp(5rem, 10vw, 9rem);
+}
+
+.section-definition--no-padding {
+    padding-block: 0;
+}
+
+.section-definition--no-padding-top {
+    padding-top: 0;
+}
+
+.section-definition--no-padding-bottom {
+    padding-bottom: 0;
+}
+
+/* ========================================================
+   MODIFIERS — HEADER ALIGNMENT
+========================================================= */
+
+.section-definition--left .section-definition__header {
+    margin-inline: 0;
+    text-align: left;
+}
+
+.section-definition--left .section-definition__description {
+    margin-inline: 0;
+}
+
+.section-definition--right .section-definition__header {
+    margin-left: auto;
+    margin-right: 0;
+    text-align: right;
+}
+
+.section-definition--right .section-definition__description {
+    margin-right: 0;
+}
+
+/* ========================================================
+   MODIFIERS — CONTENT WIDTH
+========================================================= */
+
+.section-definition--narrow .section-definition__container {
+    max-width: 760px;
+}
+
+.section-definition--wide .section-definition__container {
+    max-width: 1400px;
+}
+
+.section-definition--full .section-definition__container {
+    max-width: none;
+}
+
+/* ========================================================
+   MODIFIERS — BORDERS AND DECORATION
+========================================================= */
+
+.section-definition--border-top {
+    border-top: 1px solid var(--border, #e2e8f0);
+}
+
+.section-definition--border-bottom {
+    border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.section-definition--rounded {
+    border-radius: var(--radius, 24px);
+    overflow: hidden;
+}
+
+.section-definition--shadow {
+    box-shadow: var(--shadow, 0 20px 50px rgba(15, 23, 42, 0.08));
+}
+
+/* ========================================================
+   RESPONSIVE ADJUSTMENTS
+========================================================= */
+
+@media (max-width: 640px) {
+    .section-definition__header {
+        margin-bottom: 2rem;
+    }
+
+    .section-definition__title {
+        font-size: clamp(2rem, 8vw, 2.75rem);
+    }
+
+    .section-definition--right .section-definition__header {
+        text-align: left;
+        margin-inline: 0;
+    }
+}
+
+/* ========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .section-definition,
+    .section-definition * {
+        scroll-behavior: auto;
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+    }
+}
