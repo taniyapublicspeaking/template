@@ -1,31 +1,6 @@
 /* =========================================================
    1. GLOBAL DESIGN SYSTEM
    File: global.css
-
-Optimized Global CSS Design System
-
-I recommend organizing your stylesheet into four separate CSS files, with a single shared :root design system.
-
-This structure keeps global definitions centralized, eliminates repeated declarations, and allows you to customize sections and glass panels without editing the component styles themselves.
-
-1. Recommended file structure
-css/
-├── global.css       /* 1. Global variables, reset, typography, utilities */
-├── sections.css     /* 2. Section component and its modifiers */
-├── panels.css       /* 3. Glass panel component and its modifiers */
-└── responsive.css   /* 4. Responsive layouts and accessibility */
-
-
-What has been optimized?
-Centralized variables: Colors, fonts, spacing, glass effects, borders, shadows, and layout widths are defined in :root.
-No repeated color definitions: Existing duplicate variables such as --text are consolidated.
-Parameterized components: Sections and panels use shared variables that you can override globally.
-Independent modifiers: Background, spacing, alignment, blur, shape, and shadow modifiers remain separate so you can combine them.
-Consistent typography: Headings, paragraphs, section titles, and panel titles use the global typography system.
-Centralized responsive rules: Media queries and reduced-motion accessibility rules are placed in one file.
-Corrected glass effects: Clear glass, light glass, and dark glass use separate configurable opacity and blur values.
-Preserved functionality: The section backgrounds, image background, layout modifiers, glass panels, and content helpers are retained.
-
 ========================================================= */
 
 :root {
