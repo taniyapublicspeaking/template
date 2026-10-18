@@ -1,0 +1,266 @@
+/* =========================================================
+   GLASS PANEL COMPONENT
+   File: panels.css
+========================================================= */
+
+
+/* =========================================================
+   1. BASE PANEL
+========================================================= */
+
+.glass-panel {
+    /* Component parameters */
+
+    --panel-bg: var(--glass-background);
+    --panel-blur: var(--glass-blur);
+    --panel-border: var(--glass-border);
+    --panel-shadow: var(--glass-shadow);
+    --panel-radius: var(--glass-radius);
+    --panel-padding: var(--glass-padding);
+    --panel-text: var(--text);
+
+    /* Layout */
+
+    position: relative;
+    min-width: 0;
+
+    padding: var(--panel-padding);
+
+    /* Appearance */
+
+    background: var(--panel-bg);
+
+    border: var(--border-width) solid var(--panel-border);
+    border-radius: var(--panel-radius);
+
+    box-shadow: var(--panel-shadow);
+
+    color: var(--panel-text);
+
+    /* Glass effect */
+
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+    backdrop-filter: blur(var(--panel-blur));
+
+    /* Motion */
+
+    transition: var(--transition-standard);
+}
+
+
+/* =========================================================
+   2. BACKGROUND MODIFIERS
+========================================================= */
+
+/* Fully transparent: no tint, blur, border or shadow */
+
+.glass-panel--transparent {
+    --panel-bg: transparent;
+    --panel-blur: 0px;
+    --panel-border: transparent;
+    --panel-shadow: none;
+}
+
+
+/* Clear glass: maximum background visibility */
+
+.glass-panel--clear {
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --panel-blur: 2px;
+    --panel-border: rgba(255, 255, 255, 0.15);
+    --panel-shadow: none;
+}
+
+
+/* Light glass */
+
+.glass-panel--light {
+    --panel-bg: var(--glass-light-background);
+    --panel-border: var(--glass-light-border);
+}
+
+
+/* Dark glass */
+
+.glass-panel--dark {
+    --panel-bg: var(--glass-dark-background);
+    --panel-border: var(--glass-dark-border);
+    --panel-text: var(--white);
+}
+
+
+/* Blue glass */
+
+.glass-panel--blue {
+    --panel-bg: var(--glass-blue-background);
+    --panel-border: var(--glass-blue-border);
+}
+
+
+/* Navy glass */
+
+.glass-panel--navy {
+    --panel-bg: var(--glass-navy-background);
+    --panel-border: var(--glass-navy-border);
+    --panel-text: var(--white);
+}
+
+
+/* Orange glass */
+
+.glass-panel--orange {
+    --panel-bg: var(--glass-orange-background);
+    --panel-border: var(--glass-orange-border);
+}
+
+
+/* =========================================================
+   3. CUSTOM TINT MODIFIERS
+========================================================= */
+
+/* Darker light glass */
+
+.glass-panel--tint-dark {
+    --panel-bg: rgba(15, 23, 42, 0.35);
+    --panel-border: rgba(255, 255, 255, 0.18);
+    --panel-text: var(--white);
+}
+
+
+/* Extra dark glass */
+
+.glass-panel--tint-darker {
+    --panel-bg: rgba(15, 23, 42, 0.65);
+    --panel-border: rgba(255, 255, 255, 0.15);
+    --panel-text: var(--white);
+}
+
+
+/* =========================================================
+   4. BLUR MODIFIERS
+========================================================= */
+
+.glass-panel--blur-sm {
+    --panel-blur: var(--glass-blur-sm);
+}
+
+.glass-panel--blur-md {
+    --panel-blur: var(--glass-blur-md);
+}
+
+.glass-panel--blur-lg {
+    --panel-blur: var(--glass-blur-lg);
+}
+
+
+/* Disable blur without changing tint */
+
+.glass-panel--blur-none {
+    --panel-blur: 0px;
+}
+
+
+/* =========================================================
+   5. SIZE MODIFIERS
+========================================================= */
+
+.glass-panel--compact {
+    --panel-padding: 1rem;
+}
+
+.glass-panel--spacious {
+    --panel-padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+
+/* =========================================================
+   6. SHAPE MODIFIERS
+========================================================= */
+
+.glass-panel--rounded {
+    --panel-radius: var(--radius);
+}
+
+.glass-panel--pill {
+    --panel-radius: var(--radius-pill);
+}
+
+
+/* =========================================================
+   7. SHADOW MODIFIERS
+========================================================= */
+
+.glass-panel--shadow-none {
+    --panel-shadow: none;
+}
+
+.glass-panel--shadow-soft {
+    --panel-shadow: var(--shadow-soft);
+}
+
+.glass-panel--shadow-strong {
+    --panel-shadow: var(--shadow-strong);
+}
+
+
+/* =========================================================
+   8. INTERACTIVE MODIFIER
+========================================================= */
+
+.glass-panel--interactive {
+    cursor: pointer;
+}
+
+.glass-panel--interactive:hover {
+    --panel-bg: rgba(255, 255, 255, 0.78);
+    --panel-border: rgba(255, 255, 255, 0.85);
+    --panel-shadow: var(--shadow-strong);
+
+    transform: translateY(-3px);
+}
+
+.glass-panel--interactive:focus-within {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   9. PANEL CONTENT HELPERS
+========================================================= */
+
+.glass-panel__title {
+    margin-top: 0;
+    margin-bottom: var(--space-2);
+
+    color: inherit;
+
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+
+    line-height: var(--heading-leading);
+}
+
+.glass-panel__text {
+    margin-bottom: 0;
+
+    color: inherit;
+    line-height: var(--text-leading);
+}
+
+.glass-panel__icon {
+    display: inline-grid;
+    place-items: center;
+
+    width: 3rem;
+    height: 3rem;
+
+    margin-bottom: var(--space-3);
+
+    border-radius: 12px;
+
+    background: var(--glass-blue-background);
+    color: var(--blue);
+
+    font-size: 1.5rem;
+}
