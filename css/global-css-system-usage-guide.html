@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global CSS System — Complete Usage Guide</title>
+<style>
+:root{
+  color-scheme:light;
+  --ink:#172033;--muted:#64748b;--navy:#172554;--blue:#2563eb;--sky:#eff6ff;
+  --orange:#f97316;--paper:#f8fafc;--line:#dbe3ee;--white:#fff;
+  --radius:18px;--shadow:0 12px 34px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 Inter,"Segoe UI",Arial,sans-serif}
+a{color:var(--blue)}
+.hero{padding:clamp(2.5rem,7vw,5.5rem) 1.25rem;background:linear-gradient(135deg,#172554,#2563eb 60%,#f97316);color:white}
+.hero-inner,.layout{width:min(1180px,calc(100% - 2rem));margin-inline:auto}
+.hero h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.05;letter-spacing:-.04em;margin:0 0 1rem}
+.hero p{max-width:760px;color:#eef2ff;font-size:1.1rem;margin:0}
+.hero .pill{display:inline-block;border:1px solid #ffffff80;border-radius:999px;padding:.25rem .75rem;margin-bottom:1rem;font-size:.82rem}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:2rem;padding-block:2rem 5rem}
+nav{align-self:start;position:sticky;top:1rem;background:white;border:1px solid var(--line);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)}
+nav strong{display:block;margin:0 0 .5rem}
+nav a{display:block;text-decoration:none;padding:.35rem .5rem;border-radius:8px;color:#334155;font-size:.92rem}
+nav a:hover{background:var(--sky);color:var(--blue)}
+main{min-width:0}
+section.guide-section{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.1rem,3vw,2rem);margin-bottom:1.4rem;box-shadow:var(--shadow);scroll-margin-top:1rem}
+h2{margin:.1rem 0 1rem;font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.2;color:var(--navy)}
+h3{margin:1.6rem 0 .5rem;font-size:1.18rem;color:var(--navy)}
+p{margin:.5rem 0 1rem}
+.lead{font-size:1.05rem;color:#475569}
+.note{border-left:4px solid var(--blue);background:var(--sky);padding:.8rem 1rem;border-radius:0 10px 10px 0;margin:1rem 0}
+.warning{border-left-color:var(--orange);background:#fff7ed}
+.file-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.file{border:1px solid var(--line);padding:1rem;border-radius:12px;background:#fbfdff}
+.file code{font-weight:700;color:var(--blue)}
+.example{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:1rem 0;background:#fff}
+.example-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.7rem .9rem;background:#f1f5f9;border-bottom:1px solid var(--line);font-size:.9rem;font-weight:700}
+button.copy{border:0;border-radius:8px;background:var(--navy);color:white;padding:.45rem .75rem;font:inherit;font-size:.82rem;cursor:pointer}
+button.copy:hover{background:var(--blue)}
+button.copy:focus-visible,a:focus-visible{outline:3px solid #f97316;outline-offset:3px}
+pre{margin:0;padding:1rem;overflow:auto;background:#0f172a;color:#e2e8f0;font: .84rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}
+code.inline{background:#eef2ff;color:#1d4ed8;padding:.1rem .3rem;border-radius:5px}
+.demo{padding:1.1rem;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#172033}
+.demo h3{margin-top:0}
+.demo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+.demo-card{padding:1rem;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.demo-card.dark{background:rgba(15,23,42,.78);color:white;border-color:#ffffff30}
+.demo-card p{font-size:.92rem;margin-bottom:0;color:inherit}
+.demo-button{display:inline-block;background:var(--blue);color:white;padding:.65rem 1rem;border-radius:999px;text-decoration:none;font-weight:700}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.92rem}
+th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f1f5f9;color:var(--navy)}
+footer{text-align:center;color:var(--muted);padding:1.5rem}
+@media(max-width:850px){.layout{grid-template-columns:1fr}nav{position:static}.demo-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.file-list,.demo-grid{grid-template-columns:1fr}.layout{width:min(100% - 1rem,1180px)}section.guide-section{padding:1rem}pre{font-size:.78rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <span class="pill">FRONT-END REFERENCE · COPY-READY</span>
+    <h1>Global CSS System<br>Usage Guide</h1>
+    <p>A practical, self-contained reference for the four stylesheet segments: <strong>global.css</strong>, <strong>sections.css</strong>, <strong>panels.css</strong>, and <strong>responsive.css</strong>. Learn the class patterns, combine modifiers, and copy ready-to-use HTML and CSS examples.</p>
+  </div>
+</header>
+<div class="layout">
+<nav aria-label="Guide contents">
+  <strong>On this page</strong>
+  <a href="#overview">1. Overview</a><a href="#setup">2. File setup</a><a href="#global">3. global.css</a>
+  <a href="#sections">4. Section component</a><a href="#section-modifiers">5. Section modifiers</a>
+  <a href="#panels">6. Glass panels</a><a href="#panel-modifiers">7. Panel modifiers</a>
+  <a href="#responsive">8. Responsive rules</a><a href="#patterns">9. Complete patterns</a>
+  <a href="#accessibility">10. Accessibility</a><a href="#troubleshooting">11. Troubleshooting</a>
+</nav>
+<main>
+<section class="guide-section" id="overview">
+<h2>1. System overview</h2>
+<p class="lead">The system separates global design tokens from reusable layout components. Use the base class first, then add any modifiers that fit the design.</p>
+<div class="file-list">
+  <div class="file"><code>global.css</code><br>Design tokens, reset, typography, text utilities, and the global container.</div>
+  <div class="file"><code>sections.css</code><br>Full-width section layout, inner container, header, content, footer, and section variants.</div>
+  <div class="file"><code>panels.css</code><br>Glass panel appearance, tint/blur/shape/shadow modifiers, and panel content helpers.</div>
+  <div class="file"><code>responsive.css</code><br>Tablet/mobile adjustments, reduced motion, touch behavior, and focus-visible rules.</div>
+</div>
+<div class="note"><strong>Class pattern:</strong> <code class="inline">component</code> is the base; <code class="inline">component__element</code> is a part inside it; <code class="inline">component--modifier</code> changes a variant. For example: <code class="inline">section-definition section-definition--blue</code>.</div>
+</section>
+
+<section class="guide-section" id="setup">
+<h2>2. Recommended file setup</h2>
+<p>Keep the four CSS files separate and load them in dependency order. <code>global.css</code> defines variables used by the other files, so it must come first.</p>
+<div class="example"><div class="example-head"><span>HTML · stylesheet links</span><button class="copy" data-copy="setup-html">Copy code</button></div><pre><code id="setup-html">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;My Website&lt;/title&gt;
+
+  &lt;link rel="stylesheet" href="css/global.css"&gt;
+  &lt;link rel="stylesheet" href="css/sections.css"&gt;
+  &lt;link rel="stylesheet" href="css/panels.css"&gt;
+  &lt;link rel="stylesheet" href="css/responsive.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Your page content --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<div class="example"><div class="example-head"><span>Suggested project structure</span><button class="copy" data-copy="tree">Copy code</button></div><pre><code id="tree">project/
+├── index.html
+├── css/
+│   ├── global.css
+│   ├── sections.css
+│   ├── panels.css
+│   └── responsive.css
+└── images/
+    └── background.jpg</code></pre></div>
+<div class="note warning"><strong>Background image path:</strong> in <code>global.css</code>, <code class="inline">url("../images/background.jpg")</code> is resolved relative to the CSS file. If your folders differ, update <code class="inline">--background-image</code>. If you do not want a page background image, set it to <code class="inline">none</code>.</div>
+</section>
+
+<section class="guide-section" id="global">
+<h2>3. Using global.css</h2>
+<p><code>global.css</code> establishes the design vocabulary: fonts, type scale, colors, spacing, container widths, borders, shadows, background settings, and glass presets. Prefer changing tokens over repeating literal values throughout component CSS.</p>
+<h3>Common tokens</h3>
+<table><thead><tr><th>Token</th><th>Purpose</th><th>Example use</th></tr></thead><tbody>
+<tr><td><code>--navy</code>, <code>--blue</code>, <code>--orange</code></td><td>Brand palette</td><td>Headings, links, accents</td></tr>
+<tr><td><code>--text-base</code>, <code>--text-lg</code></td><td>Responsive type sizes</td><td>Body copy and emphasis</td></tr>
+<tr><td><code>--section-padding-block</code></td><td>Default vertical section spacing</td><td>Space above/below sections</td></tr>
+<tr><td><code>--container</code>, <code>--container-narrow</code>, <code>--container-wide</code></td><td>Content width presets</td><td>Text, standard layouts, wide grids</td></tr>
+<tr><td><code>--radius</code>, <code>--shadow</code></td><td>Shared shape and depth</td><td>Cards, panels, section surfaces</td></tr>
+<tr><td><code>--glass-*</code></td><td>Glass tint, blur, borders and presets</td><td>Glass panels and glass sections</td></tr>
+</tbody></table>
+<h3>Use the global container</h3>
+<div class="example"><div class="example-head"><span>HTML · centered content</span><button class="copy" data-copy="container-html">Copy code</button></div><pre><code id="container-html">&lt;div class="container"&gt;
+  &lt;h2&gt;Content with a consistent page width&lt;/h2&gt;
+  &lt;p&gt;The container is centered and capped by --container.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div>
+<h3>Text utilities</h3>
+<div class="example"><div class="example-head"><span>HTML · width and size utilities</span><button class="copy" data-copy="text-utils">Copy code</button></div><pre><code id="text-utils">&lt;p class="text-block text-block-sm"&gt;
+  A short, narrow paragraph for a caption or introduction.
+&lt;/p&gt;
+
+&lt;p class="text-block"&gt;
+  Standard-width supporting copy using the global text width.
+&lt;/p&gt;
+
+&lt;p class="text-block text-block-lg text-lg"&gt;
+  Wider, larger copy for a prominent introduction.
+&lt;/p&gt;
+
+&lt;small class="text-sm"&gt;A compact note or metadata label.&lt;/small&gt;</code></pre></div>
+<h3>Customize tokens safely</h3>
+<div class="example"><div class="example-head"><span>CSS · project-level overrides</span><button class="copy" data-copy="tokens-css">Copy code</button></div><pre><code id="tokens-css">/* Load this after global.css if you want project-specific tokens. */
+:root {
+  --navy: #183153;
+  --blue: #1d4ed8;
+  --section-padding-block: clamp(3.5rem, 8vw, 7rem);
+  --radius: 28px;
+  --glass-blur: 20px;
+}</code></pre></div>
+<p>Token overrides should usually be placed in a small custom stylesheet loaded after <code>global.css</code>. Remember that changing a token can affect every component that references it.</p>
+</section>
+
+<section class="guide-section" id="sections">
+<h2>4. Section component anatomy</h2>
+<p>Use <code class="inline">section-definition</code> for a full-width page section. Place the content inside <code class="inline">section-definition__container</code>, then use the header/content/footer elements as needed.</p>
+<div class="example"><div class="example-head"><span>HTML · standard section</span><button class="copy" data-copy="section-basic">Copy code</button></div><pre><code id="section-basic">&lt;section class="section-definition section-definition--white"&gt;
+  &lt;div class="section-definition__container"&gt;
+
+    &lt;header class="section-definition__header"&gt;
+      &lt;p class="section-definition__eyebrow"&gt;What we do&lt;/p&gt;
+      &lt;h2 class="section-definition__title"&gt;Thoughtful digital experiences&lt;/h2&gt;
+      &lt;p class="section-definition__description"&gt;
+        A short introduction that explains the purpose of this section.
+      &lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="section-definition__content"&gt;
+      &lt;p&gt;Put your section content here. It may contain text, images,
+      cards, lists, forms, or other components.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;footer class="section-definition__footer"&gt;
+      &lt;a href="/services" class="demo-button"&gt;Explore services&lt;/a&gt;
+    &lt;/footer&gt;
+
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<h3>Live structure preview</h3>
+<div class="demo">
+  <div style="max-width:760px;margin:auto;text-align:center">
+    <p style="text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;font-weight:700;color:#2563eb;margin-bottom:.4rem">What we do</p>
+    <h3 style="font-size:2rem;margin:.2rem 0;color:#172554">Thoughtful digital experiences</h3>
+    <p style="margin:0 auto 1rem;max-width:55ch;color:#64748b">A clear heading, a concise description, and content that is easy to scan.</p>
+    <a class="demo-button" href="#patterns">See the pattern</a>
+  </div>
+</div>
+<div class="note"><strong>Semantic tip:</strong> use a real <code class="inline">&lt;section&gt;</code> for a thematic region and ensure it has a meaningful heading. Use <code class="inline">&lt;header&gt;</code> and <code class="inline">&lt;footer&gt;</code> for the section's own header and footer, not just for styling.</div>
+</section>
+
+<section class="guide-section" id="section-modifiers">
+<h2>5. Section modifiers reference</h2>
+<p>Modifiers are additive. Combine one background modifier with spacing, alignment, width, or border modifiers as needed.</p>
+<table><thead><tr><th>Category</th><th>Classes</th><th>Effect</th></tr></thead><tbody>
+<tr><td>Background</td><td><code>--white</code>, <code>--light</code>, <code>--blue</code>, <code>--navy</code></td><td>Solid surface; navy also switches selected heading and description colors.</td></tr>
+<tr><td>Gradient</td><td><code>--gradient</code>, <code>--gradient-background2</code></td><td>Uses the gradient tokens in <code>global.css</code>.</td></tr>
+<tr><td>Spacing</td><td><code>--compact</code>, <code>--spacious</code>, <code>--no-padding</code>, <code>--no-padding-top</code>, <code>--no-padding-bottom</code></td><td>Adjusts vertical padding.</td></tr>
+<tr><td>Header alignment</td><td><code>--left</code>, <code>--right</code></td><td>Aligns the section header and description.</td></tr>
+<tr><td>Width</td><td><code>--narrow</code>, <code>--wide</code>, <code>--full</code></td><td>Changes the inner container max width.</td></tr>
+<tr><td>Edges</td><td><code>--border-top</code>, <code>--border-bottom</code>, <code>--rounded</code>, <code>--shadow</code></td><td>Adds a border, rounded clipping, or shadow.</td></tr>
+<tr><td>Glass</td><td><code>--glass</code>, <code>--glass-on-image</code></td><td>Applies glass styling or an image with a gradient overlay.</td></tr>
+</tbody></table>
+<h3>Example: compact, blue, left-aligned section</h3>
+<div class="example"><div class="example-head"><span>HTML · combine modifiers</span><button class="copy" data-copy="section-combo">Copy code</button></div><pre><code id="section-combo">&lt;section class="section-definition section-definition--blue
+                section-definition--compact
+                section-definition--left
+                section-definition--wide
+                section-definition--border-bottom"&gt;
+  &lt;div class="section-definition__container"&gt;
+    &lt;header class="section-definition__header"&gt;
+      &lt;p class="section-definition__eyebrow"&gt;Our approach&lt;/p&gt;
+      &lt;h2 class="section-definition__title"&gt;Built around your needs&lt;/h2&gt;
+      &lt;p class="section-definition__description"&gt;
+        The same section component can be adapted with a few classes.
+      &lt;/p&gt;
+    &lt;/header&gt;
+    &lt;div class="section-definition__content"&gt;
+      &lt;p&gt;Keep the component structure consistent across the website.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<h3>Example: dark navy section</h3>
+<div class="example"><div class="example-head"><span>HTML · dark section</span><button class="copy" data-copy="section-dark">Copy code</button></div><pre><code id="section-dark">&lt;section class="section-definition section-definition--navy"&gt;
+  &lt;div class="section-definition__container"&gt;
+    &lt;header class="section-definition__header"&gt;
+      &lt;p class="section-definition__eyebrow"&gt;A better way&lt;/p&gt;
+      &lt;h2 class="section-definition__title"&gt;Make the important things simple&lt;/h2&gt;
+      &lt;p class="section-definition__description"&gt;
+        The navy modifier sets the section surface and the built-in
+        title, description, and eyebrow colors for contrast.
+      &lt;/p&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<h3>Example: image background with overlay</h3>
+<div class="example"><div class="example-head"><span>HTML · glass-on-image section</span><button class="copy" data-copy="section-image">Copy code</button></div><pre><code id="section-image">&lt;section class="section-definition section-definition--glass-on-image"&gt;
+  &lt;div class="section-definition__container"&gt;
+    &lt;header class="section-definition__header"&gt;
+      &lt;p class="section-definition__eyebrow"&gt;Explore&lt;/p&gt;
+      &lt;h2 class="section-definition__title"&gt;A richer visual backdrop&lt;/h2&gt;
+      &lt;p class="section-definition__description"&gt;
+        This section layers the configured overlay gradient over
+        --background-image. Keep text contrast high.
+      &lt;/p&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<div class="example"><div class="example-head"><span>CSS · tune the image overlay in global.css</span><button class="copy" data-copy="overlay-css">Copy code</button></div><pre><code id="overlay-css">:root {
+  --background-image: url("../images/hero-background.jpg");
+  --glass-image-overlay-start: rgba(15, 23, 42, 0.48);
+  --glass-image-overlay-end: rgba(15, 23, 42, 0.72);
+  --glass-image-overlay-angle: 180deg;
+  --glass-image-size: cover;
+  --glass-image-position: center;
+  --glass-image-repeat: no-repeat;
+}</code></pre></div>
+<div class="note warning"><strong>Important distinction:</strong> <code class="inline">section-definition--glass</code> applies a translucent surface and backdrop blur. <code class="inline">section-definition--glass-on-image</code> adds the configured image and overlay; it does not itself add the same border/blur treatment as the <code class="inline">--glass</code> modifier. Combine them if that is the intended design, and test contrast over the chosen image.</div>
+</section>
+
+<section class="guide-section" id="panels">
+<h2>6. Glass panel component</h2>
+<p>Use <code class="inline">glass-panel</code> for smaller content surfaces placed inside sections: feature cards, callouts, pricing details, stats, or compact information blocks. The panel is a component, not a page-width section.</p>
+<div class="example"><div class="example-head"><span>HTML · basic panel</span><button class="copy" data-copy="panel-basic">Copy code</button></div><pre><code id="panel-basic">&lt;article class="glass-panel glass-panel--light"&gt;
+  &lt;div class="glass-panel__icon" aria-hidden="true"&gt;✦&lt;/div&gt;
+  &lt;h3 class="glass-panel__title"&gt;Design with clarity&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;
+    Use a short paragraph to explain the benefit or feature.
+  &lt;/p&gt;
+&lt;/article&gt;</code></pre></div>
+<h3>Panels in a grid</h3>
+<div class="example"><div class="example-head"><span>HTML · three feature panels</span><button class="copy" data-copy="panel-grid">Copy code</button></div><pre><code id="panel-grid">&lt;div class="feature-grid"&gt;
+  &lt;article class="glass-panel glass-panel--light"&gt;
+    &lt;h3 class="glass-panel__title"&gt;Clear structure&lt;/h3&gt;
+    &lt;p class="glass-panel__text"&gt;A consistent visual hierarchy.&lt;/p&gt;
+  &lt;/article&gt;
+
+  &lt;article class="glass-panel glass-panel--blue"&gt;
+    &lt;h3 class="glass-panel__title"&gt;Flexible styling&lt;/h3&gt;
+    &lt;p class="glass-panel__text"&gt;Modifiers adapt the surface quickly.&lt;/p&gt;
+  &lt;/article&gt;
+
+  &lt;article class="glass-panel glass-panel--dark"&gt;
+    &lt;h3 class="glass-panel__title"&gt;Comfortable reading&lt;/h3&gt;
+    &lt;p class="glass-panel__text"&gt;Spacing and line-height aid scanning.&lt;/p&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre></div>
+<div class="example"><div class="example-head"><span>CSS · optional grid layout</span><button class="copy" data-copy="grid-css">Copy code</button></div><pre><code id="grid-css">.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 800px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre></div>
+<div class="demo demo-grid">
+  <div class="demo-card"><h3>Clear structure</h3><p>A consistent visual hierarchy.</p></div>
+  <div class="demo-card"><h3>Flexible styling</h3><p>Modifiers adapt the surface quickly.</p></div>
+  <div class="demo-card dark"><h3>Comfortable reading</h3><p>Spacing and line-height aid scanning.</p></div>
+</div>
+</section>
+
+<section class="guide-section" id="panel-modifiers">
+<h2>7. Glass panel modifiers</h2>
+<table><thead><tr><th>Category</th><th>Classes</th><th>Effect / guidance</th></tr></thead><tbody>
+<tr><td>Surface</td><td><code>--transparent</code>, <code>--clear</code>, <code>--light</code>, <code>--dark</code>, <code>--blue</code>, <code>--navy</code>, <code>--orange</code></td><td>Choose the tint. Dark/navy also set white panel text.</td></tr>
+<tr><td>Custom tint</td><td><code>--tint-dark</code>, <code>--tint-darker</code></td><td>Dark translucent surfaces with light text.</td></tr>
+<tr><td>Blur</td><td><code>--blur-sm</code>, <code>--blur-md</code>, <code>--blur-lg</code>, <code>--blur-none</code></td><td>Control the backdrop blur independently from tint.</td></tr>
+<tr><td>Padding</td><td><code>--compact</code>, <code>--spacious</code></td><td>Reduce or expand internal spacing.</td></tr>
+<tr><td>Shape</td><td><code>--rounded</code>, <code>--pill</code></td><td>Large radius or pill-shaped panel. Pill is best for short content.</td></tr>
+<tr><td>Shadow</td><td><code>--shadow-none</code>, <code>--shadow-soft</code>, <code>--shadow-strong</code></td><td>Adjust elevation.</td></tr>
+<tr><td>Interaction</td><td><code>--interactive</code></td><td>Hover lift and focus-within outline; use only when the panel contains a meaningful interactive control or is itself implemented accessibly as a link/button.</td></tr>
+</tbody></table>
+<h3>Examples: preset combinations</h3>
+<div class="example"><div class="example-head"><span>HTML · modifier recipes</span><button class="copy" data-copy="panel-recipes">Copy code</button></div><pre><code id="panel-recipes">&lt;!-- Soft, compact card --&gt;
+&lt;article class="glass-panel glass-panel--light glass-panel--compact glass-panel--shadow-soft"&gt;
+  ...
+&lt;/article&gt;
+
+&lt;!-- Dark, spacious card with stronger blur --&gt;
+&lt;article class="glass-panel glass-panel--dark glass-panel--spacious glass-panel--blur-lg"&gt;
+  ...
+&lt;/article&gt;
+
+&lt;!-- Blue tint with no backdrop blur --&gt;
+&lt;article class="glass-panel glass-panel--blue glass-panel--blur-none"&gt;
+  ...
+&lt;/article&gt;
+
+&lt;!-- Pill treatment: keep its content short --&gt;
+&lt;div class="glass-panel glass-panel--clear glass-panel--pill"&gt;
+  A short label or status
+&lt;/div&gt;</code></pre></div>
+<h3>Interactive panel: make the semantics real</h3>
+<p>The CSS modifier supplies hover/focus styling, but it does not make a generic <code class="inline">&lt;div&gt;</code> keyboard-operable. Prefer a link when the entire panel navigates.</p>
+<div class="example"><div class="example-head"><span>HTML · accessible clickable panel</span><button class="copy" data-copy="panel-link">Copy code</button></div><pre><code id="panel-link">&lt;a class="glass-panel glass-panel--light glass-panel--interactive"
+   href="/services"&gt;
+  &lt;h3 class="glass-panel__title"&gt;Explore our services&lt;/h3&gt;
+  &lt;p class="glass-panel__text"&gt;Open the services page to learn more.&lt;/p&gt;
+&lt;/a&gt;</code></pre></div>
+<div class="note warning">The current <code class="inline">.glass-panel--interactive:hover</code> rule changes the background to a light tint, so that hover state may be unsuitable for dark or navy panels. If you use interactive dark panels, add a specific dark hover rule or avoid that combination. Also consider adding <code class="inline">text-decoration:none</code> to the anchor if your global styles do not already remove it.</div>
+<h3>Optional modifier improvement</h3>
+<div class="example"><div class="example-head"><span>CSS · prevent the interactive hover from overriding dark variants</span><button class="copy" data-copy="panel-hover-fix">Copy code</button></div><pre><code id="panel-hover-fix">.glass-panel--dark.glass-panel--interactive:hover,
+.glass-panel--navy.glass-panel--interactive:hover,
+.glass-panel--tint-dark.glass-panel--interactive:hover,
+.glass-panel--tint-darker.glass-panel--interactive:hover {
+  --panel-bg: rgba(15, 23, 42, 0.88);
+  --panel-border: rgba(255, 255, 255, 0.28);
+  --panel-text: var(--white);
+}</code></pre></div>
+</section>
+
+<section class="guide-section" id="responsive">
+<h2>8. Responsive and accessibility behavior</h2>
+<p><code>responsive.css</code> makes text widths and container gutters smaller on compact screens, changes the section title size, aligns right-aligned section headers to the left on mobile, reduces hover movement on touch devices, and respects reduced-motion preferences.</p>
+<table><thead><tr><th>Rule</th><th>What it changes</th></tr></thead><tbody>
+<tr><td><code>max-width: 768px</code></td><td>Text width tokens expand to 100%; container gutter becomes 32px.</td></tr>
+<tr><td><code>max-width: 640px</code></td><td>Smaller gutters, tighter header spacing, smaller section title, right headers become left-aligned, pill panel padding is reduced.</td></tr>
+<tr><td><code>prefers-reduced-motion: reduce</code></td><td>Disables panel transitions and hover transforms and turns off smooth scrolling.</td></tr>
+<tr><td><code>hover: none</code></td><td>Removes hover lift on touch-oriented devices.</td></tr>
+<tr><td><code>:focus-visible</code></td><td>Shows a visible keyboard focus outline for interactive panels.</td></tr>
+</tbody></table>
+<div class="note"><strong>Browser fallback:</strong> backdrop blur may not be supported everywhere. The translucent background and border should still provide a surface, but check text contrast with blur disabled. Avoid relying on blur alone to separate text from a busy image.</div>
+<h3>Optional: stronger keyboard affordance</h3>
+<div class="example"><div class="example-head"><span>CSS · focus and hover refinements</span><button class="copy" data-copy="focus-css">Copy code</button></div><pre><code id="focus-css">.glass-panel--interactive {
+  display: block;
+  text-decoration: none;
+}
+
+.glass-panel--interactive:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel--interactive:hover {
+    transform: none;
+  }
+}</code></pre></div>
+</section>
+
+<section class="guide-section" id="patterns">
+<h2>9. Complete page patterns</h2>
+<h3>Pattern A: services section with glass cards</h3>
+<p>Copy the HTML and the optional grid CSS. This pattern assumes the four main stylesheets are already linked.</p>
+<div class="example"><div class="example-head"><span>HTML · section plus panels</span><button class="copy" data-copy="complete-services">Copy code</button></div><pre><code id="complete-services">&lt;section class="section-definition section-definition--gradient section-definition--spacious"&gt;
+  &lt;div class="section-definition__container"&gt;
+    &lt;header class="section-definition__header"&gt;
+      &lt;p class="section-definition__eyebrow"&gt;Our services&lt;/p&gt;
+      &lt;h2 class="section-definition__title"&gt;Everything you need to move forward&lt;/h2&gt;
+      &lt;p class="section-definition__description"&gt;
+        A concise overview of the main ways we can help.
+      &lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="service-grid"&gt;
+      &lt;article class="glass-panel glass-panel--light glass-panel--shadow-soft"&gt;
+        &lt;div class="glass-panel__icon" aria-hidden="true"&gt;✦&lt;/div&gt;
+        &lt;h3 class="glass-panel__title"&gt;Strategy&lt;/h3&gt;
+        &lt;p class="glass-panel__text"&gt;Set a clear direction and prioritize the right work.&lt;/p&gt;
+      &lt;/article&gt;
+
+      &lt;article class="glass-panel glass-panel--blue glass-panel--shadow-soft"&gt;
+        &lt;div class="glass-panel__icon" aria-hidden="true"&gt;⌘&lt;/div&gt;
+        &lt;h3 class="glass-panel__title"&gt;Design&lt;/h3&gt;
+        &lt;p class="glass-panel__text"&gt;Create accessible, coherent, and useful experiences.&lt;/p&gt;
+      &lt;/article&gt;
+
+      &lt;article class="glass-panel glass-panel--dark glass-panel--shadow-soft"&gt;
+        &lt;div class="glass-panel__icon" aria-hidden="true"&gt;↗&lt;/div&gt;
+        &lt;h3 class="glass-panel__title"&gt;Delivery&lt;/h3&gt;
+        &lt;p class="glass-panel__text"&gt;Turn the plan into a reliable working product.&lt;/p&gt;
+      &lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<div class="example"><div class="example-head"><span>CSS · grid for the services pattern</span><button class="copy" data-copy="services-css">Copy code</button></div><pre><code id="services-css">.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 850px) {
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 580px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+}</code></pre></div>
+<h3>Pattern B: image-backed call-to-action</h3>
+<div class="example"><div class="example-head"><span>HTML · CTA section and inner panel</span><button class="copy" data-copy="complete-cta">Copy code</button></div><pre><code id="complete-cta">&lt;section class="section-definition section-definition--glass-on-image section-definition--spacious"&gt;
+  &lt;div class="section-definition__container"&gt;
+    &lt;div class="glass-panel glass-panel--tint-darker glass-panel--blur-lg"&gt;
+      &lt;header class="section-definition__header"&gt;
+        &lt;p class="section-definition__eyebrow"&gt;Ready to begin?&lt;/p&gt;
+        &lt;h2 class="section-definition__title"&gt;Let's build something meaningful&lt;/h2&gt;
+        &lt;p class="section-definition__description"&gt;
+          Tell us what you are working toward and we'll help you plan the next step.
+        &lt;/p&gt;
+      &lt;/header&gt;
+      &lt;div class="section-definition__footer"&gt;
+        &lt;a class="demo-button" href="/contact"&gt;Contact us&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+<div class="note warning">The CTA combines an image-backed section with a dark panel to help preserve contrast. Verify the actual image, overlay, and panel opacity in your site; visual contrast can change with different images.</div>
+</section>
+
+<section class="guide-section" id="accessibility">
+<h2>10. Accessibility checklist</h2>
+<ul>
+<li>Use semantic headings in order and give each meaningful section a clear heading.</li>
+<li>Keep body text readable; do not depend on blur or translucency to create contrast.</li>
+<li>Use anchors for navigation and buttons for actions. A CSS hover class alone does not make a card interactive.</li>
+<li>Keep a visible keyboard focus indicator for links, buttons, and form controls.</li>
+<li>Respect reduced-motion preferences; the provided responsive stylesheet already disables panel transitions and hover movement.</li>
+<li>Decorative icons should use <code class="inline">aria-hidden="true"</code>; meaningful icons need an accessible text alternative.</li>
+<li>Test the layout at narrow viewport widths and with browser zoom increased.</li>
+</ul>
+</section>
+
+<section class="guide-section" id="troubleshooting">
+<h2>11. Troubleshooting and implementation notes</h2>
+<h3>Styles do not appear</h3>
+<ul><li>Check that the file paths in the <code class="inline">&lt;link&gt;</code> tags match your project.</li><li>Load <code class="inline">global.css</code> before component stylesheets.</li><li>Hard-refresh the browser after editing CSS.</li></ul>
+<h3>Glass effect is not visible</h3>
+<ul><li><code class="inline">backdrop-filter</code> blurs content behind the panel, not the panel's own text.</li><li>Place the panel over a background with visible detail; a plain background may make blur subtle.</li><li>Check that the tint is translucent rather than fully opaque and that the browser supports backdrop filtering.</li></ul>
+<h3>Section content is unexpectedly narrow</h3>
+<p>The section's inner width is controlled by <code class="inline">--section-max-width</code>. Add <code class="inline">section-definition--wide</code> or <code class="inline">section-definition--full</code> to the section if the layout needs more room.</p>
+<h3>Conflicting modifiers</h3>
+<p>Choose one background modifier and one width modifier per component where possible. If you apply competing variants, later or more-specific CSS rules may determine the result. For a unique design, add a named project modifier instead of relying on accidental cascade order.</p>
+<h3>Potential CSS refinement</h3>
+<p>Your supplied <code class="inline">section-definition--glass-on-image</code> sets the section's background image and text color but does not explicitly set a translucent background or backdrop filter. This is intentional if the goal is a full image-backed section. If you want a glass surface over the image, combine it with <code class="inline">section-definition--glass</code> and test the resulting background layering.</p>
+<div class="note"><strong>Good default workflow:</strong> build the section structure first, add one background modifier, tune width and spacing, then add panels and only the modifiers needed for the intended visual result.</div>
+</section>
+</main>
+</div>
+<footer>Global CSS System · Self-contained usage guide · Copy buttons work without external libraries</footer>
+<script>
+(function(){
+  function copyText(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(resolve,reject){
+      var area=document.createElement('textarea');
+      area.value=text; area.setAttribute('readonly','');
+      area.style.position='fixed'; area.style.opacity='0';
+      document.body.appendChild(area); area.select();
+      try{var ok=document.execCommand('copy');document.body.removeChild(area);ok?resolve():reject();}
+      catch(e){document.body.removeChild(area);reject(e);}
+    });
+  }
+  document.querySelectorAll('button.copy').forEach(function(button){
+    button.addEventListener('click',function(){
+      var target=document.getElementById(button.getAttribute('data-copy'));
+      if(!target)return;
+      var original=button.textContent;
+      copyText(target.textContent).then(function(){
+        button.textContent='Copied!';
+        window.setTimeout(function(){button.textContent=original;},1400);
+      }).catch(function(){
+        button.textContent='Select code manually';
+        window.setTimeout(function(){button.textContent=original;},1800);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
