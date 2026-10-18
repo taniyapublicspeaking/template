@@ -152,6 +152,29 @@
         var(--orange)
     );
 
+   /* -----------------------------------------------------
+   GLASS SECTION OVER BACKGROUND IMAGE
+   -------------------------------------------------------- */
+
+   /* Overlay colours */
+    --glass-image-overlay-start: rgba(15, 23, 42, 0.40);
+    --glass-image-overlay-end: rgba(15, 23, 42, 0.55);
+
+   /* Overlay direction */
+    --glass-image-overlay-angle: 180deg;
+
+  /* Background image positioning */
+    --glass-image-size: cover;
+    --glass-image-position: center;
+    --glass-image-repeat: no-repeat;
+
+  /* Combined overlay gradient */
+    --glass-image-overlay: linear-gradient(
+    var(--glass-image-overlay-angle),
+    var(--glass-image-overlay-start),
+    var(--glass-image-overlay-end)
+);
+
 
     /* -----------------------------------------------------
        GLASS PANEL DEFAULTS
