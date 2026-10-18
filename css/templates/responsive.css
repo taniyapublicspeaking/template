@@ -1,0 +1,133 @@
+/* =========================================================
+   RESPONSIVE LAYOUT AND ACCESSIBILITY
+   File: responsive.css
+
+This file contains the responsive rules and accessibility adjustments.
+
+The base design already uses clamp() for most font sizes and spacing. That means many elements adjust automatically without additional media queries.
+
+We only need media queries where the layout or alignment should change.
+
+
+========================================================= */
+
+
+/* =========================================================
+   1. TABLET AND SMALLER SCREENS
+========================================================= */
+
+@media (max-width: 768px) {
+
+    :root {
+        --text-width-sm: 100%;
+        --text-width-md: 100%;
+        --text-width-lg: 100%;
+
+        --container-gutter: 32px;
+    }
+
+}
+
+
+/* =========================================================
+   2. MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+
+    :root {
+        --container-gutter: 24px;
+
+        --section-header-gap: 2rem;
+
+        --section-padding-block: clamp(2.5rem, 8vw, 4rem);
+        --section-padding-inline: 1rem;
+    }
+
+
+    /* Section header */
+
+    .section-definition__header {
+        margin-bottom: 2rem;
+    }
+
+
+    /* Section title */
+
+    .section-definition__title {
+        font-size: clamp(2rem, 8vw, 2.75rem);
+    }
+
+
+    /* Right-aligned sections become left-aligned */
+
+    .section-definition--right .section-definition__header {
+        margin-inline: 0;
+        text-align: left;
+    }
+
+    .section-definition--right .section-definition__description {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+
+    /* Prevent pill panels from becoming excessively tall */
+
+    .glass-panel--pill {
+        padding: 1rem;
+    }
+
+}
+
+
+/* =========================================================
+   3. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .glass-panel {
+        transition: none;
+    }
+
+    .glass-panel--interactive:hover {
+        transform: none;
+    }
+
+    .section-definition,
+    .section-definition *,
+    .glass-panel,
+    .glass-panel * {
+        animation: none;
+        scroll-behavior: auto;
+    }
+
+}
+
+
+/* =========================================================
+   4. TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    .glass-panel--interactive:hover {
+        transform: none;
+    }
+
+}
+
+
+/* =========================================================
+   5. HIGH CONTRAST FOCUS
+========================================================= */
+
+.glass-panel--interactive:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 4px;
+}
