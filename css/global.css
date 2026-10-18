@@ -1,72 +1,256 @@
-/* ========================================================
-   GLOBAL VARIABLES & DESIGN SYSTEM
+/* =========================================================
+   1. GLOBAL DESIGN SYSTEM
+   File: global.css
+
+Optimized Global CSS Design System
+
+I recommend organizing your stylesheet into four separate CSS files, with a single shared :root design system.
+
+This structure keeps global definitions centralized, eliminates repeated declarations, and allows you to customize sections and glass panels without editing the component styles themselves.
+
+1. Recommended file structure
+css/
+├── global.css       /* 1. Global variables, reset, typography, utilities */
+├── sections.css     /* 2. Section component and its modifiers */
+├── panels.css       /* 3. Glass panel component and its modifiers */
+└── responsive.css   /* 4. Responsive layouts and accessibility */
+
+
+What has been optimized?
+Centralized variables: Colors, fonts, spacing, glass effects, borders, shadows, and layout widths are defined in :root.
+No repeated color definitions: Existing duplicate variables such as --text are consolidated.
+Parameterized components: Sections and panels use shared variables that you can override globally.
+Independent modifiers: Background, spacing, alignment, blur, shape, and shadow modifiers remain separate so you can combine them.
+Consistent typography: Headings, paragraphs, section titles, and panel titles use the global typography system.
+Centralized responsive rules: Media queries and reduced-motion accessibility rules are placed in one file.
+Corrected glass effects: Clear glass, light glass, and dark glass use separate configurable opacity and blur values.
+Preserved functionality: The section backgrounds, image background, layout modifiers, glass panels, and content helpers are retained.
+
 ========================================================= */
 
 :root {
 
-    /* Typography */
+    /* -----------------------------------------------------
+       TYPOGRAPHY
+    ----------------------------------------------------- */
+
     --font-heading: 'Caveat', cursive;
     --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
 
-    /* Responsive Font Sizes */
     --text-xs: 0.8rem;
     --text-sm: 0.9rem;
     --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
     --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
 
-    /* Line Heights */
     --text-leading: 1.75;
     --text-leading-tight: 1.5;
+    --heading-leading: 1.12;
+    --heading-spacing: -0.035em;
 
-    /* Text Widths */
     --text-width-sm: 45ch;
     --text-width-md: 60ch;
     --text-width-lg: 70ch;
 
-    /* Brand Colours */
+
+    /* -----------------------------------------------------
+       BRAND COLOURS
+    ----------------------------------------------------- */
+
     --navy: #172554;
     --navy-dark: #0f172a;
+
     --blue: #2563eb;
     --blue-light: #dbeafe;
     --sky: #eff6ff;
+
     --orange: #f97316;
     --orange-light: #ffedd5;
+
     --yellow: #facc15;
+
     --white: #ffffff;
     --off-white: #f8fafc;
+
     --text: #172033;
     --muted: #64748b;
     --border: #e2e8f0;
-   
-    /* Background Colours */
-    --bg-page: #f8fafc;
-    --bg-section: #ffffff;
-    --bg-section-alt: #eff6ff;
-    --bg-section-dark: #172554;
-    --bg-card: #ffffff;
 
-    /* Text Colours */
-    --text: #172033;
-    --text-muted: #64748b;
-    --text-heading: #172554;
-    --text-on-dark: #ffffff;
+
+    /* -----------------------------------------------------
+       PAGE AND COMPONENT BACKGROUNDS
+    ----------------------------------------------------- */
+
+    --bg-page: var(--off-white);
+    --bg-section: var(--white);
+    --bg-section-alt: var(--sky);
+    --bg-section-dark: var(--navy);
+    --bg-card: var(--white);
+
+    --text-heading: var(--navy);
+    --text-on-dark: var(--white);
     --text-muted-on-dark: #cbd5e1;
-   
 
-    /* Corners */
+
+    /* -----------------------------------------------------
+       LAYOUT
+    ----------------------------------------------------- */
+
+    --container: 1160px;
+    --container-narrow: 760px;
+    --container-wide: 1400px;
+
+    --page-gutter: clamp(1rem, 4vw, 2rem);
+    --container-gutter: 40px;
+
+    --section-padding-block: clamp(3rem, 7vw, 6rem);
+    --section-padding-inline: var(--page-gutter);
+
+
+    /* -----------------------------------------------------
+       SPACING SCALE
+    ----------------------------------------------------- */
+
+    --space-1: 0.5rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 2.5rem;
+    --space-7: 3rem;
+
+    --section-header-gap: clamp(2rem, 4vw, 3.5rem);
+
+
+    /* -----------------------------------------------------
+       CORNERS AND BORDERS
+    ----------------------------------------------------- */
+
     --radius: 24px;
     --radius-small: 14px;
+    --radius-pill: 999px;
 
-    /* Shadows */
+    --border-width: 1px;
+    --border-style: var(--border-width) solid var(--border);
+
+
+    /* -----------------------------------------------------
+       SHADOWS
+    ----------------------------------------------------- */
+
     --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
 
-    /* Layout */
-    --container: 1160px;
+    --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-strong: 0 24px 60px rgba(15, 23, 42, 0.16);
+
+
+    /* -----------------------------------------------------
+       GLOBAL PAGE BACKGROUND IMAGE
+       Adjust the path to match your project.
+    ----------------------------------------------------- */
+
+    --background-image: url("../images/background.jpg");
+
+    --page-background-size: cover;
+    --page-background-position: center;
+    --page-background-repeat: no-repeat;
+    --page-background-attachment: fixed;
+
+
+    /* -----------------------------------------------------
+       SECTION BACKGROUNDS
+    ----------------------------------------------------- */
+
+    --section-gradient: linear-gradient(
+        135deg,
+        var(--sky),
+        var(--blue-light),
+        var(--white)
+    );
+
+    --section-gradient-background2: radial-gradient(
+        circle at 15% 20%,
+        rgba(37, 99, 235, 0.25),
+        transparent 40%
+    ), linear-gradient(
+        135deg,
+        var(--navy-dark),
+        var(--orange)
+    );
+
+
+    /* -----------------------------------------------------
+       GLASS PANEL DEFAULTS
+    ----------------------------------------------------- */
+
+    --glass-background: rgba(255, 255, 255, 0.65);
+    --glass-opacity: 0.65;
+
+    --glass-blur: 16px;
+
+    --glass-border: rgba(255, 255, 255, 0.55);
+
+    --glass-shadow: var(--shadow);
+
+    --glass-radius: var(--radius-small);
+    --glass-padding: 1.5rem;
+
+
+    /* -----------------------------------------------------
+       GLASS PANEL COLOUR PRESETS
+    ----------------------------------------------------- */
+
+    --glass-light-background: rgba(255, 255, 255, 0.65);
+    --glass-light-border: rgba(255, 255, 255, 0.65);
+
+    --glass-dark-background: rgba(15, 23, 42, 0.72);
+    --glass-dark-border: rgba(255, 255, 255, 0.15);
+
+    --glass-blue-background: rgba(37, 99, 235, 0.12);
+    --glass-blue-border: rgba(37, 99, 235, 0.25);
+
+    --glass-navy-background: rgba(23, 37, 84, 0.82);
+    --glass-navy-border: rgba(255, 255, 255, 0.18);
+
+    --glass-orange-background: rgba(249, 115, 22, 0.12);
+    --glass-orange-border: rgba(249, 115, 22, 0.25);
+
+
+    /* -----------------------------------------------------
+       GLASS BLUR PRESETS
+    ----------------------------------------------------- */
+
+    --glass-blur-sm: 6px;
+    --glass-blur-md: 16px;
+    --glass-blur-lg: 28px;
+
+
+    /* -----------------------------------------------------
+       GLASS SECTION PRESETS
+    ----------------------------------------------------- */
+
+    --glass-section-background: rgba(255, 255, 255, 0.65);
+    --glass-section-blur: 16px;
+    --glass-section-border: rgba(255, 255, 255, 0.4);
+    --glass-section-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+
+
+    /* -----------------------------------------------------
+       TRANSITIONS
+    ----------------------------------------------------- */
+
+    --transition-duration: 0.25s;
+    --transition-easing: ease;
+
+    --transition-standard:
+        background-color var(--transition-duration) var(--transition-easing),
+        border-color var(--transition-duration) var(--transition-easing),
+        box-shadow var(--transition-duration) var(--transition-easing),
+        transform var(--transition-duration) var(--transition-easing);
 }
 
 
 /* =========================================================
-   RESET & BASE STYLES
+   2. RESET
 ========================================================= */
 
 *,
@@ -75,34 +259,28 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    min-height: 100vh;
     margin: 0;
+
     font-family: var(--font-body);
-    color: var(--text);
+    font-size: var(--text-base);
     line-height: var(--text-leading);
+
+    color: var(--text);
+    background-color: var(--bg-page);
+
+    background-image: var(--background-image);
+    background-size: var(--page-background-size);
+    background-position: var(--page-background-position);
+    background-repeat: var(--page-background-repeat);
+    background-attachment: var(--page-background-attachment);
+
     -webkit-font-smoothing: antialiased;
-
-
-
-    background-image: url("../images/background.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-
-
-   /*
-
-   background:
-        linear-gradient(
-            rgba(15, 23, 42, 0.45),
-            rgba(15, 23, 42, 0.45)
-        ),
-        url("images/background.jpg") center / cover no-repeat fixed;
-   
-*/
-   
 }
 
 button,
@@ -136,17 +314,19 @@ a {
     -webkit-tap-highlight-color: transparent;
 }
 
+
 /* =========================================================
-   HEADINGS
+   3. GLOBAL TYPOGRAPHY
 ========================================================= */
 
 h1,
 h2,
 h3 {
     margin-top: 0;
+
     font-family: var(--font-heading);
-    line-height: 1.12;
-    letter-spacing: -0.035em;
+    line-height: var(--heading-leading);
+    letter-spacing: var(--heading-spacing);
 }
 
 h1 {
@@ -161,22 +341,27 @@ h3 {
     font-size: 1.4rem;
 }
 
-
-/* =========================================================
-   BODY TYPOGRAPHY
-========================================================= */
-
 p {
     max-width: var(--text-width-md);
     margin-top: 0;
+
     color: var(--muted);
     font-size: var(--text-base);
     line-height: var(--text-leading);
 }
 
+small {
+    font-size: var(--text-sm);
+    line-height: var(--text-leading-tight);
+}
+
+.accent-text {
+    font-family: var(--font-heading);
+}
+
 
 /* =========================================================
-   TEXT BLOCKS
+   4. TEXT WIDTH UTILITIES
 ========================================================= */
 
 .text-block {
@@ -194,7 +379,7 @@ p {
 
 
 /* =========================================================
-   TEXT SIZE UTILITIES
+   5. TEXT SIZE UTILITIES
 ========================================================= */
 
 .text-xs {
@@ -215,39 +400,14 @@ p {
 
 
 /* =========================================================
-   ACCENT & COMPACT TEXT
-========================================================= */
-
-.accent-text {
-    font-family: var(--font-heading);
-}
-
-small {
-    font-size: var(--text-sm);
-    line-height: var(--text-leading-tight);
-}
-
-
-/* =========================================================
-   CONTAINER
+   6. GLOBAL CONTAINER
 ========================================================= */
 
 .container {
-    width: min(calc(100% - 40px), var(--container));
+    width: min(
+        calc(100% - var(--container-gutter)),
+        var(--container)
+    );
+
     margin-inline: auto;
-}
-
-
-/* =========================================================
-   RESPONSIVE ADJUSTMENTS
-========================================================= */
-
-@media (max-width: 768px) {
-
-    :root {
-        --text-width-sm: 100%;
-        --text-width-md: 100%;
-        --text-width-lg: 100%;
-    }
-
 }
