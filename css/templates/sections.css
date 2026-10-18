@@ -1,0 +1,336 @@
+/* =========================================================
+   SECTION DEFINITION
+   File: sections.css
+========================================================= */
+
+
+/* =========================================================
+   1. BASE SECTION
+========================================================= */
+
+.section-definition {
+    /* Component-specific parameters */
+
+    --section-bg: var(--bg-section);
+    --section-text: var(--text);
+
+    --section-pad-block: var(--section-padding-block);
+    --section-pad-inline: var(--section-padding-inline);
+
+    --section-max-width: var(--container);
+
+    --section-radius: 0;
+    --section-shadow: none;
+    --section-border: none;
+
+    /* Layout */
+
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    min-width: 0;
+
+    padding-block: var(--section-pad-block);
+    padding-inline: var(--section-pad-inline);
+
+    /* Appearance */
+
+    background: var(--section-bg);
+    color: var(--section-text);
+
+    font-family: var(--font-body);
+
+    border: var(--section-border);
+    border-radius: var(--section-radius);
+    box-shadow: var(--section-shadow);
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   2. SECTION INNER CONTAINER
+========================================================= */
+
+.section-definition__container {
+    width: 100%;
+    max-width: var(--section-max-width);
+
+    min-width: 0;
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   3. SECTION HEADER
+========================================================= */
+
+.section-definition__header {
+    max-width: var(--text-width-lg);
+
+    margin: 0 auto var(--section-header-gap);
+
+    text-align: center;
+}
+
+.section-definition__eyebrow {
+    display: inline-block;
+
+    margin: 0 0 var(--space-2);
+
+    color: var(--blue);
+
+    font-size: var(--text-sm);
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.section-definition__title {
+    margin: 0 0 var(--space-3);
+
+    color: var(--text-heading);
+
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 4.5vw, 3.7rem);
+
+    font-weight: 700;
+    line-height: var(--heading-leading);
+    letter-spacing: var(--heading-spacing);
+}
+
+.section-definition__description {
+    max-width: var(--text-width-md);
+
+    margin: 0 auto;
+
+    color: var(--muted);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+}
+
+
+/* =========================================================
+   4. SECTION CONTENT
+========================================================= */
+
+.section-definition__content {
+    width: 100%;
+    min-width: 0;
+}
+
+.section-definition__content > :last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   5. SECTION FOOTER
+========================================================= */
+
+.section-definition__footer {
+    margin-top: var(--space-6);
+    text-align: center;
+}
+
+
+/* =========================================================
+   6. BACKGROUND MODIFIERS
+========================================================= */
+
+.section-definition--white {
+    --section-bg: var(--white);
+}
+
+.section-definition--light {
+    --section-bg: var(--off-white);
+}
+
+.section-definition--blue {
+    --section-bg: var(--sky);
+}
+
+.section-definition--navy {
+    --section-bg: var(--navy-dark);
+    --section-text: var(--white);
+}
+
+.section-definition--gradient {
+    --section-bg: var(--section-gradient);
+}
+
+.section-definition--gradient-background2 {
+    --section-bg: var(--section-gradient-background2);
+}
+
+
+/* =========================================================
+   7. DARK SECTION TYPOGRAPHY
+========================================================= */
+
+.section-definition--navy .section-definition__title {
+    color: var(--text-on-dark);
+}
+
+.section-definition--navy .section-definition__description {
+    color: var(--text-muted-on-dark);
+}
+
+.section-definition--navy .section-definition__eyebrow {
+    color: var(--yellow);
+}
+
+
+/* =========================================================
+   8. SPACING MODIFIERS
+========================================================= */
+
+.section-definition--compact {
+    --section-pad-block: clamp(2rem, 4vw, 3rem);
+}
+
+.section-definition--spacious {
+    --section-pad-block: clamp(5rem, 10vw, 9rem);
+}
+
+.section-definition--no-padding {
+    --section-pad-block: 0;
+}
+
+.section-definition--no-padding-top {
+    padding-top: 0;
+}
+
+.section-definition--no-padding-bottom {
+    padding-bottom: 0;
+}
+
+
+/* =========================================================
+   9. HEADER ALIGNMENT MODIFIERS
+========================================================= */
+
+.section-definition--left .section-definition__header {
+    margin-inline: 0;
+    text-align: left;
+}
+
+.section-definition--left .section-definition__description {
+    margin-inline: 0;
+}
+
+.section-definition--right .section-definition__header {
+    margin-left: auto;
+    margin-right: 0;
+
+    text-align: right;
+}
+
+.section-definition--right .section-definition__description {
+    margin-right: 0;
+}
+
+
+/* =========================================================
+   10. CONTENT WIDTH MODIFIERS
+========================================================= */
+
+.section-definition--narrow {
+    --section-max-width: var(--container-narrow);
+}
+
+.section-definition--wide {
+    --section-max-width: var(--container-wide);
+}
+
+.section-definition--full {
+    --section-max-width: none;
+}
+
+
+/* =========================================================
+   11. BORDER MODIFIERS
+========================================================= */
+
+.section-definition--border-top {
+    border-top: var(--border-style);
+}
+
+.section-definition--border-bottom {
+    border-bottom: var(--border-style);
+}
+
+
+/* =========================================================
+   12. SHAPE AND SHADOW MODIFIERS
+========================================================= */
+
+.section-definition--rounded {
+    --section-radius: var(--radius);
+
+    overflow: hidden;
+}
+
+.section-definition--shadow {
+    --section-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   13. GLASS SECTION
+========================================================= */
+
+.section-definition--glass {
+    --section-bg: var(--glass-section-background);
+    --section-shadow: var(--glass-section-shadow);
+
+    border: var(--border-width) solid var(--glass-section-border);
+    border-radius: var(--radius);
+
+    -webkit-backdrop-filter: blur(var(--glass-section-blur));
+    backdrop-filter: blur(var(--glass-section-blur));
+}
+
+
+/* =========================================================
+   14. GLASS SECTION OVER BACKGROUND IMAGE
+========================================================= */
+
+.section-definition--glass-on-image {
+    --section-bg: linear-gradient(
+        rgba(15, 23, 42, 0.40),
+        rgba(15, 23, 42, 0.55)
+    );
+
+    --section-text: var(--white);
+
+    background-image:
+        linear-gradient(
+            rgba(15, 23, 42, 0.40),
+            rgba(15, 23, 42, 0.55)
+        ),
+        var(--background-image);
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   15. GLASS SECTION TYPOGRAPHY
+========================================================= */
+
+.section-definition--glass-on-image .section-definition__title {
+    color: var(--white);
+}
+
+.section-definition--glass-on-image .section-definition__description {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.section-definition--glass-on-image .section-definition__eyebrow {
+    color: var(--yellow);
+}
