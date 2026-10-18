@@ -1,0 +1,438 @@
+/* ========================================================
+   GLOBAL VARIABLES & DESIGN SYSTEM
+
+
+1. Optimized global.css
+
+This version maintains your existing design direction while reducing repetition and improving 
+maintainability.
+
+
+4. Recommended design-system architecture
+
+For your website, I'd organize the CSS into the following layers:
+
+Layer	Purpose	Examples
+1. Design tokens	Central definitions	:root, colors, spacing, typography
+2. Base styles	Global defaults	body, headings, images
+3. Layout utilities	Reusable layout helpers	.container, .text-width-md
+4. Base components	Structural building blocks	.section-definition, .glass-panel
+5. Modifiers	Component variations	.glass-panel--clear, .glass-panel--dark
+6. Responsive rules	Device-specific adjustments	@media queries
+7. Accessibility	User preferences	Reduced motion, focus visibility
+
+Two important implementation notes
+CSS custom properties are not automatically inherited by unrelated components. For example, --glass-bg is a glass-specific token, so keep its default in :root if you want it to be a globally available design token, or define it on .glass-panel if it is intended to be component-specific. In the supplied version, the glass tokens are in :root so modifiers can override them.
+A transparent glass background does not guarantee readability. The --glass-bg opacity and --glass-blur values control how much of the background remains visible. A lower opacity and lower blur reveal more of the underlying image, but text contrast may decrease.
+
+
+<div class="glass-panel glass-panel--dark glass-panel--compact glass-panel--rounded">
+    <h3>Compact Dark Glass</h3>
+    <p>A compact panel with dark glass and larger corners.</p>
+</div>
+
+<div class="glass-panel glass-panel--dark">
+    <h3>Dark Glass</h3>
+    <p>A dark translucent surface with light text.</p>
+</div>
+
+
+<div class="glass-panel glass-panel--clear">
+    <h3>Clear Glass</h3>
+    <p>More of the background remains visible.</p>
+</div>
+
+<section
+    class="section-definition"
+    style="--section-bg: var(--bg-section-alt);"
+>
+    <div class="container">
+        <h2>Alternative Section</h2>
+        <p>A section with a light blue background.</p>
+    </div>
+</section>
+
+<section class="section-definition">
+    <div class="container">
+        <h2>Standard Section</h2>
+        <p class="text-width-md">
+            A responsive section using your global design system.
+        </p>
+    </div>
+</section>
+
+
+======================================================== */
+
+:root {
+
+    /* ====================================================
+       TYPOGRAPHY
+    ==================================================== */
+
+    --font-heading: 'Caveat', cursive;
+    --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+    /* Responsive Font Sizes */
+    --text-xs: 0.8rem;
+    --text-sm: 0.9rem;
+    --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+
+    /* Line Heights */
+    --text-leading: 1.75;
+    --text-leading-tight: 1.5;
+
+    /* Reading Widths */
+    --text-width-sm: 45ch;
+    --text-width-md: 60ch;
+    --text-width-lg: 70ch;
+
+
+    /* ====================================================
+       BRAND COLOURS
+    ==================================================== */
+
+    --navy: #172554;
+    --navy-dark: #0f172a;
+
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --sky: #eff6ff;
+
+    --orange: #f97316;
+    --orange-light: #ffedd5;
+
+    --yellow: #facc15;
+
+
+    /* ====================================================
+       NEUTRAL COLOURS
+    ==================================================== */
+
+    --white: #ffffff;
+    --off-white: #f8fafc;
+
+    --text: #172033;
+    --muted: #64748b;
+    --border: #e2e8f0;
+
+    /* Text Colour Aliases */
+    --text-heading: var(--navy);
+    --text-muted: var(--muted);
+    --text-on-dark: var(--white);
+    --text-muted-on-dark: #cbd5e1;
+
+
+    /* ====================================================
+       BACKGROUNDS
+    ==================================================== */
+
+    --bg-page: var(--off-white);
+    --bg-section: var(--white);
+    --bg-section-alt: var(--sky);
+    --bg-section-dark: var(--navy);
+    --bg-card: var(--white);
+
+
+    /* ====================================================
+       SPACING
+    ==================================================== */
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+
+    /* Responsive Section Spacing */
+    --section-space-y: clamp(3rem, 7vw, 6rem);
+    --section-space-x: clamp(1rem, 4vw, 2rem);
+
+
+    /* ====================================================
+       BORDERS & CORNERS
+    ==================================================== */
+
+    --border-width: 1px;
+    --border-style: solid;
+
+    --radius-small: 14px;
+    --radius: 24px;
+    --radius-large: 32px;
+    --radius-pill: 999px;
+
+
+    /* ====================================================
+       SHADOWS
+    ==================================================== */
+
+    --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    --shadow-strong: 0 24px 60px rgba(15, 23, 42, 0.16);
+
+
+    /* ====================================================
+       GLASS EFFECT
+    ==================================================== */
+
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-blur: 16px;
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --glass-opacity: 0.65;
+
+
+    /* ====================================================
+       MOTION
+    ==================================================== */
+
+    --transition-speed: 0.25s;
+    --transition-easing: ease;
+
+    --transition: var(--transition-speed) var(--transition-easing);
+
+
+    /* ====================================================
+       LAYOUT
+    ==================================================== */
+
+    --container: 1160px;
+
+}
+
+
+/* ========================================================
+   GLOBAL BASE STYLES
+======================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-leading);
+    color: var(--text);
+    background: var(--bg-page);
+}
+
+img,
+video,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    color: var(--text-heading);
+}
+
+h1 {
+    font-size: clamp(3rem, 6vw, 5.6rem);
+}
+
+h2 {
+    font-size: clamp(2.25rem, 4vw, 3.7rem);
+}
+
+h3 {
+    font-size: 1.4rem;
+}
+
+p {
+    color: var(--text-muted);
+}
+
+
+/* ========================================================
+   SHARED LAYOUT UTILITIES
+======================================================== */
+
+.container {
+    width: min(100% - 2rem, var(--container));
+    margin-inline: auto;
+}
+
+.text-width-sm {
+    max-width: var(--text-width-sm);
+}
+
+.text-width-md {
+    max-width: var(--text-width-md);
+}
+
+.text-width-lg {
+    max-width: var(--text-width-lg);
+}
+
+
+/* ========================================================
+   SECTION DEFINITION — BASE COMPONENT
+======================================================== */
+
+.section-definition {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    min-width: 0;
+
+    padding-block: var(--section-space-y);
+    padding-inline: var(--section-space-x);
+
+    background: var(--section-bg, var(--bg-section));
+    color: var(--text, #172033);
+
+    font-family: var(--font-body);
+
+    overflow-wrap: break-word;
+}
+
+
+/* ========================================================
+   GLASS PANEL — BASE COMPONENT
+======================================================== */
+
+.glass-panel {
+    /* Layout */
+    position: relative;
+    min-width: 0;
+    padding: var(--glass-padding, var(--space-5));
+
+    /* Glass Appearance */
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+
+    /* Border & Shape */
+    border: var(--border-width) var(--border-style) var(--glass-border);
+    border-radius: var(--glass-radius, var(--radius-small));
+
+    /* Depth */
+    box-shadow: var(--glass-shadow, var(--shadow));
+
+    /* Text */
+    color: var(--glass-text, var(--text));
+
+    /* Motion */
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition);
+}
+
+
+/* ========================================================
+   GLASS PANEL — MODIFIERS
+======================================================== */
+
+/* Clear Glass */
+
+.glass-panel--clear {
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-blur: 2px;
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Dark Glass */
+
+.glass-panel--dark {
+    --glass-bg: rgba(15, 23, 42, 0.65);
+    --glass-blur: 16px;
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-text: var(--white);
+}
+
+
+/* Strong Glass */
+
+.glass-panel--strong {
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-blur: 24px;
+    --glass-border: rgba(255, 255, 255, 0.7);
+}
+
+
+/* No Blur */
+
+.glass-panel--no-blur {
+    --glass-blur: 0px;
+}
+
+
+/* No Shadow */
+
+.glass-panel--flat {
+    --glass-shadow: none;
+}
+
+
+/* Compact Padding */
+
+.glass-panel--compact {
+    --glass-padding: var(--space-3);
+}
+
+
+/* Large Padding */
+
+.glass-panel--spacious {
+    --glass-padding: var(--space-6);
+}
+
+
+/* Large Corners */
+
+.glass-panel--rounded {
+    --glass-radius: var(--radius);
+}
+
+
+/* ========================================================
+   ACCESSIBILITY
+======================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+}
