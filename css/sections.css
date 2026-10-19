@@ -452,3 +452,60 @@
     --sphere-bottom: -100px;
 }
 
+
+
+/* =========================================================
+   GLOBAL FLOATING SPHERE
+========================================================= */
+
+.floating-sphere {
+    --sphere-size: 100px;
+    --sphere-color: 110, 150, 255;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: var(--sphere-size);
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+    z-index: 0;
+
+    opacity: 0.75;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(var(--sphere-color), 0.8) 15%,
+            rgba(var(--sphere-color), 0.35) 45%,
+            rgba(var(--sphere-color), 0.08) 70%,
+            transparent 100%
+        );
+
+    box-shadow:
+        inset -10px -12px 25px rgba(0, 0, 0, 0.15),
+        0 0 40px rgba(var(--sphere-color), 0.2);
+
+    will-change: transform;
+
+    transform: translate3d(-200px, -200px, 0);
+}
+
+/* Keep content above the decorative sphere */
+
+body > *:not(.floating-sphere) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .floating-sphere {
+        display: none;
+    }
+}
