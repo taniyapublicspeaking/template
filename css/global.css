@@ -123,7 +123,13 @@
        Adjust the path to match your project.
     ----------------------------------------------------- */
 
-    --background-image: url("../images/background.jpg");
+    --background-image: url("../images/bk.jpeg");
+    --background-image1: url("../images/bk1.webp");
+    --background-image2: url("../images/bk2.jpg");
+    --background-image3: url("../images/bk3.jpeg");
+    --background-image4: url("../images/bk4.webp");
+   
+   
 
     --page-background-size: cover;
     --page-background-position: center;
