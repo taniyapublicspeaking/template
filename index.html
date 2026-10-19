@@ -44,7 +44,8 @@
 
 <body id="top">
 
-    <div class="floating-sphere" aria-hidden="true"></div>
+    <!-- Global aquarium bubbles -->
+    <div class="aquarium-bubbles" aria-hidden="true"></div>
 
     <main>
 
@@ -87,129 +88,361 @@
 
 <script>
 (() => {
-    const sphere = document.querySelector(".floating-sphere");
+    "use strict";
 
-    if (!sphere) return;
+    const layer = document.querySelector(".aquarium-bubbles");
 
-    const reducedMotion = window.matchMedia(
+    if (!layer) return;
+
+    const motionPreference = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
     );
 
-    if (reducedMotion.matches) return;
+    const CONFIG = {
+        count: 14,
 
-    let animationFrame;
-    let lastTime = 0;
+        // A complete journey through the document.
+        minDuration: 45,
+        maxDuration: 85,
 
-    const state = {
-        x: window.innerWidth * 0.5,
-        y: window.innerHeight + 120,
+        // Horizontal drift strength.
+        drift: 65,
 
-        targetX: window.innerWidth * 0.5,
-        targetY: 0,
-
-        speed: 45,
-        directionChange: 0
+        // Random path changes.
+        waypointSpacing: 0.16
     };
 
-    const random = (min, max) =>
-        Math.random() * (max - min) + min;
+    const bubbles = [];
 
-    function chooseTarget() {
-        state.targetX = random(
-            0,
-            Math.max(0, window.innerWidth - 100)
+    let documentHeight = 0;
+    let viewportWidth = window.innerWidth;
+    let animationFrame = 0;
+    let lastTime = 0;
+    let running = false;
+
+    const random = (min, max) =>
+        min + Math.random() * (max - min);
+
+    const clamp = (value, min, max) =>
+        Math.max(min, Math.min(max, value));
+
+    /* =====================================================
+       MEASURE THE FULL DOCUMENT
+    ===================================================== */
+
+    function measureDocument() {
+        documentHeight = Math.max(
+            document.documentElement.scrollHeight,
+            document.body.scrollHeight,
+            window.innerHeight
         );
 
-        state.targetY = state.y - random(120, 280);
-
-        state.speed = random(30, 65);
-
-        state.directionChange = random(1.5, 4);
+        viewportWidth = window.innerWidth;
     }
 
-    function animate(time) {
-        if (!lastTime) lastTime = time;
+    /* =====================================================
+       CREATE A RANDOM HORIZONTAL PATH
+    ===================================================== */
 
-        const delta = Math.min(
-            (time - lastTime) / 1000,
-            0.05
+    function createPath() {
+        const pointCount = Math.ceil(
+            1 / CONFIG.waypointSpacing
         );
 
-        lastTime = time;
+        const points = [];
 
-        state.directionChange -= delta;
-
-        if (state.directionChange <= 0) {
-            chooseTarget();
+        for (let i = 0; i <= pointCount; i++) {
+            points.push({
+                t: i / pointCount,
+                x: Math.random()
+            });
         }
 
-        const dx = state.targetX - state.x;
-        const dy = state.targetY - state.y;
+        return points;
+    }
 
-        const distance = Math.hypot(dx, dy);
+    /* =====================================================
+       INTERPOLATE SMOOTHLY BETWEEN WAYPOINTS
+    ===================================================== */
 
-        if (distance > 2) {
-            const step = Math.min(
-                state.speed * delta,
-                distance
-            );
+    function pathPosition(points, progress) {
+        const segmentCount = points.length - 1;
 
-            state.x += (dx / distance) * step;
-            state.y += (dy / distance) * step;
-        }
+        const position = clamp(progress, 0, 1) *
+            segmentCount;
 
-        sphere.style.transform =
-            `translate3d(${state.x}px, ${state.y}px, 0)`;
+        const index = Math.min(
+            Math.floor(position),
+            segmentCount - 1
+        );
+
+        const t = position - index;
+
+        // Smoothstep easing.
+        const eased = t * t * (3 - 2 * t);
+
+        const a = points[index].x;
+        const b = points[index + 1].x;
+
+        return a + (b - a) * eased;
+    }
+
+    /* =====================================================
+       CREATE ONE BUBBLE
+    ===================================================== */
+
+    function createBubble(index) {
+        const element = document.createElement("span");
+
+        element.className = "aquarium-bubble";
+
+        const size = random(8, 36);
+
+        element.style.setProperty(
+            "--bubble-size",
+            `${size}px`
+        );
+
+        layer.appendChild(element);
+
+        const bubble = {
+            element,
+            size,
+
+            // Different speed for each bubble.
+            duration: random(
+                CONFIG.minDuration,
+                CONFIG.maxDuration
+            ),
+
+            // Spread bubbles throughout the document.
+            phase: Math.random(),
+
+            // Individual route and drift.
+            path: createPath(),
+            driftPhase: random(0, Math.PI * 2),
+            driftSpeed: random(0.5, 1.2),
+            driftAmount: random(15, CONFIG.drift),
+
+            // Keep a bubble away from the very edge.
+            margin: size / 2,
+
+            // A little size variation during movement.
+            wobblePhase: random(0, Math.PI * 2)
+        };
+
+        bubbles.push(bubble);
+    }
+
+    /* =====================================================
+       RESTART A BUBBLE AT THE BOTTOM
+    ===================================================== */
+
+    function restartBubble(bubble) {
+        bubble.phase = 0;
+        bubble.path = createPath();
+
+        bubble.driftPhase = random(0, Math.PI * 2);
+        bubble.wobblePhase = random(0, Math.PI * 2);
+
+        bubble.duration = random(
+            CONFIG.minDuration,
+            CONFIG.maxDuration
+        );
+    }
+
+    /* =====================================================
+       RENDER EVERY BUBBLE
+    ===================================================== */
+
+    function render(now) {
+        animationFrame = 0;
+
+        if (!running || motionPreference.matches) return;
+
+        // Limit unusually large time steps.
+        const delta = lastTime
+            ? Math.min((now - lastTime) / 1000, 0.05)
+            : 0;
+
+        lastTime = now;
+
+        const scrollY = window.scrollY;
 
         /*
-         * Once the sphere reaches the top,
-         * restart below the viewport.
+         * Re-measure periodically to accommodate
+         * images, fonts, and dynamically added sections.
          */
+        measureDocument();
 
-        if (state.y < -120) {
-            state.y = window.innerHeight + 120;
+        for (const bubble of bubbles) {
+            /*
+             * Advance continuously, independent of scrolling.
+             */
+            bubble.phase += delta / bubble.duration;
 
-            state.x = random(
-                0,
-                Math.max(0, window.innerWidth - 100)
+            /*
+             * Begin another journey after reaching the top.
+             */
+            if (bubble.phase >= 1) {
+                bubble.phase %= 1;
+                bubble.path = createPath();
+
+                bubble.driftPhase = random(
+                    0,
+                    Math.PI * 2
+                );
+
+                bubble.duration = random(
+                    CONFIG.minDuration,
+                    CONFIG.maxDuration
+                );
+            }
+
+            const progress = bubble.phase;
+
+            /*
+             * Vertical document coordinates:
+             * bottom of document -> top of document.
+             */
+            const documentY =
+                documentHeight +
+                bubble.size -
+                progress *
+                (documentHeight + bubble.size * 2);
+
+            /*
+             * Horizontal position follows a random route.
+             */
+            const routeX = pathPosition(
+                bubble.path,
+                progress
             );
 
-            chooseTarget();
+            const availableWidth = Math.max(
+                0,
+                viewportWidth - bubble.size
+            );
+
+            const baseX = routeX * availableWidth;
+
+            /*
+             * Gentle, organic side-to-side drift.
+             */
+            const drift =
+                Math.sin(
+                    progress * Math.PI * 8 *
+                    bubble.driftSpeed +
+                    bubble.driftPhase
+                ) * bubble.driftAmount;
+
+            const x = clamp(
+                baseX + drift,
+                0,
+                availableWidth
+            );
+
+            /*
+             * Convert document coordinates to viewport
+             * coordinates so scrolling reveals the bubble
+             * at its correct position in the document.
+             */
+            const y = documentY - scrollY;
+
+            /*
+             * Tiny scale variation adds life without
+             * distracting from the slow upward movement.
+             */
+            const scale =
+                1 + Math.sin(
+                    now * 0.0007 +
+                    bubble.wobblePhase
+                ) * 0.025;
+
+            bubble.element.style.transform =
+                `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
         }
 
-        animationFrame = requestAnimationFrame(animate);
+        animationFrame = requestAnimationFrame(render);
     }
+
+    /* =====================================================
+       START AND STOP
+    ===================================================== */
 
     function start() {
         cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+
+        if (motionPreference.matches) {
+            running = false;
+            layer.style.display = "none";
+            return;
+        }
+
+        layer.style.display = "";
+
+        measureDocument();
+
+        running = true;
         lastTime = 0;
 
-        if (!reducedMotion.matches) {
-            animationFrame = requestAnimationFrame(animate);
-        }
+        animationFrame = requestAnimationFrame(render);
     }
 
-    window.addEventListener("resize", () => {
-        state.x = Math.min(
-            state.x,
-            Math.max(0, window.innerWidth - 100)
-        );
+    function handleResize() {
+        measureDocument();
 
-        start();
-    });
+        /*
+         * Keep the existing routes when possible.
+         * Rendering adapts them to the new viewport width.
+         */
+    }
 
-    reducedMotion.addEventListener("change", () => {
-        if (reducedMotion.matches) {
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    for (let i = 0; i < CONFIG.count; i++) {
+        createBubble(i);
+    }
+
+    window.addEventListener(
+        "resize",
+        handleResize,
+        { passive: true }
+    );
+
+    motionPreference.addEventListener("change", start);
+
+    /*
+     * Pause unnecessary animation while the tab is hidden.
+     * Resume without a large time jump when it becomes visible.
+     */
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
             cancelAnimationFrame(animationFrame);
-            sphere.style.display = "none";
-        } else {
-            sphere.style.display = "";
-            state.y = window.innerHeight + 120;
-            start();
+            animationFrame = 0;
+            lastTime = 0;
+        } else if (running) {
+            lastTime = 0;
+            animationFrame = requestAnimationFrame(render);
         }
     });
 
+    /*
+     * Recalculate document height when its size changes.
+     */
+    if ("ResizeObserver" in window) {
+        const observer = new ResizeObserver(() => {
+            measureDocument();
+        });
+
+        observer.observe(document.documentElement);
+    }
+
     start();
+
 })();
 </script>
 
