@@ -421,3 +421,34 @@
         animation: none;
     }
 }
+
+.section-definition--sphere-large {
+    --sphere-size: 280px;
+    --sphere-bottom: -140px;
+    --sphere-right: 10%;
+}
+
+.section-definition--sphere-left {
+    --sphere-size: 100px;
+    --sphere-bottom: -50px;
+    --sphere-right: auto;
+    left: 15%;
+}
+
+.section-definition--sphere-left::after {
+    right: auto;
+    left: 15%;
+}
+
+.section-definition--sphere-cyan {
+    --sphere-color: 0, 220, 255;
+    --sphere-opacity: 0.9;
+    --sphere-size: 160px;
+}
+
+.section-definition--sphere-purple {
+    --sphere-color: 170, 90, 255;
+    --sphere-size: 200px;
+    --sphere-bottom: -100px;
+}
+
