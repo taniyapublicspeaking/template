@@ -233,10 +233,13 @@
     ----------------------------------------------------- */
 
     --glass-section-background: rgba(255, 255, 255, 0.65);
+    --glass-section-background-clear: rgba(255, 255, 255, 0.2);
     --glass-section-blur: 16px;
+    --glass-section-blur-clear: 2px;
     --glass-section-border: rgba(255, 255, 255, 0.4);
+    --glass-section-border-clear: rgba(255, 255, 255, 0.4);
     --glass-section-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
-
+    --glass-section-shadow-clear: 0 8px 32px rgba(15, 23, 42, 0.12);
 
     /* -----------------------------------------------------
        TRANSITIONS
