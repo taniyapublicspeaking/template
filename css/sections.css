@@ -329,3 +329,95 @@
 .section-definition--glass-on-image .section-definition__eyebrow {
     color: var(--yellow);
 }
+
+
+
+/* =========================================================
+   SECTION DEFINITION — FLOATING SPHERE
+========================================================= */
+
+
+
+/* =========================================================
+   SECTION CONTENT
+========================================================= */
+
+.section-definition__content {
+    position: relative;
+    z-index: 2;    
+    margin-inline: auto;
+}
+
+/* =========================================================
+   FLOATING SPHERE MODIFIER
+========================================================= */
+
+.section-definition--sphere {
+    --sphere-size: 180px;
+    --sphere-color: 120, 150, 255;
+    --sphere-opacity: 0.75;
+    --sphere-bottom: -90px;
+    --sphere-right: 15%;
+    --sphere-blur: 2px;
+    --sphere-duration: 8s;
+
+    /* Allow sphere to extend below the section */
+    overflow: visible;
+}
+
+/* Sphere */
+.section-definition--sphere::after {
+    content: "";
+
+    position: absolute;
+
+    width: var(--sphere-size);
+    aspect-ratio: 1;
+
+    right: var(--sphere-right);
+    bottom: var(--sphere-bottom);
+
+    z-index: 1;
+    pointer-events: none;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(var(--sphere-color), 0.8) 15%,
+            rgba(var(--sphere-color), 0.4) 45%,
+            rgba(var(--sphere-color), 0.08) 70%,
+            transparent 100%
+        );
+
+    filter: blur(var(--sphere-blur));
+
+    box-shadow:
+        inset -12px -15px 30px rgba(0, 0, 0, 0.2),
+        0 0 45px rgba(var(--sphere-color), 0.25);
+
+    animation:
+        sphere-float var(--sphere-duration)
+        ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes sphere-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(-15px, -25px, 0);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .section-definition--sphere::after {
+        animation: none;
+    }
+}
