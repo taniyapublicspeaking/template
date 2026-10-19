@@ -295,6 +295,23 @@
 
 
 /* =========================================================
+   13.1 GLASS SECTION CLEAR
+========================================================= */
+
+.section-definition--glass-clear {
+    --section-bg: var(--glass-section-background-clear);
+    --section-shadow: var(--glass-section-shadow-clear);
+
+    border: var(--border-width) solid var(--glass-section-border-clear);
+    border-radius: var(--radius);
+
+    -webkit-backdrop-filter: blur(var(--glass-section-blur-clear));
+    backdrop-filter: blur(var(--glass-section-blur-clear));
+}
+
+
+
+/* =========================================================
    14. GLASS SECTION OVER BACKGROUND IMAGE
 ========================================================= */
 
