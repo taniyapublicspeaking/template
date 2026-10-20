@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question Presenter</title>
+<style>
+  :root {
+    --qp-section-bg: #f3f6fb;
+    --qp-panel-bg: #fff;
+    --qp-text: #172033;
+    --qp-muted: #667085;
+    --qp-accent: #3157d5;
+    --qp-border: #dce3ee;
+    --qp-radius: 22px;
+    --qp-panel-padding: clamp(1.25rem, 4vw, 3rem);
+    --qp-question-seconds: 30;
+    --qp-answer-seconds: 5;
+    --qp-content-width: 980px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--qp-text);
+    background: #e9eef6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .section-definition {
+    min-height: 100svh;
+    padding: clamp(1rem, 4vw, 3rem);
+    display: grid;
+    place-items: center;
+    background: var(--qp-section-bg);
+  }
+
+  .question-presenter {
+    width: min(100%, var(--qp-content-width));
+  }
+
+  .question-presenter__heading {
+    margin: 0 0 .4rem;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .question-presenter__intro {
+    margin: 0 0 1.5rem;
+    color: var(--qp-muted);
+    line-height: 1.6;
+  }
+
+  .question-panel {
+    min-height: 360px;
+    padding: var(--qp-panel-padding);
+    display: flex;
+    flex-direction: column;
+    background: var(--qp-panel-bg);
+    border: 1px solid var(--qp-border);
+    border-radius: var(--qp-radius);
+    box-shadow: 0 18px 50px rgb(31 45 76 / 9%);
+  }
+
+  .question-panel__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .question-panel__number {
+    color: var(--qp-accent);
+    font-weight: 750;
+    letter-spacing: .04em;
+  }
+
+  .question-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .8rem;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #233eaa;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .question-timer[data-urgent="true"] {
+    color: #a12b22;
+    background: #fff0ee;
+  }
+
+  .question-panel__label {
+    margin: 0 0 .75rem;
+    color: var(--qp-muted);
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .question-panel__question {
+    margin: 0;
+    font-size: clamp(1.45rem, 3.5vw, 2.5rem);
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--qp-border);
+  }
+
+  .question-panel__answer {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap[hidden] { display: none; }
+
+  .question-progress {
+    height: 7px;
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #dfe5ef;
+  }
+
+  .question-progress__bar {
+    width: 0%;
+    height: 100%;
+    background: var(--qp-accent);
+    transition: width .2s linear;
+  }
+
+  .question-status {
+    min-height: 1.5em;
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .9rem;
+  }
+
+  .question-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    margin-top: 1.25rem;
+  }
+
+  button, input {
+    font: inherit;
+  }
+
+  button {
+    min-height: 44px;
+    padding: .65rem 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 11px;
+    color: var(--qp-text);
+    background: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--qp-accent); }
+  button:focus-visible, input:focus-visible {
+    outline: 3px solid rgb(49 87 213 / 30%);
+    outline-offset: 2px;
+  }
+
+  button:disabled { opacity: .45; cursor: not-allowed; }
+
+  button.button-primary {
+    color: white;
+    background: var(--qp-accent);
+    border-color: var(--qp-accent);
+  }
+
+  .question-settings-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+
+  .question-settings[hidden] {
+    display: none;
+  }
+
+  .question-settings {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 70%);
+  }
+
+  .question-settings__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: .85rem;
+  }
+
+  .question-settings__title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .question-settings__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: .85rem;
+  }
+
+  .question-settings label {
+    display: grid;
+    gap: .35rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings input[type="number"],
+  .question-settings input[type="url"] {
+    min-height: 42px;
+    width: 100%;
+    padding: .55rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .seconds-field { width: 145px; }
+  .question-settings .url-field { flex: 1 1 280px; }
+
+  .question-settings__note {
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .82rem;
+    line-height: 1.5;
+  }
+
+  .question-settings__file {
+    display: grid;
+    gap: .4rem;
+    margin-top: 1rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings__file input { max-width: 100%; }
+
+  @media (max-width: 540px) {
+    .section-definition { padding: .75rem; }
+    .question-panel { min-height: 320px; }
+    .question-panel__top { margin-bottom: 1.5rem; }
+    .question-controls button { flex: 1 1 calc(50% - .65rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<section class="section-definition" aria-labelledby="presenter-title">
+  <div class="question-presenter">
+    <h1 class="question-presenter__heading" id="presenter-title">Question Presenter</h1>
+    <p class="question-presenter__intro">
+      One question at a time, with a countdown, answer reveal, and presenter controls.
+    </p>
+
+    <article class="question-panel" aria-live="polite" aria-atomic="false">
+      <div class="question-panel__top">
+        <span class="question-panel__number" id="question-number">Question 1</span>
+        <span class="question-timer" id="question-timer" aria-label="Time remaining">
+          <span aria-hidden="true">◷</span>
+          <span id="timer-value">00:30</span>
+        </span>
+      </div>
+
+      <div>
+        <p class="question-panel__label">Question</p>
+        <h2 class="question-panel__question" id="question-text">Loading sample questions…</h2>
+      </div>
+
+      <div class="question-panel__answer-wrap" id="answer-wrap" hidden>
+        <p class="question-panel__label">Answer</p>
+        <p class="question-panel__answer" id="answer-text"></p>
+      </div>
+    </article>
+
+    <div class="question-progress" role="progressbar" aria-label="Question progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+      <div class="question-progress__bar" id="progress-bar"></div>
+    </div>
+    <p class="question-status" id="status" role="status">Ready.</p>
+
+    <nav class="question-controls" aria-label="Question controls">
+      <button type="button" id="previous-button">Previous</button>
+      <button type="button" class="button-primary" id="pause-button">Pause</button>
+      <button type="button" id="reveal-button">Reveal answer</button>
+      <button type="button" id="skip-button">Skip</button>
+      <button type="button" id="next-button">Next</button>
+      <button type="button" id="restart-button">Restart question</button>
+    </nav>
+
+    <div class="question-settings-toggle">
+      <button type="button" id="settings-toggle-button"
+              aria-expanded="false" aria-controls="question-settings-panel">
+        Settings &amp; question source
+      </button>
+    </div>
+
+    <aside class="question-settings" id="question-settings-panel"
+           aria-label="Question presenter settings" hidden>
+      <div class="question-settings__heading">
+        <h2 class="question-settings__title">Settings &amp; question source</h2>
+        <button type="button" id="settings-close-button">Close settings</button>
+      </div>
+      <div class="question-settings__row">
+        <label class="seconds-field">
+          Question time (seconds)
+          <input type="number" id="question-seconds" min="1" max="3600" value="30">
+        </label>
+        <label class="seconds-field">
+          Answer display (seconds)
+          <input type="number" id="answer-seconds" min="0" max="3600" value="5">
+        </label>
+        <button type="button" id="apply-settings-button">Apply times</button>
+      </div>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="url-field">
+          Published Google Sheets CSV URL
+          <input type="url" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
+        </label>
+        <button type="button" id="load-url-button">Load Google Sheet</button>
+      </div>
+
+      <label class="question-settings__file">
+        Or choose a CSV file from your device
+        <input type="file" id="csv-file" accept=".csv,text/csv">
+      </label>
+
+      <p class="question-settings__note">
+        Expected CSV headers: <strong>Question number, Question, Answer</strong>.
+        For Google Sheets, publish the relevant sheet as CSV and paste its published CSV URL.
+        Publishing can make sheet data public. A private sheet needs an authenticated API setup.
+        CSV file selection is processed in this browser; no upload is performed.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<script>
+(() => {
+  "use strict";
+
+  // Defaults can also be changed here.
+  const CONFIG = {
+    questionSeconds: 30,
+    answerSeconds: 5,
+    autoStart: true
+  };
+
+  const SAMPLE_QUESTIONS = [
+    {
+      number: "1",
+      question: "What does HTML stand for?",
+      answer: "HyperText Markup Language."
+    },
+    {
+      number: "2",
+      question: "Which language is primarily used to style HTML pages?",
+      answer: "CSS (Cascading Style Sheets)."
+    },
+    {
+      number: "3",
+      question: "Which JavaScript method converts a JSON string into a JavaScript value?",
+      answer: "JSON.parse()."
+    }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+
+  const els = {
+    number: $("question-number"),
+    question: $("question-text"),
+    answer: $("answer-text"),
+    answerWrap: $("answer-wrap"),
+    timer: $("question-timer"),
+    timerValue: $("timer-value"),
+    status: $("status"),
+    progress: $("progress"),
+    progressBar: $("progress-bar"),
+    previous: $("previous-button"),
+    pause: $("pause-button"),
+    reveal: $("reveal-button"),
+    skip: $("skip-button"),
+    next: $("next-button"),
+    restart: $("restart-button"),
+    questionSeconds: $("question-seconds"),
+    answerSeconds: $("answer-seconds"),
+    applySettings: $("apply-settings-button"),
+    sheetUrl: $("sheet-url"),
+    loadUrl: $("load-url-button"),
+    csvFile: $("csv-file"),
+    settingsPanel: $("question-settings-panel"),
+    settingsToggle: $("settings-toggle-button"),
+    settingsClose: $("settings-close-button")
+  };
+
+  let questions = SAMPLE_QUESTIONS;
+  let index = 0;
+  let questionSeconds = CONFIG.questionSeconds;
+  let answerSeconds = CONFIG.answerSeconds;
+  let phase = "question"; // question | answer | paused | complete
+  let pausedFrom = "question";
+  let remainingMs = questionSeconds * 1000;
+  let deadline = 0;
+  let intervalId = null;
+  let loadedSource = "sample questions";
+
+  function setStatus(message) {
+    els.status.textContent = message;
+  }
+
+  function formatTime(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  function clearTicker() {
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  function startTicker() {
+    clearTicker();
+    deadline = Date.now() + remainingMs;
+    intervalId = setInterval(tick, 100);
+    tick();
+  }
+
+  function tick() {
+    if (phase !== "question" && phase !== "answer") return;
+
+    remainingMs = Math.max(0, deadline - Date.now());
+    els.timerValue.textContent = formatTime(remainingMs);
+    els.timer.dataset.urgent = phase === "question" && remainingMs <= 5000 ? "true" : "false";
+
+    if (phase === "question") {
+      const elapsed = 1 - (remainingMs / (questionSeconds * 1000));
+      els.progressBar.style.width = `${Math.min(100, Math.max(0, elapsed * 100))}%`;
+      els.progress.setAttribute("aria-valuenow", String(Math.round(elapsed * 100)));
+    }
+
+    if (remainingMs <= 0) {
+      clearTicker();
+      if (phase === "question") {
+        revealAnswer(false);
+      } else if (phase === "answer") {
+        advance(1);
+      }
+    }
+  }
+
+  function renderQuestion() {
+    const item = questions[index];
+    if (!item) return;
+
+    els.number.textContent = `Question ${item.number || index + 1} · ${index + 1} of ${questions.length}`;
+    els.question.textContent = item.question;
+    els.answer.textContent = item.answer;
+    els.answerWrap.hidden = true;
+
+    els.previous.disabled = index <= 0;
+    els.next.disabled = index >= questions.length - 1;
+    els.skip.disabled = index >= questions.length - 1;
+    els.reveal.disabled = false;
+    els.pause.disabled = false;
+    els.pause.textContent = "Pause";
+    els.progressBar.style.width = "0%";
+    els.progress.setAttribute("aria-valuenow", "0");
+  }
+
+  function loadQuestion(newIndex, shouldRun = true) {
+    clearTicker();
+
+    if (!questions.length) {
+      showEmpty("No questions were found in the source.");
+      return;
+    }
+
+    if (newIndex < 0) newIndex = 0;
+
+    if (newIndex >= questions.length) {
+      showComplete();
+      return;
+    }
+
+    index = newIndex;
+    phase = "question";
+    pausedFrom = "question";
+    remainingMs = questionSeconds * 1000;
+    renderQuestion();
+
+    if (shouldRun) {
+      setStatus(`Showing question ${index + 1} of ${questions.length}.`);
+      startTicker();
+    } else {
+      phase = "paused";
+      pausedFrom = "question";
+      els.pause.textContent = "Resume";
+      setStatus("Question loaded and paused.");
+      updateTimerDisplay();
+    }
+  }
+
+  function updateTimerDisplay() {
+    els.timerValue.textContent = formatTime(remainingMs);
+    els.timer.dataset.urgent = phase === "question" && remainingMs <= 5000 ? "true" : "false";
+  }
+
+  function revealAnswer(manual = true) {
+    if (phase === "complete" || phase === "answer") return;
+    if (phase === "paused" && pausedFrom === "answer") return;
+
+    clearTicker();
+    els.answerWrap.hidden = false;
+    els.progressBar.style.width = "100%";
+    els.progress.setAttribute("aria-valuenow", "100");
+
+    if (manual && phase === "paused") {
+      // Manual reveal while paused: show the answer and keep the presentation paused.
+      phase = "paused";
+      pausedFrom = "answer";
+      remainingMs = answerSeconds * 1000;
+      updateTimerDisplay();
+      els.pause.textContent = "Resume";
+      setStatus("Answer revealed. Presentation is paused.");
+      return;
+    }
+
+    phase = "answer";
+    remainingMs = answerSeconds * 1000;
+    els.reveal.disabled = true;
+    setStatus(`Answer revealed. Next question in ${answerSeconds} second${answerSeconds === 1 ? "" : "s"}.`);
+
+    if (answerSeconds === 0) {
+      advance(1);
+    } else {
+      startTicker();
+    }
+  }
+
+  function togglePause() {
+    if (phase === "complete") return;
+
+    if (phase === "paused") {
+      phase = pausedFrom;
+      els.pause.textContent = "Pause";
+      setStatus(phase === "answer" ? "Answer displayed; timer resumed." : "Countdown resumed.");
+      startTicker();
+      return;
+    }
+
+    if (phase !== "question" && phase !== "answer") return;
+
+    remainingMs = Math.max(0, deadline - Date.now());
+    pausedFrom = phase;
+    clearTicker();
+    phase = "paused";
+    els.pause.textContent = "Resume";
+    updateTimerDisplay();
+    setStatus("Paused.");
+  }
+
+  function advance(step) {
+    clearTicker();
+    const target = index + step;
+    if (target >= questions.length) {
+      showComplete();
+      return;
+    }
+    loadQuestion(Math.max(0, target), true);
+  }
+
+  function showComplete() {
+    clearTicker();
+    phase = "complete";
+    remainingMs = 0;
+    els.number.textContent = "Presentation complete";
+    els.question.textContent = `You've reached the end of all ${questions.length} questions.`;
+    els.answer.textContent = "";
+    els.answerWrap.hidden = true;
+    els.timerValue.textContent = "00:00";
+    els.timer.dataset.urgent = "false";
+    els.progressBar.style.width = "100%";
+    els.progress.setAttribute("aria-valuenow", "100");
+    els.previous.disabled = questions.length === 0;
+    els.next.disabled = true;
+    els.skip.disabled = true;
+    els.pause.disabled = true;
+    els.pause.textContent = "Pause";
+    els.reveal.disabled = true;
+    setStatus("Presentation complete. Use Previous to revisit a question, or Restart question to begin again.");
+  }
+
+  function showEmpty(message) {
+    clearTicker();
+    phase = "complete";
+    els.number.textContent = "No questions loaded";
+    els.question.textContent = message;
+    els.answer.textContent = "";
+    els.answerWrap.hidden = true;
+    els.timerValue.textContent = "--:--";
+    els.progressBar.style.width = "0%";
+    els.previous.disabled = true;
+    els.next.disabled = true;
+    els.skip.disabled = true;
+    els.pause.disabled = true;
+    els.reveal.disabled = true;
+    els.restart.disabled = true;
+    setStatus("Load a CSV file or a published Google Sheets CSV URL.");
+  }
+
+  function normalizeHeader(value) {
+    return String(value ?? "")
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ");
+  }
+
+  // CSV parser supports quoted fields, commas, escaped quotes and newlines in quoted cells.
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let quoted = false;
+
+    text = text.replace(/^\uFEFF/, "");
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+
+      if (quoted) {
+        if (char === '"' && text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else if (char === '"') {
+          quoted = false;
+        } else {
+          field += char;
+        }
+      } else if (char === '"' && field === "") {
+        quoted = true;
+      } else if (char === ",") {
+        row.push(field);
+        field = "";
+      } else if (char === "\n" || char === "\r") {
+        if (char === "\r" && text[i + 1] === "\n") i++;
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = "";
+      } else {
+        field += char;
+      }
+    }
+
+    if (quoted) throw new Error("CSV parsing failed: an opening quote has no matching closing quote.");
+
+    if (field !== "" || row.length) {
+      row.push(field);
+      rows.push(row);
+    }
+
+    return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+  }
+
+  function csvToQuestions(csvText) {
+    const rows = parseCSV(csvText);
+    if (rows.length < 2) {
+      throw new Error("The CSV must contain a header row and at least one question.");
+    }
+
+    const headers = rows[0].map(normalizeHeader);
+    const numberIndex = headers.findIndex(h =>
+      ["question number", "question no", "number", "no", "question #"].includes(h)
+    );
+    const questionIndex = headers.findIndex(h => h === "question" || h === "question text");
+    const answerIndex = headers.findIndex(h => h === "answer" || h === "answer text");
+
+    if (questionIndex < 0 || answerIndex < 0) {
+      throw new Error('Could not find required "Question" and "Answer" headers. Check the CSV header row.');
+    }
+
+    const parsed = rows.slice(1).map((row, rowIndex) => ({
+      number: numberIndex >= 0 && row[numberIndex] !== undefined && row[numberIndex].trim() !== ""
+        ? row[numberIndex].trim()
+        : String(rowIndex + 1),
+      question: String(row[questionIndex] ?? "").trim(),
+      answer: String(row[answerIndex] ?? "").trim()
+    })).filter(item => item.question !== "");
+
+    if (!parsed.length) throw new Error("No non-empty questions were found.");
+    return parsed;
+  }
+
+  async function loadCSVText(csvText, sourceLabel) {
+    const newQuestions = csvToQuestions(csvText);
+    questions = newQuestions;
+    index = 0;
+    loadedSource = sourceLabel;
+    els.restart.disabled = false;
+    loadQuestion(0, true);
+    setStatus(`Loaded ${questions.length} questions from ${loadedSource}.`);
+  }
+
+  function setSettingsOpen(open) {
+    els.settingsPanel.hidden = !open;
+    els.settingsToggle.setAttribute("aria-expanded", String(open));
+    els.settingsToggle.textContent = open
+      ? "Hide settings & question source"
+      : "Settings & question source";
+
+    if (open) {
+      els.questionSeconds.focus();
+    } else {
+      els.settingsToggle.focus();
+    }
+  }
+
+  els.settingsToggle.addEventListener("click", () => {
+    setSettingsOpen(els.settingsPanel.hidden);
+  });
+
+  els.settingsClose.addEventListener("click", () => {
+    setSettingsOpen(false);
+  });
+
+  els.previous.addEventListener("click", () => {
+    if (index > 0) loadQuestion(index - 1, true);
+  });
+
+  els.next.addEventListener("click", () => advance(1));
+
+  els.skip.addEventListener("click", () => advance(1));
+
+  els.pause.addEventListener("click", togglePause);
+
+  els.reveal.addEventListener("click", () => revealAnswer(true));
+
+  els.restart.addEventListener("click", () => {
+    if (phase === "complete" && index >= questions.length - 1) {
+      loadQuestion(0, true);
+    } else {
+      loadQuestion(index, true);
+    }
+  });
+
+  els.applySettings.addEventListener("click", () => {
+    const q = Number(els.questionSeconds.value);
+    const a = Number(els.answerSeconds.value);
+
+    if (!Number.isFinite(q) || q < 1 || q > 3600 ||
+        !Number.isFinite(a) || a < 0 || a > 3600) {
+      setStatus("Enter a question time from 1–3600 seconds and answer display from 0–3600 seconds.");
+      return;
+    }
+
+    questionSeconds = Math.floor(q);
+    answerSeconds = Math.floor(a);
+    loadQuestion(index, true);
+    setStatus(`Timing updated: ${questionSeconds}s per question; ${answerSeconds}s answer display.`);
+  });
+
+  els.csvFile.addEventListener("change", async (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    try {
+      await loadCSVText(await file.text(), file.name);
+    } catch (error) {
+      setStatus(error.message || "Could not read this CSV file.");
+    }
+  });
+
+  els.loadUrl.addEventListener("click", async () => {
+    const url = els.sheetUrl.value.trim();
+    if (!url) {
+      setStatus("Paste a published Google Sheets CSV URL first.");
+      return;
+    }
+
+    try {
+      setStatus("Loading Google Sheets CSV…");
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Request failed (${response.status}). Check the published CSV URL and permissions.`);
+      const text = await response.text();
+
+      // A common sign that the URL returned a Google sign-in/error page rather than CSV.
+      if (/<html[\s>]/i.test(text.slice(0, 500))) {
+        throw new Error("The URL returned HTML rather than CSV. Publish the sheet as CSV and use its published CSV URL.");
+      }
+
+      await loadCSVText(text, "Google Sheets");
+    } catch (error) {
+      setStatus(`${error.message || "Unable to load the Google Sheet."} If this is a private sheet, use an authenticated Google Sheets API setup.`);
+    }
+  });
+
+  // Start with sample questions so the component can be tested immediately.
+  if (CONFIG.autoStart && questions.length) {
+    loadQuestion(0, true);
+  } else {
+    showEmpty("Load a CSV file or Google Sheet to begin.");
+  }
+})();
+</script>
+</body>
+</html>
