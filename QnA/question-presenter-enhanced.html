@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question Presenter — Enhanced</title>
+<style>
+  :root {
+    --qp-section-bg: #f3f6fb;
+    --qp-panel-bg: #fff;
+    --qp-text: #172033;
+    --qp-muted: #667085;
+    --qp-accent: #3157d5;
+    --qp-border: #dce3ee;
+    --qp-radius: 22px;
+    --qp-panel-padding: clamp(1.25rem, 4vw, 3rem);
+    --qp-question-seconds: 30;
+    --qp-answer-seconds: 5;
+    --qp-content-width: 980px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--qp-text);
+    background: #e9eef6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .section-definition {
+    min-height: 100svh;
+    padding: clamp(1rem, 4vw, 3rem);
+    display: grid;
+    place-items: center;
+    background: var(--qp-section-bg);
+  }
+
+  .question-presenter {
+    width: min(100%, var(--qp-content-width));
+  }
+
+  .question-presenter__heading {
+    margin: 0 0 .4rem;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .question-presenter__intro {
+    margin: 0 0 1.5rem;
+    color: var(--qp-muted);
+    line-height: 1.6;
+  }
+
+  .question-panel {
+    min-height: 360px;
+    padding: var(--qp-panel-padding);
+    display: flex;
+    flex-direction: column;
+    background: var(--qp-panel-bg);
+    border: 1px solid var(--qp-border);
+    border-radius: var(--qp-radius);
+    box-shadow: 0 18px 50px rgb(31 45 76 / 9%);
+  }
+
+  .question-panel__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .question-panel__number {
+    color: var(--qp-accent);
+    font-weight: 750;
+    letter-spacing: .04em;
+  }
+
+  .question-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .8rem;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #233eaa;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .question-timer[data-urgent="true"] {
+    color: #a12b22;
+    background: #fff0ee;
+  }
+
+  .question-panel__label {
+    margin: 0 0 .75rem;
+    color: var(--qp-muted);
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .question-panel__question {
+    margin: 0;
+    font-size: clamp(1.45rem, 3.5vw, 2.5rem);
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--qp-border);
+  }
+
+  .question-panel__answer {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap[hidden] { display: none; }
+  .question-panel__explanation { margin: .8rem 0 0; color: var(--qp-muted); font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.65; white-space: pre-wrap; }
+  .question-panel__explanation:empty { display:none; }
+  .question-panel__media { max-width:100%; max-height: min(34vh, 320px); object-fit:contain; margin-top:1rem; border-radius:12px; }
+  .question-panel__media[hidden] { display:none; }
+  .question-panel__mode { display:inline-flex; padding:.35rem .65rem; border-radius:999px; background:#f1f4f9; color:var(--qp-muted); font-size:.8rem; font-weight:700; }
+  .question-completion { margin-top:1rem; padding:1.25rem; border:1px solid var(--qp-border); border-radius:16px; background:white; }
+  .question-completion[hidden] { display:none; }
+  .question-completion h2 { margin:0 0 .5rem; }
+  .question-completion p { color:var(--qp-muted); line-height:1.6; }
+  .question-presenter.is-fullscreen { width:100%; max-width:none; }
+  body.presenter-fullscreen .section-definition { padding:clamp(1rem,3vw,3rem); }
+  body.presenter-fullscreen .question-panel { min-height:55vh; justify-content:center; }
+  body.presenter-fullscreen .question-panel__question { font-size:clamp(2rem,6vw,5rem); line-height:1.2; }
+  body.presenter-fullscreen .question-panel__answer { font-size:clamp(1.4rem,3vw,2.4rem); }
+  body.presenter-fullscreen .question-presenter__intro, body.presenter-fullscreen .question-settings-toggle, body.presenter-fullscreen .question-settings { display:none !important; }
+  .question-settings__subheading { flex:1 1 100%; margin:.35rem 0 0; font-size:.9rem; color:var(--qp-text); }
+
+  .question-progress {
+    height: 7px;
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #dfe5ef;
+  }
+
+  .question-progress__bar {
+    width: 0%;
+    height: 100%;
+    background: var(--qp-accent);
+    transition: width .2s linear;
+  }
+
+  .question-status {
+    min-height: 1.5em;
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .9rem;
+  }
+
+  .question-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    margin-top: 1.25rem;
+  }
+
+  button, input {
+    font: inherit;
+  }
+
+  button {
+    min-height: 44px;
+    padding: .65rem 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 11px;
+    color: var(--qp-text);
+    background: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--qp-accent); }
+  button:focus-visible, input:focus-visible {
+    outline: 3px solid rgb(49 87 213 / 30%);
+    outline-offset: 2px;
+  }
+
+  button:disabled { opacity: .45; cursor: not-allowed; }
+
+  button.button-primary {
+    color: white;
+    background: var(--qp-accent);
+    border-color: var(--qp-accent);
+  }
+
+  .question-settings-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+
+  .question-settings[hidden] {
+    display: none;
+  }
+
+  .question-settings {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 70%);
+  }
+
+  .question-settings__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: .85rem;
+  }
+
+  .question-settings__title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .question-settings__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: .85rem;
+  }
+
+  .question-settings label {
+    display: grid;
+    gap: .35rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings input[type="number"],
+  .question-settings input[type="url"] {
+    min-height: 42px;
+    width: 100%;
+    padding: .55rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .seconds-field { width: 145px; }
+  .question-settings .url-field { flex: 1 1 280px; }
+
+  .question-settings select {
+    min-height: 42px;
+    width: 100%;
+    padding: .55rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .setting-toggle {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: 42px;
+    padding: .5rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .setting-toggle input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--qp-accent);
+  }
+
+  .question-settings__note {
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .82rem;
+    line-height: 1.5;
+  }
+
+  .question-settings__file {
+    display: grid;
+    gap: .4rem;
+    margin-top: 1rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings__file input { max-width: 100%; }
+
+  @media (max-width: 540px) {
+    .section-definition { padding: .75rem; }
+    .question-panel { min-height: 320px; }
+    .question-panel__top { margin-bottom: 1.5rem; }
+    .question-controls button { flex: 1 1 calc(50% - .65rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<section class="section-definition" aria-labelledby="presenter-title">
+  <div class="question-presenter">
+    <h1 class="question-presenter__heading" id="presenter-title">Question Presenter</h1>
+    <p class="question-presenter__intro">
+      One question at a time, with a countdown, answer reveal, and presenter controls.
+    </p>
+
+    <article class="question-panel" aria-live="polite" aria-atomic="false">
+      <div class="question-panel__top">
+        <span class="question-panel__number" id="question-number">Quiz ready</span>
+        <span class="question-panel__mode" id="mode-badge">Timed Quiz</span>
+        <span class="question-timer" id="question-timer" aria-label="Time remaining">
+          <span aria-hidden="true">◷</span>
+          <span id="timer-value">00:30</span>
+        </span>
+      </div>
+
+      <div>
+        <p class="question-panel__label">Question</p>
+        <h2 class="question-panel__question" id="question-text">Your quiz is ready to begin. Select Start quiz when you are ready.</h2>
+      </div>
+
+      <img class="question-panel__media" id="question-image" alt="" hidden>
+      <div class="question-panel__answer-wrap" id="answer-wrap" hidden>
+        <p class="question-panel__label">Answer</p>
+        <p class="question-panel__answer" id="answer-text"></p>
+        <div id="explanation-wrap" hidden>
+          <p class="question-panel__label" style="margin-top:1rem">Explanation</p>
+          <p class="question-panel__explanation" id="explanation-text"></p>
+        </div>
+      </div>
+    </article>
+
+    <div class="question-progress" role="progressbar" aria-label="Question progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+      <div class="question-progress__bar" id="progress-bar"></div>
+    </div>
+    <p class="question-status" id="status" role="status">Ready.</p>
+
+    <nav class="question-controls" aria-label="Question controls">
+      <button type="button" class="button-primary" id="start-button">Start quiz</button>
+      <button type="button" id="stop-button" disabled>Stop quiz</button>
+      <button type="button" id="previous-button" disabled>Previous</button>
+      <button type="button" id="pause-button" disabled>Pause</button>
+      <button type="button" id="reveal-button" disabled>Reveal answer</button>
+      <button type="button" id="skip-button" disabled>Skip</button>
+      <button type="button" id="next-button" disabled>Next</button>
+      <button type="button" id="restart-button" disabled>Restart question</button>
+      <button type="button" id="repeat-range-button">Run range again</button>
+      <button type="button" id="fullscreen-button">Enter fullscreen</button>
+    </nav>
+    <section class="question-completion" id="completion-panel" hidden aria-live="polite">
+      <h2>Quiz complete!</h2>
+      <p id="completion-summary">You have finished the selected questions.</p>
+      <div class="question-controls">
+        <button type="button" class="button-primary" id="completion-restart-button">Run this range again</button>
+        <button type="button" id="completion-revision-button">Repeat selected range in Revision mode</button>
+      </div>
+    </section>
+
+    <div class="question-settings-toggle">
+      <button type="button" id="settings-toggle-button"
+              aria-expanded="false" aria-controls="question-settings-panel">
+        Settings &amp; question source
+      </button>
+    </div>
+
+    <aside class="question-settings" id="question-settings-panel"
+           aria-label="Question presenter settings" hidden>
+      <div class="question-settings__heading">
+        <h2 class="question-settings__title">Settings &amp; question source</h2>
+        <button type="button" id="settings-close-button">Close settings</button>
+      </div>
+      <div class="question-settings__row">
+        <label class="seconds-field">
+          Presentation mode
+          <select id="presentation-mode">
+            <option value="timed">Timed Quiz</option>
+            <option value="teacher">Teacher-Led</option>
+            <option value="self">Self-Paced</option>
+            <option value="revision">Revision</option>
+          </select>
+        </label>
+        <label class="seconds-field">
+          Question time (seconds)
+          <input type="number" id="question-seconds" min="1" max="3600" value="30">
+        </label>
+        <label class="seconds-field">
+          Answer display (seconds)
+          <input type="number" id="answer-seconds" min="0" max="3600" value="5">
+        </label>
+        <button type="button" id="apply-settings-button">Apply times</button>
+      </div>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="setting-toggle">
+          <input type="checkbox" id="question-voice-enabled" checked>
+          Read questions aloud
+        </label>
+        <label class="setting-toggle">
+          <input type="checkbox" id="answer-voice-enabled" checked>
+          Read answers aloud
+        </label>
+        <label class="setting-toggle">
+          <input type="checkbox" id="tick-enabled" checked>
+          Play ticking sound during countdown
+        </label>
+        <label class="seconds-field">
+          Speech voice
+          <select id="speech-voice" aria-label="Speech voice"><option value="">Device default</option></select>
+        </label>
+        <label class="seconds-field">
+          Speech rate
+          <select id="speech-rate" aria-label="Speech rate">
+            <option value="0.8">Slow</option>
+            <option value="0.9" selected>Natural</option>
+            <option value="1">Normal</option>
+            <option value="1.1">Fast</option>
+          </select>
+        </label>
+        <button type="button" id="test-voice-button">Test voice</button>
+        <button type="button" id="test-tick-button">Test tick</button>
+      </div>
+      <p class="question-settings__note">
+        Voice uses your browser/device's available speech voices. Tick sounds are generated in your browser.
+        Some browsers require a user click before audio can play.
+      </p>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="seconds-field">
+          Start question number
+          <input type="number" id="start-question" min="1" value="1" step="1">
+        </label>
+        <label class="seconds-field">
+          End question number
+          <input type="number" id="end-question" min="1" value="3" step="1">
+        </label>
+        <p class="question-settings__note" style="flex:1 1 100%; margin-top:0">
+          These numbers refer to the question's position in the loaded list. For example,
+          enter 20 and 50 to quiz questions 20 through 50, inclusive.
+        </p>
+      </div>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="url-field">
+          Published Google Sheets CSV URL
+          <input type="url" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
+        </label>
+        <button type="button" id="load-url-button">Load Google Sheet</button>
+      </div>
+
+      <label class="question-settings__file">
+        Or choose a CSV file from your device
+        <input type="file" id="csv-file" accept=".csv,text/csv">
+      </label>
+
+      <p class="question-settings__note">
+        Required CSV headers: <strong>Question number, Question, Answer</strong>. Optional columns: <strong>Explanation</strong> and <strong>Image URL</strong>.
+        Settings are saved in this browser. For Google Sheets, publish the relevant sheet as CSV and paste its published CSV URL.
+        Publishing can make sheet data public. A private sheet needs an authenticated API setup.
+        CSV file selection is processed in this browser; no upload is performed.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const DEFAULTS = { questionSeconds:30, answerSeconds:5, mode:"timed", questionVoice:true, answerVoice:true, tick:true, rate:"0.9", voiceURI:"", start:1, end:3, sheetUrl:"" };
+  const els = {
+    presenter:document.querySelector('.question-presenter'), number:$('question-number'), question:$('question-text'), answer:$('answer-text'), answerWrap:$('answer-wrap'), explanationWrap:$('explanation-wrap'), explanation:$('explanation-text'), image:$('question-image'), timer:$('question-timer'), timerValue:$('timer-value'), status:$('status'), progress:$('progress'), progressBar:$('progress-bar'), modeBadge:$('mode-badge'), completion:$('completion-panel'), completionSummary:$('completion-summary'),
+    start:$('start-button'), stop:$('stop-button'), previous:$('previous-button'), pause:$('pause-button'), reveal:$('reveal-button'), skip:$('skip-button'), next:$('next-button'), restart:$('restart-button'), repeat:$('repeat-range-button'), fullscreen:$('fullscreen-button'), completionRestart:$('completion-restart-button'), completionRevision:$('completion-revision-button'),
+    questionSeconds:$('question-seconds'), answerSeconds:$('answer-seconds'), questionVoice:$('question-voice-enabled'), answerVoice:$('answer-voice-enabled'), tick:$('tick-enabled'), rate:$('speech-rate'), voice:$('speech-voice'), testVoice:$('test-voice-button'), testTick:$('test-tick-button'), mode:$('presentation-mode'), startQuestion:$('start-question'), endQuestion:$('end-question'), apply:$('apply-settings-button'), sheetUrl:$('sheet-url'), loadUrl:$('load-url-button'), csvFile:$('csv-file'), settingsPanel:$('question-settings-panel'), settingsToggle:$('settings-toggle-button'), settingsClose:$('settings-close-button')
+  };
+  const SAMPLE = [
+    {number:"1",question:"What does HTML stand for?",answer:"HyperText Markup Language.",explanation:"HTML provides the structure and meaning of content on a web page."},
+    {number:"2",question:"Which language is primarily used to style HTML pages?",answer:"CSS (Cascading Style Sheets).",explanation:"CSS controls visual presentation, including colour, spacing, layout, and typography."},
+    {number:"3",question:"Which JavaScript method converts a JSON string into a JavaScript value?",answer:"JSON.parse().",explanation:"JSON.parse reads JSON text and produces the corresponding JavaScript value."}
+  ];
+  let questions=SAMPLE, index=0, startPosition=1, endPosition=questions.length, questionSeconds=30, answerSeconds=5, mode="timed", phase="ready", pausedFrom="question", remainingMs=30000, deadline=0, intervalId=null, loadedSource="sample questions", audioContext=null, lastTickSecond=null, speechRunId=0, answerSpeechPending=false, answerTimerElapsed=false, savedRange={start:1,end:3};
+  const activePhases=["question","answer","paused"];
+  function setStatus(s){els.status.textContent=s;}
+  function formatTime(ms){const t=Math.max(0,Math.ceil(ms/1000));return `${String(Math.floor(t/60)).padStart(2,"0")}:${String(t%60).padStart(2,"0")}`;}
+  function clearTicker(){if(intervalId!==null){clearInterval(intervalId);intervalId=null;}}
+  function setTimer(ms,urgent=false){els.timerValue.textContent=formatTime(ms);els.timer.dataset.urgent=urgent?"true":"false";}
+  function saveSettings(){try{localStorage.setItem('questionPresenterSettings',JSON.stringify({questionSeconds:els.questionSeconds.value,answerSeconds:els.answerSeconds.value,mode:els.mode.value,questionVoice:els.questionVoice.checked,answerVoice:els.answerVoice.checked,tick:els.tick.checked,rate:els.rate.value,voiceURI:els.voice.value,start:els.startQuestion.value,end:els.endQuestion.value,sheetUrl:els.sheetUrl.value}));}catch(_){} }
+  function restoreSettings(){let s={};try{s=JSON.parse(localStorage.getItem('questionPresenterSettings')||'{}')||{};}catch(_){};els.questionSeconds.value=s.questionSeconds??DEFAULTS.questionSeconds;els.answerSeconds.value=s.answerSeconds??DEFAULTS.answerSeconds;els.mode.value=s.mode??DEFAULTS.mode;els.questionVoice.checked=s.questionVoice??DEFAULTS.questionVoice;els.answerVoice.checked=s.answerVoice??DEFAULTS.answerVoice;els.tick.checked=s.tick??DEFAULTS.tick;els.rate.value=s.rate??DEFAULTS.rate;els.startQuestion.value=s.start??DEFAULTS.start;els.endQuestion.value=s.end??DEFAULTS.end;els.sheetUrl.value=s.sheetUrl??"";savedRange={start:Number(els.startQuestion.value)||1,end:Number(els.endQuestion.value)||3};}
+  function cancelSpeech(){speechRunId++;answerSpeechPending=false;if('speechSynthesis'in window)window.speechSynthesis.cancel();}
+  function selectedVoice(){if(!('speechSynthesis'in window))return null;const voices=window.speechSynthesis.getVoices();return voices.find(v=>v.voiceURI===els.voice.value)||null;}
+  function speakText(text, kind='question', onDone){const enabled=kind==='question'?els.questionVoice.checked:els.answerVoice.checked;if(!enabled||!('speechSynthesis'in window)||!text){if(onDone)onDone();return;}const runId=++speechRunId;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=Number(els.rate.value)||.9;u.pitch=1;u.volume=1;u.lang=selectedVoice()?.lang||document.documentElement.lang||navigator.language||'en-US';const v=selectedVoice();if(v)u.voice=v;u.onend=()=>{if(runId===speechRunId&&onDone)onDone();};u.onerror=()=>{if(runId===speechRunId&&onDone)onDone();};window.speechSynthesis.speak(u);}
+  function populateVoices(){if(!('speechSynthesis'in window))return;const previous=els.voice.value;const voices=window.speechSynthesis.getVoices();els.voice.replaceChildren(new Option('Device default',''));voices.forEach(v=>els.voice.add(new Option(`${v.name} (${v.lang})${v.default?' — default':''}`,v.voiceURI)));if([...els.voice.options].some(o=>o.value===previous))els.voice.value=previous;else {try{const s=JSON.parse(localStorage.getItem('questionPresenterSettings')||'{}');els.voice.value=s.voiceURI||'';}catch(_){}}}
+  function getAudioContext(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;if(!audioContext)audioContext=new C();if(audioContext.state==='suspended')audioContext.resume().catch(()=>{});return audioContext;}
+  function playTick(){if(!els.tick.checked)return;const ctx=getAudioContext();if(!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain(),n=ctx.currentTime;o.type='sine';o.frequency.setValueAtTime(1050,n);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.08,n+.004);g.gain.exponentialRampToValueAtTime(.0001,n+.035);o.connect(g);g.connect(ctx.destination);o.start(n);o.stop(n+.04);}
+  function setControlState(){const active=activePhases.includes(phase);els.start.disabled=active;els.stop.disabled=!active;els.previous.disabled=!active||index<=startPosition-1;els.next.disabled=!active;els.skip.disabled=!active;els.pause.disabled=!active||mode==='teacher'||mode==='self'||mode==='revision';els.pause.textContent=phase==='paused'?'Resume':'Pause';els.reveal.disabled=!active||phase==='answer'||(phase==='paused'&&pausedFrom==='answer')||mode==='revision';els.restart.disabled=!active;els.repeat.disabled=false;}
+  function updateProgress(){const total=Math.max(1,endPosition-startPosition+1);const done=Math.min(total,Math.max(0,index-startPosition+1));const pct=phase==='complete'?100:Math.round((done/total)*100);els.progressBar.style.width=pct+'%';els.progress.setAttribute('aria-valuenow',String(pct));els.progress.setAttribute('aria-valuetext',`${done} of ${total} questions`);}
+  function startTicker(){clearTicker();deadline=Date.now()+remainingMs;lastTickSecond=Math.ceil(remainingMs/1000);intervalId=setInterval(tick,100);tick();}
+  function tick(){if(phase!=='question'&&phase!=='answer')return;remainingMs=Math.max(0,deadline-Date.now());setTimer(remainingMs,phase==='question'&&remainingMs<=5000);if(phase==='question'){const sec=Math.ceil(remainingMs/1000);if(lastTickSecond!==null&&sec<lastTickSecond)playTick();lastTickSecond=sec;}if(remainingMs<=0){clearTicker();if(phase==='question'){if(mode==='timed')revealAnswer(false);else {setTimer(0);phase='question';setStatus(mode==='teacher'?'Time is up. Reveal the answer when ready.':'Time is up. Select Next to continue.');setControlState();}}else if(phase==='answer'){answerTimerElapsed=true;if(!answerSpeechPending)advance(1);}}}
+  function renderQuestion(){const item=questions[index];if(!item)return;els.number.textContent=`Question ${item.number||index+1} · ${index-startPosition+2} of ${endPosition-startPosition+1}`;els.question.textContent=item.question;els.answer.textContent=item.answer;els.explanation.textContent=item.explanation||'';els.explanationWrap.hidden=!item.explanation;els.answerWrap.hidden=(mode==='revision')?false:true;els.image.hidden=!item.imageUrl;els.image.removeAttribute('src');els.image.alt=item.imageAlt||'Question illustration';if(item.imageUrl){els.image.src=item.imageUrl;els.image.onerror=()=>{els.image.hidden=true;setStatus('The question image could not be loaded.');};}els.modeBadge.textContent=({timed:'Timed Quiz',teacher:'Teacher-Led',self:'Self-Paced',revision:'Revision'})[mode];updateProgress();setControlState();}
+  function showReady(message='Ready. Select Start quiz to begin.') {clearTicker();cancelSpeech();phase='ready';remainingMs=questionSeconds*1000;els.number.textContent='Quiz ready';els.question.textContent='Your quiz is ready to begin. Select Start quiz when you are ready.';els.answer.textContent='';els.explanation.textContent='';els.answerWrap.hidden=true;els.explanationWrap.hidden=true;els.image.hidden=true;setTimer(remainingMs);els.progressBar.style.width='0%';els.progress.setAttribute('aria-valuenow','0');els.completion.hidden=true;setControlState();setStatus(message);}
+  function showStopped(){clearTicker();cancelSpeech();answerTimerElapsed=false;phase='stopped';remainingMs=0;setTimer(0);els.answerWrap.hidden=true;setControlState();els.start.disabled=false;els.stop.disabled=true;els.previous.disabled=els.next.disabled=els.skip.disabled=els.pause.disabled=els.reveal.disabled=els.restart.disabled=true;setStatus('Quiz stopped. Select Start quiz to run the configured range again.');}
+  function showComplete(){clearTicker();cancelSpeech();phase='complete';remainingMs=0;els.number.textContent='Quiz complete';els.question.textContent=`You have finished questions ${startPosition} to ${endPosition}.`;els.answerWrap.hidden=true;els.explanationWrap.hidden=true;els.image.hidden=true;setTimer(0);els.progressBar.style.width='100%';els.progress.setAttribute('aria-valuenow','100');els.completionSummary.textContent=`Completed ${endPosition-startPosition+1} question(s) from ${loadedSource}. You can run the same range again or repeat it in Revision mode.`;els.completion.hidden=false;setControlState();els.start.disabled=false;els.stop.disabled=true;els.previous.disabled=els.next.disabled=els.skip.disabled=els.pause.disabled=els.reveal.disabled=els.restart.disabled=true;setStatus('Quiz complete. Choose an option below to continue.');}
+  function showEmpty(message){clearTicker();phase='ready';els.number.textContent='No questions loaded';els.question.textContent=message;els.answerWrap.hidden=true;els.timerValue.textContent='--:--';els.progressBar.style.width='0%';setControlState();els.start.disabled=true;els.stop.disabled=true;setStatus('Load a CSV file or a published Google Sheets CSV URL.');}
+  function validateRange(){const a=Number(els.startQuestion.value),b=Number(els.endQuestion.value);if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1||a>questions.length||b>questions.length||a>b)throw new Error(`Choose a valid range from 1 to ${questions.length}, with start no greater than end.`);startPosition=a;endPosition=b;savedRange={start:a,end:b};}
+  function startQuiz(){try{validateRange();}catch(e){setStatus(e.message);return;}mode=els.mode.value;questionSeconds=Math.max(1,Math.floor(Number(els.questionSeconds.value)||30));answerSeconds=Math.max(0,Math.floor(Number(els.answerSeconds.value)||0));saveSettings();els.completion.hidden=true;loadQuestion(startPosition-1,true);setStatus(`Started ${els.mode.options[els.mode.selectedIndex].text}: questions ${startPosition}–${endPosition}.`);}
+  function loadQuestion(newIndex,shouldRun=true){clearTicker();cancelSpeech();answerTimerElapsed=false;answerSpeechPending=false;if(!questions.length){showEmpty('No questions were found in the source.');return;}index=Math.max(startPosition-1,newIndex);if(index>=endPosition){showComplete();return;}phase='question';pausedFrom='question';remainingMs=questionSeconds*1000;els.completion.hidden=true;renderQuestion();if(mode==='revision'){els.answerWrap.hidden=false;setTimer(0);phase='question';setStatus(`Revision mode: question ${index-startPosition+2} of ${endPosition-startPosition+1}. Use Next or Previous to review.`);speakText(questions[index].question,'question');setControlState();return;}if(mode==='self'||mode==='teacher'){setTimer(0);setStatus(mode==='teacher'?'Teacher-Led: discuss the question, then reveal the answer.':'Self-Paced: reveal the answer when ready, then select Next.');speakText(questions[index].question,'question');setControlState();return;}if(shouldRun){setStatus(`Showing question ${index-startPosition+2} of ${endPosition-startPosition+1}.`);speakText(questions[index].question,'question');startTicker();}else{phase='paused';pausedFrom='question';setTimer(remainingMs);setControlState();setStatus('Question loaded and paused.');}}
+  function revealAnswer(manual=true){if(phase==='complete'||phase==='ready'||phase==='stopped'||phase==='answer')return;if(phase==='paused'&&pausedFrom==='answer')return;clearTicker();cancelSpeech();els.answerWrap.hidden=false;els.explanationWrap.hidden=!questions[index].explanation;updateProgress();answerTimerElapsed=false;if(manual&&phase==='paused'){phase='paused';pausedFrom='answer';remainingMs=answerSeconds*1000;setTimer(remainingMs);setControlState();setStatus('Answer revealed. Quiz remains paused.');return;}if(mode==='teacher'||mode==='self'||mode==='revision'){phase='answer';remainingMs=0;setTimer(0);speakText((questions[index].answer||'')+(questions[index].explanation?'. Explanation. '+questions[index].explanation:''),'answer');setControlState();setStatus(mode==='teacher'?'Answer revealed. Select Next when ready.':'Answer revealed. Select Next when ready.');return;}phase='answer';remainingMs=answerSeconds*1000;answerSpeechPending=els.answerVoice.checked&&'speechSynthesis'in window&&Boolean(questions[index].answer);setControlState();setStatus('Answer revealed.');if(answerSpeechPending)speakText((questions[index].answer||'')+(questions[index].explanation?'. Explanation. '+questions[index].explanation:''),'answer',()=>{answerSpeechPending=false;if(phase==='answer'&&answerTimerElapsed)advance(1);});if(answerSeconds===0){answerTimerElapsed=true;setTimer(0);if(!answerSpeechPending)advance(1);}else startTicker();}
+  function togglePause(){if(mode!=='timed')return;if(phase==='paused'){phase=pausedFrom;setControlState();if('speechSynthesis'in window&&els.questionVoice.checked||'speechSynthesis'in window&&els.answerVoice.checked){try{window.speechSynthesis.resume();}catch(_){}}setStatus(phase==='answer'?'Answer display timer resumed.':'Question countdown resumed.');startTicker();return;}if(phase!=='question'&&phase!=='answer')return;remainingMs=Math.max(0,deadline-Date.now());pausedFrom=phase;clearTicker();if('speechSynthesis'in window){try{window.speechSynthesis.pause();}catch(_){}}phase='paused';setTimer(remainingMs);setControlState();setStatus('Quiz paused.');}
+  function advance(step){clearTicker();cancelSpeech();const target=index+step;if(target>=endPosition){showComplete();return;}loadQuestion(Math.max(startPosition-1,target),true);}
+  function normalizeHeader(v){return String(v??'').replace(/^\uFEFF/,'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ');}
+  function parseCSV(text){const rows=[];let row=[],field='',quoted=false;text=text.replace(/^\uFEFF/,'');for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++;}else if(c==='"')quoted=false;else field+=c;}else if(c==='"'&&field==='')quoted=true;else if(c===','){row.push(field);field='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);rows.push(row);row=[];field='';}else field+=c;}if(quoted)throw new Error('CSV parsing failed: an opening quote has no matching closing quote.');if(field!==''||row.length){row.push(field);rows.push(row);}return rows.filter(r=>r.some(c=>String(c).trim()!==''));}
+  function csvToQuestions(text){const rows=parseCSV(text);if(rows.length<2)throw new Error('The CSV must contain a header row and at least one question.');const h=rows[0].map(normalizeHeader);const find=names=>h.findIndex(v=>names.includes(v));const ni=find(['question number','question no','number','no','question #']),qi=find(['question','question text']),ai=find(['answer','answer text']),ei=find(['explanation','answer explanation','why']),ii=find(['image url','image','image link']),alt=find(['image alt','image description']);if(qi<0||ai<0)throw new Error('Required headers "Question" and "Answer" were not found.');const out=rows.slice(1).map((r,i)=>({number:ni>=0?(r[ni]||'').trim()||String(i+1):String(i+1),question:String(r[qi]??'').trim(),answer:String(r[ai]??'').trim(),explanation:ei>=0?String(r[ei]??'').trim():'',imageUrl:ii>=0?String(r[ii]??'').trim():'',imageAlt:alt>=0?String(r[alt]??'').trim():''})).filter(q=>q.question);if(!out.length)throw new Error('No non-empty questions were found.');const missing=out.filter(q=>!q.answer).length;if(missing)setStatus(`Loaded with warning: ${missing} question(s) have no answer.`);return out;}
+  async function loadCSVText(text,source){const next=csvToQuestions(text);questions=next;index=0;loadedSource=source;els.startQuestion.value='1';els.endQuestion.value=String(questions.length);els.startQuestion.max=els.endQuestion.max=String(questions.length);savedRange={start:1,end:questions.length};showReady(`Loaded ${questions.length} questions from ${source}. Optional Explanation and Image URL columns are supported.`);saveSettings();}
+  function setSettingsOpen(open){els.settingsPanel.hidden=!open;els.settingsToggle.setAttribute('aria-expanded',String(open));els.settingsToggle.textContent=open?'Hide settings & question source':'Settings & question source';if(open)els.questionSeconds.focus();else els.settingsToggle.focus();}
+  async function toggleFullscreen(){try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();document.body.classList.add('presenter-fullscreen');els.fullscreen.textContent='Exit fullscreen';}else await document.exitFullscreen();}catch(_){setStatus('Fullscreen is not available in this browser or was blocked.');}}
+  document.addEventListener('fullscreenchange',()=>{const on=Boolean(document.fullscreenElement);document.body.classList.toggle('presenter-fullscreen',on);els.fullscreen.textContent=on?'Exit fullscreen':'Enter fullscreen';});
+  els.settingsToggle.addEventListener('click',()=>setSettingsOpen(els.settingsPanel.hidden));els.settingsClose.addEventListener('click',()=>setSettingsOpen(false));
+  els.testVoice.addEventListener('click',()=>{if(!('speechSynthesis'in window)){setStatus('Speech synthesis is not available in this browser.');return;}cancelSpeech();speakText('Hello! This is a sample of the selected quiz voice.','question');setStatus('Playing a voice sample.');});
+  els.testTick.addEventListener('click',()=>{const old=els.tick.checked;els.tick.checked=true;playTick();els.tick.checked=old;setStatus('Playing a ticking sound sample.');});
+  [els.questionVoice,els.answerVoice,els.tick,els.rate,els.voice,els.mode,els.questionSeconds,els.answerSeconds,els.startQuestion,els.endQuestion,els.sheetUrl].forEach(el=>el.addEventListener('change',saveSettings));
+  els.questionVoice.addEventListener('change',()=>{if(!els.questionVoice.checked&&phase==='question')cancelSpeech();setStatus(els.questionVoice.checked?'Question voice enabled.':'Question voice disabled.');});
+  els.answerVoice.addEventListener('change',()=>{if(!els.answerVoice.checked&&phase==='answer'&&answerSpeechPending){cancelSpeech();answerSpeechPending=false;if(answerTimerElapsed&&mode==='timed')advance(1);}setStatus(els.answerVoice.checked?'Answer voice enabled.':'Answer voice disabled.');});
+  els.start.addEventListener('click',startQuiz);els.stop.addEventListener('click',showStopped);els.previous.addEventListener('click',()=>{if(index>startPosition-1&&activePhases.includes(phase))loadQuestion(index-1,true);});els.next.addEventListener('click',()=>advance(1));els.skip.addEventListener('click',()=>advance(1));els.pause.addEventListener('click',togglePause);els.reveal.addEventListener('click',()=>revealAnswer(true));els.restart.addEventListener('click',()=>{if(activePhases.includes(phase))loadQuestion(index,true);});els.repeat.addEventListener('click',()=>{els.startQuestion.value=String(savedRange.start);els.endQuestion.value=String(savedRange.end);startQuiz();});els.completionRestart.addEventListener('click',()=>{els.startQuestion.value=String(savedRange.start);els.endQuestion.value=String(savedRange.end);startQuiz();});els.completionRevision.addEventListener('click',()=>{els.mode.value='revision';saveSettings();startQuiz();});els.fullscreen.addEventListener('click',toggleFullscreen);
+  els.apply.addEventListener('click',()=>{const q=Number(els.questionSeconds.value),a=Number(els.answerSeconds.value);if(!Number.isFinite(q)||q<1||q>3600||!Number.isFinite(a)||a<0||a>3600){setStatus('Enter question time from 1–3600 seconds and answer display from 0–3600 seconds.');return;}questionSeconds=Math.floor(q);answerSeconds=Math.floor(a);mode=els.mode.value;saveSettings();if(activePhases.includes(phase))loadQuestion(index,true);else setStatus(`Settings saved. Mode: ${els.mode.options[els.mode.selectedIndex].text}; question ${questionSeconds}s; answer ${answerSeconds}s.`);});
+  els.csvFile.addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{await loadCSVText(await f.text(),f.name);}catch(err){setStatus(err.message||'Could not read this CSV file.');}});
+  els.loadUrl.addEventListener('click',async()=>{const url=els.sheetUrl.value.trim();if(!url){setStatus('Paste a published Google Sheets CSV URL first.');return;}try{setStatus('Loading Google Sheets CSV…');const r=await fetch(url);if(!r.ok)throw new Error(`Request failed (${r.status}). Check the published CSV URL and permissions.`);const t=await r.text();if(/<html[\s>]/i.test(t.slice(0,500)))throw new Error('The URL returned HTML rather than CSV. Publish the sheet as CSV.');await loadCSVText(t,'Google Sheets');}catch(e){setStatus(`${e.message||'Unable to load the Google Sheet.'} A private sheet needs authenticated Google Sheets API access.`);}});
+  document.addEventListener('keydown',e=>{if(e.target.matches('input,select,textarea,button'))return;if(e.key==='Escape'&&document.fullscreenElement)return;if(e.code==='Space'&&mode==='timed'&&activePhases.includes(phase)){e.preventDefault();togglePause();}else if(e.key==='ArrowRight'&&activePhases.includes(phase))advance(1);else if(e.key==='ArrowLeft'&&activePhases.includes(phase)&&index>startPosition-1)loadQuestion(index-1,true);else if(e.key.toLowerCase()==='r'&&activePhases.includes(phase))loadQuestion(index,true);});
+  restoreSettings();questionSeconds=Math.max(1,Number(els.questionSeconds.value)||30);answerSeconds=Math.max(0,Number(els.answerSeconds.value)||5);mode=els.mode.value;populateVoices();if('speechSynthesis'in window)window.speechSynthesis.onvoiceschanged=populateVoices;els.startQuestion.max=els.endQuestion.max=String(questions.length);els.endQuestion.value=String(questions.length);savedRange={start:1,end:questions.length};showReady('Ready. Choose a presentation mode, load your question bank if needed, and select Start quiz.');
+})();
+</script>
+</body>
+</html>
