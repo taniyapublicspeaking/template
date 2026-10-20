@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question Presenter</title>
+<style>
+  :root {
+    --qp-section-bg: #f3f6fb;
+    --qp-panel-bg: #fff;
+    --qp-text: #172033;
+    --qp-muted: #667085;
+    --qp-accent: #3157d5;
+    --qp-border: #dce3ee;
+    --qp-radius: 22px;
+    --qp-panel-padding: clamp(1.25rem, 4vw, 3rem);
+    --qp-question-seconds: 30;
+    --qp-answer-seconds: 5;
+    --qp-content-width: 980px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--qp-text);
+    background: #e9eef6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .section-definition {
+    min-height: 100svh;
+    padding: clamp(1rem, 4vw, 3rem);
+    display: grid;
+    place-items: center;
+    background: var(--qp-section-bg);
+  }
+
+  .question-presenter {
+    width: min(100%, var(--qp-content-width));
+  }
+
+  .question-presenter__heading {
+    margin: 0 0 .4rem;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .question-presenter__intro {
+    margin: 0 0 1.5rem;
+    color: var(--qp-muted);
+    line-height: 1.6;
+  }
+
+  .question-panel {
+    min-height: 360px;
+    padding: var(--qp-panel-padding);
+    display: flex;
+    flex-direction: column;
+    background: var(--qp-panel-bg);
+    border: 1px solid var(--qp-border);
+    border-radius: var(--qp-radius);
+    box-shadow: 0 18px 50px rgb(31 45 76 / 9%);
+  }
+
+  .question-panel__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .question-panel__number {
+    color: var(--qp-accent);
+    font-weight: 750;
+    letter-spacing: .04em;
+  }
+
+  .question-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .8rem;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #233eaa;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .question-timer[data-urgent="true"] {
+    color: #a12b22;
+    background: #fff0ee;
+  }
+
+  .question-panel__label {
+    margin: 0 0 .75rem;
+    color: var(--qp-muted);
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .question-panel__question {
+    margin: 0;
+    font-size: clamp(1.45rem, 3.5vw, 2.5rem);
+    line-height: 1.35;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--qp-border);
+  }
+
+  .question-panel__answer {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .question-panel__answer-wrap[hidden] { display: none; }
+
+  .question-progress {
+    height: 7px;
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #dfe5ef;
+  }
+
+  .question-progress__bar {
+    width: 0%;
+    height: 100%;
+    background: var(--qp-accent);
+    transition: width .2s linear;
+  }
+
+  .question-status {
+    min-height: 1.5em;
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .9rem;
+  }
+
+  .question-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    margin-top: 1.25rem;
+  }
+
+  button, input {
+    font: inherit;
+  }
+
+  button {
+    min-height: 44px;
+    padding: .65rem 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 11px;
+    color: var(--qp-text);
+    background: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--qp-accent); }
+  button:focus-visible, input:focus-visible {
+    outline: 3px solid rgb(49 87 213 / 30%);
+    outline-offset: 2px;
+  }
+
+  button:disabled { opacity: .45; cursor: not-allowed; }
+
+  button.button-primary {
+    color: white;
+    background: var(--qp-accent);
+    border-color: var(--qp-accent);
+  }
+
+  .question-settings-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+
+  .question-settings[hidden] {
+    display: none;
+  }
+
+  .question-settings {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 70%);
+  }
+
+  .question-settings__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: .85rem;
+  }
+
+  .question-settings__title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .question-settings__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: .85rem;
+  }
+
+  .question-settings label {
+    display: grid;
+    gap: .35rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings input[type="number"],
+  .question-settings input[type="url"] {
+    min-height: 42px;
+    width: 100%;
+    padding: .55rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .seconds-field { width: 145px; }
+  .question-settings .url-field { flex: 1 1 280px; }
+
+  .question-settings select {
+    min-height: 42px;
+    width: 100%;
+    padding: .55rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .setting-toggle {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: 42px;
+    padding: .5rem .7rem;
+    border: 1px solid var(--qp-border);
+    border-radius: 9px;
+    background: white;
+    color: var(--qp-text);
+  }
+
+  .question-settings .setting-toggle input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--qp-accent);
+  }
+
+  .question-settings__note {
+    margin: .75rem 0 0;
+    color: var(--qp-muted);
+    font-size: .82rem;
+    line-height: 1.5;
+  }
+
+  .question-settings__file {
+    display: grid;
+    gap: .4rem;
+    margin-top: 1rem;
+    color: var(--qp-muted);
+    font-size: .85rem;
+    font-weight: 650;
+  }
+
+  .question-settings__file input { max-width: 100%; }
+
+  @media (max-width: 540px) {
+    .section-definition { padding: .75rem; }
+    .question-panel { min-height: 320px; }
+    .question-panel__top { margin-bottom: 1.5rem; }
+    .question-controls button { flex: 1 1 calc(50% - .65rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<section class="section-definition" aria-labelledby="presenter-title">
+  <div class="question-presenter">
+    <h1 class="question-presenter__heading" id="presenter-title">Question Presenter</h1>
+    <p class="question-presenter__intro">
+      One question at a time, with a countdown, answer reveal, and presenter controls.
+    </p>
+
+    <article class="question-panel" aria-live="polite" aria-atomic="false">
+      <div class="question-panel__top">
+        <span class="question-panel__number" id="question-number">Quiz ready</span>
+        <span class="question-timer" id="question-timer" aria-label="Time remaining">
+          <span aria-hidden="true">◷</span>
+          <span id="timer-value">00:30</span>
+        </span>
+      </div>
+
+      <div>
+        <p class="question-panel__label">Question</p>
+        <h2 class="question-panel__question" id="question-text">Your quiz is ready to begin. Select Start quiz when you are ready.</h2>
+      </div>
+
+      <div class="question-panel__answer-wrap" id="answer-wrap" hidden>
+        <p class="question-panel__label">Answer</p>
+        <p class="question-panel__answer" id="answer-text"></p>
+      </div>
+    </article>
+
+    <div class="question-progress" role="progressbar" aria-label="Question progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+      <div class="question-progress__bar" id="progress-bar"></div>
+    </div>
+    <p class="question-status" id="status" role="status">Ready.</p>
+
+    <nav class="question-controls" aria-label="Question controls">
+      <button type="button" class="button-primary" id="start-button">Start quiz</button>
+      <button type="button" id="stop-button" disabled>Stop quiz</button>
+      <button type="button" id="previous-button" disabled>Previous</button>
+      <button type="button" id="pause-button" disabled>Pause</button>
+      <button type="button" id="reveal-button" disabled>Reveal answer</button>
+      <button type="button" id="skip-button" disabled>Skip</button>
+      <button type="button" id="next-button" disabled>Next</button>
+      <button type="button" id="restart-button" disabled>Restart question</button>
+    </nav>
+
+    <div class="question-settings-toggle">
+      <button type="button" id="settings-toggle-button"
+              aria-expanded="false" aria-controls="question-settings-panel">
+        Settings &amp; question source
+      </button>
+    </div>
+
+    <aside class="question-settings" id="question-settings-panel"
+           aria-label="Question presenter settings" hidden>
+      <div class="question-settings__heading">
+        <h2 class="question-settings__title">Settings &amp; question source</h2>
+        <button type="button" id="settings-close-button">Close settings</button>
+      </div>
+      <div class="question-settings__row">
+        <label class="seconds-field">
+          Question time (seconds)
+          <input type="number" id="question-seconds" min="1" max="3600" value="30">
+        </label>
+        <label class="seconds-field">
+          Answer display (seconds)
+          <input type="number" id="answer-seconds" min="0" max="3600" value="5">
+        </label>
+        <button type="button" id="apply-settings-button">Apply times</button>
+      </div>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="setting-toggle">
+          <input type="checkbox" id="voice-enabled" checked>
+          Read questions and answers aloud
+        </label>
+        <label class="setting-toggle">
+          <input type="checkbox" id="tick-enabled" checked>
+          Play ticking sound during countdown
+        </label>
+        <label class="seconds-field">
+          Speech rate
+          <select id="speech-rate" aria-label="Speech rate">
+            <option value="0.8">Slow</option>
+            <option value="0.9" selected>Natural</option>
+            <option value="1">Normal</option>
+            <option value="1.1">Fast</option>
+          </select>
+        </label>
+        <button type="button" id="test-voice-button">Test voice</button>
+        <button type="button" id="test-tick-button">Test tick</button>
+      </div>
+      <p class="question-settings__note">
+        Voice uses your browser/device's available speech voices. Tick sounds are generated in your browser.
+        Some browsers require a user click before audio can play.
+      </p>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="seconds-field">
+          Start question number
+          <input type="number" id="start-question" min="1" value="1" step="1">
+        </label>
+        <label class="seconds-field">
+          End question number
+          <input type="number" id="end-question" min="1" value="3" step="1">
+        </label>
+        <p class="question-settings__note" style="flex:1 1 100%; margin-top:0">
+          These numbers refer to the question's position in the loaded list. For example,
+          enter 20 and 50 to quiz questions 20 through 50, inclusive.
+        </p>
+      </div>
+
+      <div class="question-settings__row" style="margin-top:1rem">
+        <label class="url-field">
+          Published Google Sheets CSV URL
+          <input type="url" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
+        </label>
+        <button type="button" id="load-url-button">Load Google Sheet</button>
+      </div>
+
+      <label class="question-settings__file">
+        Or choose a CSV file from your device
+        <input type="file" id="csv-file" accept=".csv,text/csv">
+      </label>
+
+      <p class="question-settings__note">
+        Expected CSV headers: <strong>Question number, Question, Answer</strong>.
+        For Google Sheets, publish the relevant sheet as CSV and paste its published CSV URL.
+        Publishing can make sheet data public. A private sheet needs an authenticated API setup.
+        CSV file selection is processed in this browser; no upload is performed.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<script>
+(() => {
+  "use strict";
+
+  const CONFIG = {
+    questionSeconds: 30,
+    answerSeconds: 5,
+    autoStart: false
+  };
+
+  const SAMPLE_QUESTIONS = [
+    { number: "1", question: "What does HTML stand for?", answer: "HyperText Markup Language." },
+    { number: "2", question: "Which language is primarily used to style HTML pages?", answer: "CSS (Cascading Style Sheets)." },
+    { number: "3", question: "Which JavaScript method converts a JSON string into a JavaScript value?", answer: "JSON.parse()." }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    number: $("question-number"),
+    question: $("question-text"),
+    answer: $("answer-text"),
+    answerWrap: $("answer-wrap"),
+    timer: $("question-timer"),
+    timerValue: $("timer-value"),
+    status: $("status"),
+    progress: $("progress"),
+    progressBar: $("progress-bar"),
+    start: $("start-button"),
+    stop: $("stop-button"),
+    previous: $("previous-button"),
+    pause: $("pause-button"),
+    reveal: $("reveal-button"),
+    skip: $("skip-button"),
+    next: $("next-button"),
+    restart: $("restart-button"),
+    questionSeconds: $("question-seconds"),
+    answerSeconds: $("answer-seconds"),
+    voiceEnabled: $("voice-enabled"),
+    tickEnabled: $("tick-enabled"),
+    speechRate: $("speech-rate"),
+    testVoice: $("test-voice-button"),
+    testTick: $("test-tick-button"),
+    startQuestion: $("start-question"),
+    endQuestion: $("end-question"),
+    applySettings: $("apply-settings-button"),
+    sheetUrl: $("sheet-url"),
+    loadUrl: $("load-url-button"),
+    csvFile: $("csv-file"),
+    settingsPanel: $("question-settings-panel"),
+    settingsToggle: $("settings-toggle-button"),
+    settingsClose: $("settings-close-button")
+  };
+
+  let questions = SAMPLE_QUESTIONS;
+  let index = 0;
+  let startPosition = 1;
+  let endPosition = questions.length;
+  let questionSeconds = CONFIG.questionSeconds;
+  let answerSeconds = CONFIG.answerSeconds;
+  let phase = "ready"; // ready | question | answer | paused | stopped | complete
+  let pausedFrom = "question";
+  let remainingMs = questionSeconds * 1000;
+  let deadline = 0;
+  let intervalId = null;
+  let loadedSource = "sample questions";
+  let audioContext = null;
+  let lastTickSecond = null;
+  let answerSpeechPending = false;
+  let answerTimerElapsed = false;
+  let speechRunId = 0;
+
+  function setStatus(message) {
+    els.status.textContent = message;
+  }
+
+  function formatTime(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  function clearTicker() {
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  function setTimer(ms, urgent = false) {
+    els.timerValue.textContent = formatTime(ms);
+    els.timer.dataset.urgent = urgent ? "true" : "false";
+  }
+
+  function cancelSpeech() {
+    speechRunId++;
+    answerSpeechPending = false;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  }
+
+  function speakText(text, onDone) {
+    if (!els.voiceEnabled.checked || !("speechSynthesis" in window) || !text) {
+      if (typeof onDone === "function") onDone();
+      return;
+    }
+    const runId = ++speechRunId;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = Number(els.speechRate.value) || 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    utterance.lang = document.documentElement.lang || navigator.language || "en-US";
+    utterance.onend = () => {
+      if (runId === speechRunId && typeof onDone === "function") onDone();
+    };
+    utterance.onerror = () => {
+      if (runId === speechRunId && typeof onDone === "function") onDone();
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function getAudioContext() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+    if (!audioContext) audioContext = new AudioContextClass();
+    if (audioContext.state === "suspended") audioContext.resume().catch(() => {});
+    return audioContext;
+  }
+
+  function playTick() {
+    if (!els.tickEnabled.checked) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const now = ctx.currentTime;
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(1050, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.04);
+  }
+
+  function setControlState() {
+    const active = ["question", "answer", "paused"].includes(phase);
+    const canNavigate = active;
+    els.start.disabled = active;
+    els.stop.disabled = !active;
+    els.previous.disabled = !canNavigate || index <= startPosition - 1;
+    els.next.disabled = !canNavigate || index >= endPosition - 1;
+    els.skip.disabled = !canNavigate || index >= endPosition - 1;
+    els.pause.disabled = !active;
+    els.pause.textContent = phase === "paused" ? "Resume" : "Pause";
+    els.reveal.disabled = !active || phase === "answer" || (phase === "paused" && pausedFrom === "answer");
+    els.restart.disabled = !active;
+  }
+
+  function startTicker() {
+    clearTicker();
+    deadline = Date.now() + remainingMs;
+    lastTickSecond = Math.ceil(remainingMs / 1000);
+    intervalId = setInterval(tick, 100);
+    tick();
+  }
+
+  function tick() {
+    if (phase !== "question" && phase !== "answer") return;
+    remainingMs = Math.max(0, deadline - Date.now());
+    setTimer(remainingMs, phase === "question" && remainingMs <= 5000);
+
+    if (phase === "question") {
+      const elapsed = 1 - (remainingMs / (questionSeconds * 1000));
+      els.progressBar.style.width = `${Math.min(100, Math.max(0, elapsed * 100))}%`;
+      els.progress.setAttribute("aria-valuenow", String(Math.round(elapsed * 100)));
+      const secondNow = Math.ceil(remainingMs / 1000);
+      if (lastTickSecond !== null && secondNow < lastTickSecond) playTick();
+      lastTickSecond = secondNow;
+    }
+
+    if (remainingMs <= 0) {
+      clearTicker();
+      if (phase === "question") {
+        revealAnswer(false);
+      } else if (phase === "answer") {
+        answerTimerElapsed = true;
+        if (!answerSpeechPending) advance(1);
+      }
+    }
+  }
+
+  function renderQuestion() {
+    const item = questions[index];
+    if (!item) return;
+    els.number.textContent = `Question ${item.number || index + 1} · ${index + 1} of ${questions.length}`;
+    els.question.textContent = item.question;
+    els.answer.textContent = item.answer;
+    els.answerWrap.hidden = true;
+    els.progressBar.style.width = "0%";
+    els.progress.setAttribute("aria-valuenow", "0");
+    setControlState();
+  }
+
+  function showReady(message = "Ready. Configure the question range, then select Start quiz.") {
+    clearTicker();
+    cancelSpeech();
+    phase = "ready";
+    remainingMs = questionSeconds * 1000;
+    els.number.textContent = "Quiz ready";
+    els.question.textContent = "Your quiz is ready to begin. Select Start quiz when you are ready.";
+    els.answer.textContent = "";
+    els.answerWrap.hidden = true;
+    setTimer(remainingMs, false);
+    els.progressBar.style.width = "0%";
+    els.progress.setAttribute("aria-valuenow", "0");
+    setControlState();
+    setStatus(message);
+  }
+
+  function showStopped() {
+    clearTicker();
+    cancelSpeech();
+    answerTimerElapsed = false;
+    phase = "stopped";
+    remainingMs = 0;
+    setTimer(0, false);
+    els.answerWrap.hidden = true;
+    setControlState();
+    els.start.disabled = false;
+    els.stop.disabled = true;
+    els.previous.disabled = true;
+    els.next.disabled = true;
+    els.skip.disabled = true;
+    els.pause.disabled = true;
+    els.reveal.disabled = true;
+    els.restart.disabled = true;
+    setStatus("Quiz stopped. Select Start quiz to run the configured question range again.");
+  }
+
+  function showComplete() {
+    clearTicker();
+    cancelSpeech();
+    phase = "complete";
+    remainingMs = 0;
+    els.number.textContent = "Quiz complete";
+    els.question.textContent = `You have finished questions ${startPosition} to ${endPosition}.`;
+    els.answer.textContent = "";
+    els.answerWrap.hidden = true;
+    setTimer(0, false);
+    els.progressBar.style.width = "100%";
+    els.progress.setAttribute("aria-valuenow", "100");
+    setControlState();
+    els.start.disabled = false;
+    els.stop.disabled = true;
+    els.previous.disabled = true;
+    els.next.disabled = true;
+    els.skip.disabled = true;
+    els.pause.disabled = true;
+    els.reveal.disabled = true;
+    els.restart.disabled = true;
+    setStatus("Quiz complete. Select Start quiz to run this range again.");
+  }
+
+  function showEmpty(message) {
+    clearTicker();
+    phase = "ready";
+    els.number.textContent = "No questions loaded";
+    els.question.textContent = message;
+    els.answer.textContent = "";
+    els.answerWrap.hidden = true;
+    els.timerValue.textContent = "--:--";
+    els.timer.dataset.urgent = "false";
+    els.progressBar.style.width = "0%";
+    els.progress.setAttribute("aria-valuenow", "0");
+    setControlState();
+    els.start.disabled = true;
+    els.stop.disabled = true;
+    els.previous.disabled = true;
+    els.next.disabled = true;
+    els.skip.disabled = true;
+    els.pause.disabled = true;
+    els.reveal.disabled = true;
+    els.restart.disabled = true;
+    setStatus("Load a CSV file or a published Google Sheets CSV URL.");
+  }
+
+  function validateRange() {
+    const start = Number(els.startQuestion.value);
+    const end = Number(els.endQuestion.value);
+    if (!Number.isInteger(start) || !Number.isInteger(end) ||
+        start < 1 || end < 1 || start > questions.length ||
+        end > questions.length || start > end) {
+      throw new Error(`Choose a valid range from 1 to ${questions.length}, with the start number no greater than the end number.`);
+    }
+    startPosition = start;
+    endPosition = end;
+  }
+
+  function startQuiz() {
+    try {
+      validateRange();
+    } catch (error) {
+      setStatus(error.message);
+      return;
+    }
+    loadQuestion(startPosition - 1, true);
+    setStatus(`Quiz started: questions ${startPosition}–${endPosition} of ${questions.length}.`);
+  }
+
+  function loadQuestion(newIndex, shouldRun = true) {
+    clearTicker();
+    cancelSpeech();
+    answerTimerElapsed = false;
+    answerSpeechPending = false;
+    if (!questions.length) {
+      showEmpty("No questions were found in the source.");
+      return;
+    }
+    const boundedIndex = Math.max(startPosition - 1, newIndex);
+    if (boundedIndex >= endPosition) {
+      showComplete();
+      return;
+    }
+    index = boundedIndex;
+    phase = "question";
+    pausedFrom = "question";
+    remainingMs = questionSeconds * 1000;
+    renderQuestion();
+    if (shouldRun) {
+      setStatus(`Showing question ${index + 1} of ${questions.length}. Quiz range: ${startPosition}–${endPosition}.`);
+      speakText(questions[index].question);
+      startTicker();
+    } else {
+      phase = "paused";
+      pausedFrom = "question";
+      setTimer(remainingMs, false);
+      setControlState();
+      setStatus("Question loaded and paused.");
+    }
+  }
+
+  function revealAnswer(manual = true) {
+    if (phase === "complete" || phase === "ready" || phase === "stopped" || phase === "answer") return;
+    if (phase === "paused" && pausedFrom === "answer") return;
+
+    clearTicker();
+    cancelSpeech();
+    els.answerWrap.hidden = false;
+    els.progressBar.style.width = "100%";
+    els.progress.setAttribute("aria-valuenow", "100");
+    answerTimerElapsed = false;
+
+    if (manual && phase === "paused") {
+      phase = "paused";
+      pausedFrom = "answer";
+      remainingMs = answerSeconds * 1000;
+      setTimer(remainingMs, false);
+      setControlState();
+      setStatus("Answer revealed. Quiz remains paused.");
+      return;
+    }
+
+    phase = "answer";
+    remainingMs = answerSeconds * 1000;
+    answerSpeechPending = Boolean(els.voiceEnabled.checked && "speechSynthesis" in window && questions[index].answer);
+    setControlState();
+    setStatus("Answer revealed. Reading answer aloud when voice is enabled.");
+
+    if (answerSpeechPending) {
+      speakText(questions[index].answer, () => {
+        answerSpeechPending = false;
+        if (phase === "answer" && answerTimerElapsed) advance(1);
+      });
+    }
+
+    if (answerSeconds === 0) {
+      answerTimerElapsed = true;
+      setTimer(0, false);
+      if (!answerSpeechPending) advance(1);
+    } else {
+      startTicker();
+    }
+  }
+
+  function togglePause() {
+    if (phase === "paused") {
+      phase = pausedFrom;
+      setControlState();
+      if ("speechSynthesis" in window && els.voiceEnabled.checked) {
+        try { window.speechSynthesis.resume(); } catch (_) {}
+      }
+      setStatus(phase === "answer" ? "Answer display timer resumed." : "Question countdown resumed.");
+      startTicker();
+      return;
+    }
+    if (phase !== "question" && phase !== "answer") return;
+    remainingMs = Math.max(0, deadline - Date.now());
+    pausedFrom = phase;
+    clearTicker();
+    if ("speechSynthesis" in window) {
+      try { window.speechSynthesis.pause(); } catch (_) {}
+    }
+    phase = "paused";
+    setTimer(remainingMs, false);
+    setControlState();
+    setStatus("Quiz paused.");
+  }
+
+  function advance(step) {
+    clearTicker();
+    const target = index + step;
+    if (target >= endPosition) {
+      showComplete();
+      return;
+    }
+    loadQuestion(Math.max(startPosition - 1, target), true);
+  }
+
+  function normalizeHeader(value) {
+    return String(value ?? "")
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ");
+  }
+
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let quoted = false;
+    text = text.replace(/^\uFEFF/, "");
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      if (quoted) {
+        if (char === '"' && text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else if (char === '"') {
+          quoted = false;
+        } else {
+          field += char;
+        }
+      } else if (char === '"' && field === "") {
+        quoted = true;
+      } else if (char === ",") {
+        row.push(field);
+        field = "";
+      } else if (char === "\n" || char === "\r") {
+        if (char === "\r" && text[i + 1] === "\n") i++;
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = "";
+      } else {
+        field += char;
+      }
+    }
+    if (quoted) throw new Error("CSV parsing failed: an opening quote has no matching closing quote.");
+    if (field !== "" || row.length) {
+      row.push(field);
+      rows.push(row);
+    }
+    return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+  }
+
+  function csvToQuestions(csvText) {
+    const rows = parseCSV(csvText);
+    if (rows.length < 2) throw new Error("The CSV must contain a header row and at least one question.");
+    const headers = rows[0].map(normalizeHeader);
+    const numberIndex = headers.findIndex(h =>
+      ["question number", "question no", "number", "no", "question #"].includes(h)
+    );
+    const questionIndex = headers.findIndex(h => h === "question" || h === "question text");
+    const answerIndex = headers.findIndex(h => h === "answer" || h === "answer text");
+    if (questionIndex < 0 || answerIndex < 0) {
+      throw new Error('Could not find required "Question" and "Answer" headers. Check the CSV header row.');
+    }
+    const parsed = rows.slice(1).map((row, rowIndex) => ({
+      number: numberIndex >= 0 && row[numberIndex] !== undefined && row[numberIndex].trim() !== ""
+        ? row[numberIndex].trim()
+        : String(rowIndex + 1),
+      question: String(row[questionIndex] ?? "").trim(),
+      answer: String(row[answerIndex] ?? "").trim()
+    })).filter(item => item.question !== "");
+    if (!parsed.length) throw new Error("No non-empty questions were found.");
+    return parsed;
+  }
+
+  async function loadCSVText(csvText, sourceLabel) {
+    const newQuestions = csvToQuestions(csvText);
+    questions = newQuestions;
+    index = 0;
+    loadedSource = sourceLabel;
+    els.startQuestion.value = "1";
+    els.endQuestion.value = String(questions.length);
+    els.startQuestion.max = String(questions.length);
+    els.endQuestion.max = String(questions.length);
+    showReady(`Loaded ${questions.length} questions from ${loadedSource}. Set the range if needed, then select Start quiz.`);
+  }
+
+  function setSettingsOpen(open) {
+    els.settingsPanel.hidden = !open;
+    els.settingsToggle.setAttribute("aria-expanded", String(open));
+    els.settingsToggle.textContent = open
+      ? "Hide settings & question source"
+      : "Settings & question source";
+    if (open) els.questionSeconds.focus();
+    else els.settingsToggle.focus();
+  }
+
+  els.settingsToggle.addEventListener("click", () => setSettingsOpen(els.settingsPanel.hidden));
+  els.settingsClose.addEventListener("click", () => setSettingsOpen(false));
+  els.testVoice.addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) {
+      setStatus("Speech synthesis is not available in this browser. Try a current version of Chrome or Edge.");
+      return;
+    }
+    cancelSpeech();
+    speakText("Hello! I will read each question and answer aloud during the quiz.");
+    setStatus("Playing a voice sample.");
+  });
+  els.testTick.addEventListener("click", () => {
+    const wasEnabled = els.tickEnabled.checked;
+    els.tickEnabled.checked = true;
+    playTick();
+    els.tickEnabled.checked = wasEnabled;
+    setStatus("Playing a ticking sound sample.");
+  });
+  els.voiceEnabled.addEventListener("change", () => {
+    if (!els.voiceEnabled.checked) {
+      cancelSpeech();
+      answerSpeechPending = false;
+      if (phase === "answer" && answerTimerElapsed) advance(1);
+    }
+    setStatus(els.voiceEnabled.checked ? "Voice reading enabled." : "Voice reading disabled.");
+  });
+  els.tickEnabled.addEventListener("change", () => {
+    setStatus(els.tickEnabled.checked ? "Ticking sound enabled." : "Ticking sound disabled.");
+  });
+  els.start.addEventListener("click", startQuiz);
+  els.stop.addEventListener("click", showStopped);
+  els.previous.addEventListener("click", () => {
+    if (index > startPosition - 1 && ["question", "answer", "paused"].includes(phase)) {
+      loadQuestion(index - 1, true);
+    }
+  });
+  els.next.addEventListener("click", () => advance(1));
+  els.skip.addEventListener("click", () => advance(1));
+  els.pause.addEventListener("click", togglePause);
+  els.reveal.addEventListener("click", () => revealAnswer(true));
+  els.restart.addEventListener("click", () => {
+    if (["question", "answer", "paused"].includes(phase)) loadQuestion(index, true);
+  });
+
+  els.applySettings.addEventListener("click", () => {
+    const q = Number(els.questionSeconds.value);
+    const a = Number(els.answerSeconds.value);
+    if (!Number.isFinite(q) || q < 1 || q > 3600 ||
+        !Number.isFinite(a) || a < 0 || a > 3600) {
+      setStatus("Enter a question time from 1–3600 seconds and answer display from 0–3600 seconds.");
+      return;
+    }
+    questionSeconds = Math.floor(q);
+    answerSeconds = Math.floor(a);
+    if (["question", "answer", "paused"].includes(phase)) {
+      loadQuestion(index, true);
+      setStatus(`Timing updated: ${questionSeconds}s per question; ${answerSeconds}s answer display.`);
+    } else {
+      setStatus(`Timing saved: ${questionSeconds}s per question; ${answerSeconds}s answer display.`);
+    }
+  });
+
+  els.csvFile.addEventListener("change", async (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    try {
+      await loadCSVText(await file.text(), file.name);
+    } catch (error) {
+      setStatus(error.message || "Could not read this CSV file.");
+    }
+  });
+
+  els.loadUrl.addEventListener("click", async () => {
+    const url = els.sheetUrl.value.trim();
+    if (!url) {
+      setStatus("Paste a published Google Sheets CSV URL first.");
+      return;
+    }
+    try {
+      setStatus("Loading Google Sheets CSV…");
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Request failed (${response.status}). Check the published CSV URL and permissions.`);
+      const text = await response.text();
+      if (/<html[\s>]/i.test(text.slice(0, 500))) {
+        throw new Error("The URL returned HTML rather than CSV. Publish the sheet as CSV and use its published CSV URL.");
+      }
+      await loadCSVText(text, "Google Sheets");
+    } catch (error) {
+      setStatus(`${error.message || "Unable to load the Google Sheet."} If this is a private sheet, use an authenticated Google Sheets API setup.`);
+    }
+  });
+
+  // The page opens in a ready state. The quiz begins only when Start quiz is pressed.
+  els.startQuestion.max = String(questions.length);
+  els.endQuestion.max = String(questions.length);
+  els.endQuestion.value = String(questions.length);
+  showReady("Ready. Select Start quiz to begin, or open settings to configure the question range and source.");
+})();
+</script>
+</body>
+</html>
