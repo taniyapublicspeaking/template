@@ -1,0 +1,1631 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#174a8b"><title>Question Presenter v1.3.0-alpha9 — Enhanced Learning</title>
+<style>
+:root{--page:#f3f7fc;--surface:#fff;--text:#172b4d;--muted:#60728a;--line:#dce5f1;--blue:#174a8b;--dark:#103765;--soft:#e8f1ff;--accent:#2e6ecb;--green:#19724a;--greenbg:#e8f7ef;--red:#b42332;--shadow:0 12px 34px rgba(23,54,96,.09);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#fff,var(--page) 65%);color:var(--text);font-size:17px;line-height:1.55}.app{width:min(1120px,calc(100% - 28px));margin:auto;padding:25px 0 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.brand{display:flex;align-items:center;gap:13px}.logo{width:50px;height:50px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,#2f70c9,#123b73);color:white;font-size:26px;box-shadow:0 8px 20px #174a8b30}.brand h1{margin:0;color:var(--dark);font-size:clamp(1.35rem,3vw,1.9rem);letter-spacing:-.03em}.brand p{margin:3px 0 0;color:var(--muted);font-size:.9rem}.surface{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.setup{padding:20px;margin:16px 0}.setup-section h2{margin:0 0 5px;color:var(--dark);font-size:1.08rem}.section-help{margin:0 0 16px;color:var(--muted);font-size:.9rem}.metadata-summary{margin-top:16px;padding:13px 15px;border:1px solid #cbdcf2;border-radius:13px;background:#edf5ff;color:#163f70;font-weight:800;font-size:.94rem}.source-grid{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:end}.source-status{display:block;margin-top:12px;max-width:none}.appearance-panel{display:block;padding:20px;margin:16px 0}.appearance-panel .field{width:min(300px,100%)}.appearance-panel .section-help{margin:0 0 16px}.setup h2{margin-bottom:14px}.start-panel{display:flex;justify-content:center;margin:22px 0 12px}.start-lesson{min-width:min(340px,100%);padding:15px 28px;font-size:1.05rem;min-height:54px}.setup h2,.side h3{margin:0 0 14px;color:var(--dark);font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.85rem;font-weight:750;color:#314967}.field input,.field select{width:100%;min-height:43px;padding:9px 11px;border:1px solid #cbd8e8;border-radius:11px;background:white;color:var(--text);font:inherit;font-size:.92rem}.actions,.controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:14px}.btn{border:1px solid #cbd8e8;border-radius:12px;padding:10px 15px;min-height:42px;font:inherit;font-size:.9rem;font-weight:750;background:white;color:var(--dark);cursor:pointer;transition:transform .15s,background .15s}.btn:hover:not(:disabled){transform:translateY(-1px)}.btn.primary{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 5px 12px #174a8b29}.btn.soft{background:var(--soft);border-color:#d7e6fb}.btn:disabled{opacity:.4;cursor:not-allowed}.status{flex:1 1 220px;color:var(--muted);font-size:.85rem}.file-label{position:relative;overflow:hidden}.file-label input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}.layout{display:block;gap:20px;align-items:start}.presenter{overflow:hidden}.progress{padding:20px 24px 0}.progressline{display:flex;justify-content:space-between;color:var(--muted);font-size:.87rem;font-weight:700}.progressline strong{color:var(--dark)}.track{height:9px;background:#e7edf6;border-radius:99px;overflow:hidden;margin-top:10px}.fill{height:100%;width:0;background:linear-gradient(90deg,#2e6ecb,#63a1f3);transition:width .3s}.qbody{padding:28px clamp(20px,4vw,40px) 30px}.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.pill{padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--dark);font-size:.76rem;font-weight:800}.pill.gray{background:#eef2f7;color:#586b82}.questionrow{display:grid;grid-template-columns:minmax(0,1fr) 116px;gap:20px;align-items:center}.kicker{margin:0 0 8px;color:var(--accent);font-size:.8rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}.question{margin:0;color:#142f54;font-size:clamp(1.7rem,3.4vw,2.75rem);line-height:1.23;letter-spacing:-.035em;font-weight:800}.ring{--progress:1turn;width:112px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) var(--progress),#e6edf7 0);position:relative}.ring:before{content:"";position:absolute;inset:8px;background:white;border-radius:50%}.ringcontent{position:relative;text-align:center}.number{display:block;font-size:2rem;font-weight:850;color:var(--dark);line-height:1.1;font-variant-numeric:tabular-nums}.label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800}.ring.urgent{background:conic-gradient(var(--red) var(--progress),#f7dfe2 0);animation:pulse 1s infinite}.ring.urgent .number{color:var(--red)}@keyframes pulse{50%{transform:scale(1.025)}}.answer,.explanation{margin-top:22px;padding:19px 21px;border-radius:17px;animation:appear .22s ease}.answer{background:var(--greenbg);border:1px solid #c8ead7}.explanation{background:#f1f6ff;border:1px solid #d8e6fb}@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes questionEnter{from{opacity:0;transform:translateY(18px) scale(.992);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}.qbody{animation:questionEnter .48s cubic-bezier(.2,.7,.25,1) both}.progress{animation:appear .35s ease both}.controls{animation:appear .38s ease both}.answer,.explanation{box-shadow:0 10px 24px rgba(23,54,96,.09)}.answer h3,.explanation h3{margin:0 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.09em}.answer h3{color:var(--green)}.explanation h3{color:var(--blue)}.answer p,.explanation p{margin:0;font-size:clamp(1.05rem,2vw,1.35rem);font-weight:650;color:#183653}.controls{padding:16px 22px;border-top:1px solid var(--line);background:#fbfdff;margin:0;justify-content:space-between}.group{display:flex;flex-wrap:wrap;gap:8px}.side{padding:18px;margin-bottom:15px}.side h3{font-size:1rem}.setting{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #edf1f6;font-size:.9rem}.setting span{color:var(--muted)}.toggle{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.88rem}.toggle input{width:18px;height:18px;accent-color:var(--blue)}.empty,.done{padding:45px 28px;text-align:center;min-height:350px;display:grid;place-items:center}.emptyicon{font-size:42px;margin-bottom:10px}.empty h2,.done h2{color:var(--dark);font-size:clamp(1.6rem,3vw,2.2rem);margin:0 0 8px}.empty p,.done p{max-width:470px;margin:0 auto 20px;color:var(--muted)}.hidden{display:none!important}.footer{text-align:center;color:#71819a;font-size:.8rem;margin-top:18px}.theme-dark{--page:#101a2a;--surface:#17263b;--text:#e9f1fc;--muted:#a9bad0;--line:#30445e;--blue:#5d9df0;--dark:#c5ddff;--soft:#233d5f;--greenbg:#173c31;--shadow:0 12px 34px #0003}.theme-dark body{background:var(--page);color:var(--text)}.theme-dark .question{color:#c5ddff}.theme-dark .field input,.theme-dark .field select{background:#122035;color:var(--text);border-color:var(--line)}.theme-dark .metadata-summary{background:#203a59;color:#d9eaff;border-color:#3c5b80}.theme-dark .controls{background:#142238}.theme-dark .btn{background:#1b304a;color:#c5ddff;border-color:#405875}.theme-dark .btn.primary{background:var(--blue);color:#101a2a}.theme-dark .answer p,.theme-dark .explanation p{color:#e5eefb}.theme-dark .explanation{background:#1a2e49;border-color:#304b70}.theme-dark .ring:before{background:#17263b}.theme-ocean{--page:#eaf7fb;--blue:#126a91;--dark:#0b4867;--soft:#dff4fb;--line:#cde5ed}.theme-ocean body{background:var(--page)}.theme-ocean .ring{background:conic-gradient(#0b83aa var(--progress),#d8eaf0 0)}.presentation{width:calc(100% - 24px);padding-top:12px}.presentation .setup,.presentation .sidebar,.presentation .appearance-panel,.presentation .start-panel,.presentation .footer{display:none}.presentation .top{padding:12px 16px;border-radius:18px;background:#fff;border:2px solid #d6e5f7;box-shadow:0 8px 24px rgba(10,35,70,.15)}.presentation .brand h1{display:inline-block;color:#102f56;background:#eef5ff;border:1px solid #c9dcf5;border-radius:10px;padding:5px 12px;font-weight:900;letter-spacing:-.025em;text-shadow:none}.presentation .brand p{color:#3e5878;font-weight:650}.presentation .top .logo{flex:0 0 auto}.presentation .layout{display:block}.presentation .qbody{padding:clamp(32px,6vh,70px) clamp(24px,7vw,90px)}.presentation .question{font-size:clamp(1.8rem,2.8vw,2.7rem);line-height:1.3;letter-spacing:-.02em}.presentation .ring{width:140px}.presentation .number{font-size:2.5rem}.presentation .progress{padding:22px 34px 0}.presentation .controls{padding:20px 34px}@media(max-width:850px){.source-grid{grid-template-columns:1fr 1fr}.source-grid .field{grid-column:1/-1}.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.appearance-panel{display:block}}@media(max-width:580px){.source-grid{grid-template-columns:1fr}.source-grid .field{grid-column:auto}.start-lesson{width:100%}.appearance-panel{display:block}.app{width:calc(100% - 18px);padding-top:14px}.top{align-items:flex-start;flex-wrap:wrap}.brand{flex:1 1 220px}.grid{grid-template-columns:1fr}.questionrow{grid-template-columns:1fr}.ring{width:88px}.ring:before{inset:6px}.number{font-size:1.6rem}.progress{padding:16px 16px 0}.qbody{padding:22px 17px}.question{font-size:clamp(1.55rem,7vw,2.2rem)}.controls{padding:14px}.controls .btn{flex:1}.sidebar{grid-template-columns:1fr}.presentation .questionrow{grid-template-columns:1fr}.presentation .question{font-size:clamp(2rem,8vw,3.2rem)}}@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Clear, colored title bars for each setup area */
+.setup-section>h2{display:block;background:linear-gradient(110deg,var(--blue),var(--accent));color:#fff!important;padding:11px 15px;border-radius:12px;margin:-20px -20px 17px!important;font-size:1.03rem!important;letter-spacing:.01em;box-shadow:0 4px 12px rgba(23,74,139,.14)}
+.setup-section .section-help{margin-top:0}
+.range-panel .metadata-summary{margin-top:15px}
+.quick-controls .grid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:4px 18px}
+.quick-controls .setting{min-width:0}
+.presentation .start-panel{display:none!important}
+.theme-dark .setup-section>h2{background:linear-gradient(110deg,#244c7d,#356db0);color:#fff!important}
+@media(max-width:580px){.setup-section>h2{margin:-20px -20px 15px!important;padding:10px 12px}.quick-controls .grid{grid-template-columns:1fr}}
+
+.setup-section>h2{display:block;background:linear-gradient(110deg,var(--blue),var(--accent));color:#fff!important;padding:11px 15px;border-radius:12px;margin:-20px -20px 17px!important;font-size:1.03rem!important;letter-spacing:.01em;box-shadow:0 4px 12px rgba(23,74,139,.14)}
+.timer-panel .setting{max-width:100%;}
+.timer-panel .toggle,.voice-panel .toggle{border-bottom:1px solid #edf1f6;min-height:42px}
+.theme-dark .setup-section>h2{background:linear-gradient(110deg,#244c7d,#356db0);color:#fff!important}
+
+/* Presentation viewport fix: keep long questions/answers scrollable and controls reachable. */
+@media (min-width:851px){
+  .presentation{height:100vh;max-height:100vh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:12px}
+  .presentation .top{flex:0 0 auto;margin-bottom:12px}
+  .presentation .layout{flex:1 1 auto;min-height:0;overflow:hidden}
+  .presentation .presenter{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .presentation #view{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+  .presentation .qbody{padding:clamp(18px,3vh,38px) clamp(24px,5vw,72px)}
+  .presentation .controls{position:sticky;bottom:0;z-index:5;flex:0 0 auto;box-shadow:0 -5px 16px rgba(15,40,75,.08);gap:10px}
+  .presentation .answer,.presentation .explanation{overflow-wrap:anywhere}
+}
+
+
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.welcome-steps{max-width:680px;margin:0 auto 18px;padding-left:1.5rem;text-align:left;color:var(--text)}.welcome-steps li{padding:5px 0 5px 4px}.welcome-intro{margin-bottom:12px!important}.welcome-tip{max-width:680px!important;margin:0 auto!important;padding:12px 14px;border-radius:12px;background:var(--soft);color:var(--dark)!important;font-size:.9rem}.empty>div{width:100%}.empty{padding:36px 28px}.presentation .top-actions #resetSettings{display:none}@media(min-width:851px){.presentation .question{font-size:clamp(1.8rem,2.8vw,2.7rem)}}@media(max-width:580px){.top-actions{width:100%;justify-content:flex-end}.welcome-steps{font-size:.92rem}.empty{padding:28px 18px}}
+
+/* Control visibility preferences and prominent sound setting */
+.tick-feature{margin-top:16px;padding:15px 17px;border:2px solid #8bb8f4;border-radius:14px;background:linear-gradient(110deg,#edf5ff,#f8fbff);box-shadow:0 5px 15px rgba(23,74,139,.10);gap:18px;min-height:70px}
+.tick-feature strong{display:block;color:#174a8b;font-size:1rem}
+.tick-feature small{display:block;margin-top:3px;color:#526984;font-size:.82rem;line-height:1.4}
+.tick-feature input{width:22px;height:22px;flex:0 0 auto}
+.display-options .grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.display-options .toggle{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(235,243,253,.45);gap:14px}
+.display-options .toggle label{font-size:.88rem;font-weight:650}
+.theme-dark .tick-feature{background:#203a59;border-color:#4779b5}
+.theme-dark .tick-feature strong{color:#d9eaff}
+.theme-dark .tick-feature small{color:#b7cbe3}
+.theme-dark .display-options .toggle{background:#1b304a}
+
+
+/* =========================================================
+   MODERN, CONSISTENT UI SYSTEM — labels, controls, cards, type
+========================================================= */
+:root{
+  --ui-radius:16px;
+  --ui-radius-sm:10px;
+  --ui-border:#dbe4ef;
+  --ui-ink:#172b4d;
+  --ui-muted:#63758b;
+  --ui-blue:#174a8b;
+  --ui-blue-soft:#edf4fd;
+  --ui-shadow:0 8px 24px rgba(23,54,96,.065);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.55;letter-spacing:0}
+.app{max-width:1160px}
+.surface{border:1px solid var(--ui-border);border-radius:var(--ui-radius);box-shadow:var(--ui-shadow)}
+.setup,.appearance-panel{padding:22px;margin:16px 0;border-radius:var(--ui-radius);background:var(--surface)}
+.setup-section>h2,.appearance-panel>div:first-child h2{
+  display:flex;align-items:center;gap:9px;min-height:48px;
+  margin:-22px -22px 20px!important;padding:12px 18px;
+  border-radius:var(--ui-radius) var(--ui-radius) 0 0;
+  background:linear-gradient(105deg,#174a8b,#2e6ecb);
+  color:#fff!important;font-size:1rem!important;font-weight:750;
+  line-height:1.35;letter-spacing:-.01em;box-shadow:none
+}
+.setup-section h2::first-letter{font-weight:800}
+.section-help{margin:0 0 18px;color:var(--ui-muted);font-size:.875rem;line-height:1.6}
+.field{gap:7px}
+.field label,.display-options .toggle label{
+  color:#354b67;font-size:.84rem;font-weight:700;line-height:1.4;letter-spacing:.005em
+}
+.field input,.field select,.field textarea{
+  min-height:44px;padding:10px 12px;border:1px solid #cbd7e6;border-radius:var(--ui-radius-sm);
+  background:#fff;color:#172b4d;font:inherit;font-size:.92rem;line-height:1.4;
+  box-shadow:inset 0 1px 2px rgba(20,45,80,.025);transition:border-color .16s,box-shadow .16s,background .16s
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:#4a86d8;box-shadow:0 0 0 3px rgba(46,110,203,.14)
+}
+.btn{
+  min-height:42px;padding:10px 15px;border-radius:var(--ui-radius-sm);border:1px solid #cbd7e6;
+  font-family:inherit;font-size:.875rem;font-weight:700;letter-spacing:0;line-height:1.3;
+  box-shadow:0 1px 2px rgba(20,45,80,.035);transition:background .16s,border-color .16s,box-shadow .16s,transform .16s
+}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 10px rgba(23,54,96,.09)}
+.btn.primary{background:#174a8b;border-color:#174a8b;box-shadow:0 4px 10px rgba(23,74,139,.18)}
+.btn.primary:hover:not(:disabled){background:#123d75;border-color:#123d75}
+.btn.soft{background:#edf4fd;border-color:#d7e5f7;color:#174a8b}
+.start-panel{margin:20px 0 14px}
+.start-lesson{min-height:52px;border-radius:13px;padding:14px 28px;font-size:.98rem;font-weight:800;letter-spacing:.005em}
+.source-grid{gap:12px}
+.grid{gap:16px}
+.metadata-summary{margin-top:18px;padding:13px 15px;border:1px solid #d5e3f5;border-radius:12px;background:#f2f7fe;color:#244c7c;font-size:.875rem;font-weight:700;line-height:1.5}
+.status{font-size:.84rem;line-height:1.5}
+.tick-feature{border:1px solid #8db6ec;border-radius:13px;background:linear-gradient(110deg,#eef5ff,#f8fbff);box-shadow:0 3px 10px rgba(23,74,139,.07)}
+.tick-feature strong{font-size:.93rem;font-weight:750}
+.tick-feature small{font-size:.81rem;line-height:1.5}
+.display-options .toggle{padding:11px 13px;border:1px solid var(--ui-border);border-radius:12px;background:#f8fafd;min-height:46px}
+.toggle{gap:14px;color:var(--ui-ink);line-height:1.45}
+.toggle input{accent-color:#2466b8}
+.pill{font-size:.72rem;letter-spacing:.015em;padding:5px 10px}
+.kicker{font-size:.72rem;letter-spacing:.1em}
+.question{font-weight:750;letter-spacing:-.025em}
+.answer,.explanation{border-radius:14px;padding:18px 20px}
+.answer h3,.explanation h3{font-size:.74rem;letter-spacing:.08em;font-weight:800}
+.answer p,.explanation p{line-height:1.55;font-weight:600}
+.controls{background:#f8fafd;border-top:1px solid var(--ui-border)}
+.empty h2,.done h2{letter-spacing:-.025em;font-weight:780}
+.empty p,.done p{font-size:.95rem;line-height:1.65}
+.theme-dark .setup,.theme-dark .appearance-panel{background:var(--surface)}
+.theme-dark .setup-section>h2,.theme-dark .appearance-panel>div:first-child h2{background:linear-gradient(105deg,#1e4e86,#286bb2);color:#fff!important}
+.theme-dark .field label,.theme-dark .display-options .toggle label{color:#d5e3f5}
+.theme-dark .field input,.theme-dark .field select,.theme-dark .field textarea{background:#122035;color:var(--text);border-color:#405875}
+.theme-dark .metadata-summary{background:#203a59;color:#d9eaff;border-color:#3c5b80}
+.theme-dark .display-options .toggle{background:#1b304a;border-color:#405875}
+.theme-dark .controls{background:#142238}
+.theme-ocean .setup-section>h2,.theme-ocean .appearance-panel>div:first-child h2{background:linear-gradient(105deg,#0b597a,#1684a8)}
+@media(max-width:580px){
+ .setup,.appearance-panel{padding:17px;border-radius:14px}
+ .setup-section>h2,.appearance-panel>div:first-child h2{margin:-17px -17px 17px!important;padding:12px 15px;font-size:.96rem!important}
+ .section-help{font-size:.84rem}
+ .field label,.display-options .toggle label{font-size:.83rem}
+ .btn{padding:10px 12px}
+}
+
+
+/* Child-friendly themes: bright, coordinated colours and matching rounded typography */
+body.theme-candy{
+ --page:#fff0f7;--surface:#fffafd;--text:#55264f;--muted:#865d83;--line:#f3c9e5;
+ --blue:#b83280;--dark:#76205f;--soft:#ffe0f2;--accent:#7c4dff;--green:#16845d;--greenbg:#ddfff0;
+ --shadow:0 12px 34px rgba(176,45,128,.13);
+ font-family:"Trebuchet MS","Arial Rounded MT Bold",system-ui,sans-serif;
+ background:radial-gradient(ellipse at top,#fffafd,var(--page) 68%);color:var(--text)
+}
+body.theme-candy .logo{background:linear-gradient(145deg,#ff7ab6,#8b5cf6);box-shadow:0 8px 20px #b8328033}
+body.theme-candy .setup-section>h2{background:linear-gradient(110deg,#ec4899,#8b5cf6)}
+body.theme-candy .btn.primary{background:linear-gradient(110deg,#db2777,#7c3aed);border-color:#b83280;box-shadow:0 5px 14px #b8328033}
+body.theme-candy .question{font-family:"Trebuchet MS","Arial Rounded MT Bold",system-ui,sans-serif;color:#76205f}
+body.theme-candy .fill{background:linear-gradient(90deg,#ec4899,#8b5cf6,#f59e0b)}
+body.theme-candy .ring{background:conic-gradient(#ec4899 var(--progress),#f8d7eb 0)}
+body.theme-candy .ring:before{background:#fffafd}
+body.theme-candy .answer{background:#e1fff2;border-color:#a7f3d0}
+body.theme-candy .explanation{background:#f2eaff;border-color:#dac8ff}
+body.theme-candy .explanation h3{color:#7c3aed}
+body.theme-candy .metadata-summary{background:#ffe4f3;border-color:#f4b8dc;color:#76205f}
+body.theme-candy .controls{background:#fff4fa}
+body.theme-candy .field input,body.theme-candy .field select{border-color:#eab8d9}
+body.theme-candy .toggle input{accent-color:#db2777}
+body.theme-candy .pill{background:#ffe0f2;color:#76205f}
+
+body.theme-jungle{
+ --page:#effbe9;--surface:#fcfff8;--text:#234b32;--muted:#5c7a62;--line:#cce5c2;
+ --blue:#2f855a;--dark:#185c3b;--soft:#e0f5d8;--accent:#e87924;--green:#167448;--greenbg:#e2f9e9;
+ --shadow:0 12px 34px rgba(38,104,55,.12);
+ font-family:"Trebuchet MS","Verdana",system-ui,sans-serif;
+ background:radial-gradient(ellipse at top,#fffef4,var(--page) 68%);color:var(--text)
+}
+body.theme-jungle .logo{background:linear-gradient(145deg,#4caf50,#0f766e);box-shadow:0 8px 20px #2f855a33}
+body.theme-jungle .setup-section>h2{background:linear-gradient(110deg,#218c55,#e87924)}
+body.theme-jungle .btn.primary{background:linear-gradient(110deg,#218c55,#167c80);border-color:#218c55;box-shadow:0 5px 14px #218c5533}
+body.theme-jungle .question{font-family:"Trebuchet MS","Verdana",system-ui,sans-serif;color:#185c3b}
+body.theme-jungle .fill{background:linear-gradient(90deg,#2f9e44,#eab308,#e87924)}
+body.theme-jungle .ring{background:conic-gradient(#e87924 var(--progress),#dcefd5 0)}
+body.theme-jungle .ring:before{background:#fcfff8}
+body.theme-jungle .answer{background:#e2f9e9;border-color:#b7e4c7}
+body.theme-jungle .explanation{background:#fff4dc;border-color:#f3d29a}
+body.theme-jungle .explanation h3{color:#b45309}
+body.theme-jungle .metadata-summary{background:#e0f5d8;border-color:#b9ddb0;color:#185c3b}
+body.theme-jungle .controls{background:#f5fff0}
+body.theme-jungle .field input,body.theme-jungle .field select{border-color:#c3ddb9}
+body.theme-jungle .toggle input{accent-color:#218c55}
+body.theme-jungle .pill{background:#e0f5d8;color:#185c3b}
+body.theme-jungle .kicker{color:#c65d16}
+
+/* Keep the new palettes readable in fullscreen presentation mode too. */
+body.theme-candy .presentation .top{background:#fffafd;border-color:#f3c9e5}
+body.theme-candy .presentation .brand h1{color:#76205f;background:#ffe0f2;border-color:#f3c9e5}
+body.theme-jungle .presentation .top{background:#fcfff8;border-color:#cce5c2}
+body.theme-jungle .presentation .brand h1{color:#185c3b;background:#e0f5d8;border-color:#cce5c2}
+
+.start-options .field small{display:block;margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.45}.start-countdown{padding:42px 24px;text-align:center;min-height:280px;display:grid;place-items:center}.start-countdown .count-number{font-size:clamp(3rem,10vw,5.5rem);font-weight:850;line-height:1;color:var(--blue);font-variant-numeric:tabular-nums}.start-countdown p{color:var(--muted);margin:14px auto 20px;max-width:520px}.theme-dark .start-countdown .count-number{color:#8dbbff}
+
+/* Smooth question changes and more prominent answer/explanation panels */
+.qbody{animation:questionEnter .42s cubic-bezier(.2,.7,.2,1) both}
+@keyframes questionEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.answer,.explanation{position:relative;padding:24px 26px 25px 30px;border-width:2px;box-shadow:0 10px 24px rgba(20,55,95,.10);overflow:hidden}
+.answer{background:linear-gradient(135deg,#e4f8ec,#f5fff8);border-color:#72c99a;border-left:8px solid #218653}
+.explanation{background:linear-gradient(135deg,#e9f2ff,#f8fbff);border-color:#8bb8f0;border-left:8px solid #2e6ecb}
+.answer h3,.explanation h3{font-size:.88rem;letter-spacing:.07em;margin-bottom:10px}
+.answer p,.explanation p{font-size:clamp(1.15rem,2.2vw,1.55rem);line-height:1.55;font-weight:700}
+.answer h3{color:#116b3e}.explanation h3{color:#174a8b}
+.theme-dark .answer{background:linear-gradient(135deg,#173f32,#1b4938);border-color:#347e5c;border-left-color:#4cc58a}
+.theme-dark .explanation{background:linear-gradient(135deg,#1a3556,#203e64);border-color:#456f9e;border-left-color:#76b1ff}
+@media(prefers-reduced-motion:reduce){.qbody{animation:none}}
+
+/* Gentle staged reveal after the question countdown ends. */
+@keyframes answerRevealSoft {
+  0% { opacity: 0; transform: translateY(18px) scale(.985); filter: blur(3px); }
+  65% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.answer {
+  animation: answerRevealSoft .62s cubic-bezier(.2,.72,.25,1) both;
+  transform-origin: top center;
+}
+.explanation {
+  animation: answerRevealSoft .62s cubic-bezier(.2,.72,.25,1) .20s both;
+  transform-origin: top center;
+}
+/* Give the answer a moment to land before the explanation follows. */
+@media (prefers-reduced-motion: reduce) {
+  .answer, .explanation { animation: none !important; }
+}
+
+/* v1.1.0 staged learning enhancements */
+.thinking-banner{display:flex;align-items:center;gap:12px;margin:18px 0 0;padding:12px 15px;border:1px solid #c9dcf5;border-radius:14px;background:#f0f6ff;color:#174a8b;font-weight:750}
+.thinking-dot{width:10px;height:10px;border-radius:50%;background:#2e6ecb;box-shadow:0 0 0 5px #2e6ecb20;flex:0 0 auto}
+.thinking-banner .thinking-copy{flex:1}
+.thinking-progress{height:5px;background:#dce8f8;border-radius:99px;overflow:hidden;margin-top:6px}
+.thinking-progress span{display:block;height:100%;width:100%;transform-origin:left;background:#2e6ecb;transition:transform .1s linear}
+.question-media{display:block;max-width:min(100%,760px);max-height:42vh;object-fit:contain;margin:22px auto 0;border-radius:16px;border:1px solid var(--line);box-shadow:0 8px 24px #17365f12}
+.hint-panel{margin-top:16px;padding:14px 17px;border:1px dashed #d59b37;border-radius:14px;background:#fff8e8;color:#734b08}
+.confidence-panel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.confidence-panel strong{margin-right:5px}
+.confidence-btn[aria-pressed="true"]{outline:3px solid #8bb8f0;background:#eaf3ff}
+
+.confidence-summary{font-size:.85rem;color:var(--muted)}
+.completion-content{width:min(100%,780px);margin-inline:auto;text-align:center}
+.completion-content h3{margin:20px 0 8px;font-size:1.05rem}
+.confidence-results,.focus-review{margin:20px auto;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--panel, #fff);text-align:left}
+.confidence-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.confidence-stat{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface,#f8fafc);min-width:0}
+.confidence-stat>span:last-child{display:flex;flex-direction:column;gap:4px;min-width:0}
+.confidence-stat strong{font-size:.88rem}.confidence-stat b{font-size:1.35rem}
+.confidence-symbol{font-size:1.45rem}.confident-stat b{color:#197347}.unsure-stat b{color:#9a6700}.help-stat b{color:#b42332}
+.completion-next-title{margin-top:24px!important}
+.completion-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px}
+.completion-actions .btn{min-height:44px}
+.completion-options{align-items:stretch}
+.completion-option{flex:1 1 220px;min-width:0;text-align:left;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface)}
+.completion-option .btn{width:100%}
+.completion-option p{font-size:.86rem;line-height:1.45;margin:9px 2px 2px;color:var(--muted)}
+.focus-review{background:var(--surface,#f8fafc)}
+.focus-review .section-help{margin-bottom:0}
+@media(max-width:580px){.confidence-legend{grid-template-columns:1fr}.confidence-stat{padding:10px 12px}.completion-actions{flex-direction:column}.completion-actions .btn{width:100%}}
+
+.answer{border-left:8px solid #218653}
+.explanation{border-left:8px solid #2e6ecb}
+.sequence-status{margin:12px 0 0;color:var(--muted);font-size:.9rem;font-weight:700}
+.presentation .qbody{max-height:none;overflow:visible}
+.presentation .question-media{max-height:32vh}
+.presentation .thinking-banner{max-width:760px}
+.presentation .controls{flex-wrap:wrap}
+.presentation .controls.toolbar-collapsed .group{display:none}
+.presentation .controls #toolbarToggle{margin-inline:auto}
+@media(max-width:580px){.question-media{max-height:34vh}.confidence-panel{align-items:flex-start}.confidence-panel .btn{flex:1 1 30%}}
+@media(prefers-reduced-motion:reduce){.thinking-progress span{transition:none}}
+
+
+/* v1.3.0-alpha9: responsive presentation scrolling on every viewport. */
+.presentation {
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+}
+.presentation .top {
+  flex: 0 0 auto;
+  min-width: 0;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  gap: 8px;
+}
+.presentation .layout {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+.presentation .presenter {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.presentation #view {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+.presentation .qbody {
+  max-height: none;
+  overflow: visible;
+  padding: clamp(14px, 3vh, 34px) clamp(14px, 5vw, 64px);
+}
+.presentation .controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  flex: 0 0 auto;
+  padding: 10px max(12px, env(safe-area-inset-right)) 10px max(12px, env(safe-area-inset-left));
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--surface, #fff);
+  box-shadow: 0 -5px 16px rgba(15,40,75,.12);
+}
+.presentation .controls .group { min-width: 0; flex-wrap: wrap; }
+.presentation .controls .btn { max-width: 100%; white-space: normal; }
+.presentation .answer,
+.presentation .explanation { overflow-wrap: anywhere; word-break: normal; }
+.presentation .questionrow { grid-template-columns: minmax(0, 1fr) auto; }
+@media (max-width: 580px) {
+  .presentation { width: 100%; padding-top: max(4px, env(safe-area-inset-top)); }
+  .presentation .top { border-radius: 12px; padding: 7px 9px; margin-bottom: 6px; }
+  .presentation .brand { flex: 1 1 auto; min-width: 0; gap: 8px; }
+  .presentation .brand h1 { font-size: 1rem; padding: 4px 7px; }
+  .presentation .brand p { font-size: .72rem; }
+  .presentation .logo { width: 36px; height: 36px; font-size: 20px; border-radius: 10px; }
+  .presentation .top-actions { width: auto; flex: 0 0 auto; }
+  .presentation .progress { padding: 10px 12px 0; }
+  .presentation .qbody { padding: 16px 14px 22px; }
+  .presentation .questionrow { grid-template-columns: minmax(0,1fr); gap: 10px; }
+  .presentation .question { font-size: clamp(1.45rem, 6vw, 2.3rem); line-height: 1.25; }
+  .presentation .ring { width: 64px; }
+  .presentation .number { font-size: 1.3rem; }
+  .presentation .ring:before { inset: 5px; }
+  .presentation .controls { padding: 8px max(8px, env(safe-area-inset-right)) 8px max(8px, env(safe-area-inset-left)); }
+  .presentation .controls .btn { min-height: 40px; padding: 8px 10px; font-size: .82rem; flex: 1 1 auto; }
+  .presentation .controls .group { flex: 1 1 100%; }
+}
+@media (max-height: 500px) {
+  .presentation .top { padding-block: 4px; margin-bottom: 4px; }
+  .presentation .brand p { display: none; }
+  .presentation .progress { padding-top: 6px; }
+  .presentation .qbody { padding-block: 10px; }
+  .presentation .question { font-size: clamp(1.25rem, 4.5vh, 2rem); }
+  .presentation .answer, .presentation .explanation { margin-top: 10px; padding: 12px; }
+  .presentation .controls { padding-block: 5px; }
+}
+
+/* v1.2.1 CSV validation, preview, and confirmation */
+.csv-review{margin-top:16px;padding:16px;border:1px solid #cbdcf2;border-radius:15px;background:#f8fbff}
+.csv-review h3{margin:0 0 8px;color:var(--dark);font-size:1rem}
+.csv-summary{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.csv-count{padding:7px 11px;border:1px solid #d6e2f1;border-radius:999px;background:#fff;font-size:.82rem;font-weight:800}
+.csv-count.good{color:#176343;background:#e8f7ef;border-color:#c8ead7}
+.csv-count.warn{color:#865500;background:#fff6df;border-color:#f0dfaa}
+.csv-count.bad{color:#a3202c;background:#fff0f1;border-color:#f0c9cd}
+.csv-issues{margin:8px 0 14px;padding-left:22px;font-size:.88rem}
+.csv-issues li{margin:4px 0}
+.csv-preview-wrap{overflow:auto;max-height:310px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.csv-preview{width:100%;border-collapse:collapse;font-size:.82rem;min-width:600px}
+.csv-preview th,.csv-preview td{padding:8px 10px;border-bottom:1px solid #e8edf4;text-align:left;vertical-align:top;max-width:280px;overflow-wrap:anywhere}
+.csv-preview th{position:sticky;top:0;background:#edf4fd;color:#183d69;z-index:1}
+.csv-preview tr.row-invalid td{background:#fff5f5}
+.csv-preview tr.row-warning td{background:#fffbef}
+.csv-review-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.csv-review-note{font-size:.85rem;color:var(--muted);margin:8px 0}
+.csv-review .status{flex-basis:100%}
+.theme-dark .csv-review{background:#142238;border-color:var(--line)}
+.theme-dark .csv-count,.theme-dark .csv-preview-wrap{background:#17263b;color:var(--text)}
+.theme-dark .csv-preview th{background:#203a59;color:#d9eaff}
+.theme-dark .csv-preview td{border-color:var(--line)}
+@media(max-width:580px){.csv-review{padding:12px}.csv-review-actions .btn{width:100%}}
+
+</style>
+<style>
+/* Presentation polish: only the question animates on question changes; answer and explanation reveal in sequence. */
+.presentation .qbody.question-visible { animation: questionEnter .48s cubic-bezier(.2,.7,.25,1) both; }
+.presentation .qbody.answer-visible { animation: none !important; }
+.presentation .answer { animation: answerRevealSoft .68s cubic-bezier(.2,.72,.25,1) both; }
+.presentation .explanation { animation: answerRevealSoft .68s cubic-bezier(.2,.72,.25,1) .26s both; }
+/* A restrained, always-reachable teacher toolbar during presentation. */
+.presentation .controls {
+  position: sticky; bottom: 10px; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 24px 12px 12px; padding: 10px 12px !important;
+  border: 1px solid rgba(166,190,222,.9); border-radius: 18px;
+  background: rgba(255,255,255,.94); backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(18,45,82,.16);
+}
+.presentation .controls .group { align-items: center; gap: 7px; padding: 0 7px; }
+.presentation .controls .group + .group { border-left: 1px solid #dce5f1; }
+.presentation .controls .btn { min-height: 42px; padding: 9px 13px; border-radius: 11px; }
+.presentation .controls #next,
+.presentation .controls #reveal { background: var(--blue); color: #fff; border-color: var(--blue); }
+.presentation .controls #prev,
+.presentation .controls #readQ,
+.presentation .controls #readA,
+.presentation .controls #restartQ { background: #f3f7fc; }
+.presentation .controls #stop { color: #9b2634; border-color: #e6bfc4; background: #fff8f8; }
+.theme-dark.presentation .controls { background: rgba(22,37,58,.96); border-color: #405979; box-shadow: 0 10px 30px #0005; }
+.theme-dark.presentation .controls .group + .group { border-left-color: #405979; }
+.theme-dark.presentation .controls .btn { background: #203652; color: #e8f1ff; border-color: #405979; }
+.theme-dark.presentation .controls #next,
+.theme-dark.presentation .controls #reveal { background: #3978c5; border-color: #3978c5; color: #fff; }
+.theme-dark.presentation .controls #stop { background: #3c2630; color: #ffc6cc; border-color: #75434b; }
+@media(max-width:700px) {
+  .presentation .controls { position: sticky; bottom: 6px; margin: 16px 5px 6px; padding: 8px !important; gap: 5px; flex-wrap: wrap; }
+  .presentation .controls .group { flex: 1 1 auto; justify-content: center; padding: 2px 4px; }
+  .presentation .controls .group + .group { border-left: 0; }
+  .presentation .controls .btn { flex: 1 1 auto; padding: 8px 10px; font-size: .84rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .presentation .qbody.question-visible,
+  .presentation .answer,
+  .presentation .explanation { animation: none !important; }
+}
+
+/* Teacher toolbar refinement: clear action hierarchy, calmer glass surface, reliable touch targets. */
+.presentation .controls {
+  --toolbar-ink: #193657;
+  position: sticky;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 22px 14px 12px;
+  padding: 11px 14px !important;
+  border: 1px solid rgba(151,177,211,.72);
+  border-radius: 20px;
+  background: rgba(250,252,255,.88);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  backdrop-filter: blur(20px) saturate(1.25);
+  box-shadow: 0 12px 34px rgba(18,45,82,.17), inset 0 1px 0 rgba(255,255,255,.85);
+}
+.presentation .controls .group {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+}
+.presentation .controls .group:first-child { justify-content: flex-start; }
+.presentation .controls .group:nth-child(2) { justify-content: center; }
+.presentation .controls .group:last-child { justify-content: flex-end; }
+.presentation .controls .group + .group { border-left: 0; }
+.presentation .controls .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #d5e0ee;
+  border-radius: 12px;
+  background: rgba(255,255,255,.9);
+  color: #244363;
+  font-size: .86rem;
+  font-weight: 760;
+  line-height: 1.15;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(20,48,82,.04);
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
+}
+.presentation .controls .btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(24,58,99,.1);
+  border-color: #a9c4e6;
+}
+.presentation .controls .btn:focus-visible {
+  outline: 3px solid rgba(46,110,203,.38);
+  outline-offset: 2px;
+}
+.presentation .controls #next,
+.presentation .controls #reveal {
+  color: #fff;
+  background: linear-gradient(135deg,#2868b8,#174a8b);
+  border-color: #174a8b;
+  box-shadow: 0 4px 10px rgba(23,74,139,.2);
+}
+.presentation .controls #next:hover:not(:disabled),
+.presentation .controls #reveal:hover:not(:disabled) {
+  background: linear-gradient(135deg,#3479cc,#1a559b);
+  box-shadow: 0 6px 15px rgba(23,74,139,.25);
+}
+.presentation .controls #pause { background: #eaf2ff; border-color: #c8dbf6; color: #174a8b; }
+.presentation .controls #stop { color: #9d2634; border-color: #efcbd0; background: #fff5f6; }
+.presentation .controls #prev,
+.presentation .controls #readQ,
+.presentation .controls #readA,
+.presentation .controls #restartQ { background: #f5f8fc; }
+.presentation .controls .btn:disabled { opacity: .42; box-shadow: none; transform: none; }
+.theme-dark.presentation .controls {
+  --toolbar-ink: #e5efff;
+  background: rgba(18,31,49,.9);
+  border-color: rgba(91,119,153,.8);
+  box-shadow: 0 12px 34px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.theme-dark.presentation .controls .btn { background: #203650; color: #e5efff; border-color: #405a78; box-shadow: none; }
+.theme-dark.presentation .controls #next,
+.theme-dark.presentation .controls #reveal { background: linear-gradient(135deg,#4386d3,#2d65a8); color: #fff; border-color: #4386d3; }
+.theme-dark.presentation .controls #pause { background: #243f61; color: #cfe2ff; border-color: #456b98; }
+.theme-dark.presentation .controls #stop { background: #3b2630; color: #ffc8cf; border-color: #75434b; }
+@media(max-width:900px) {
+  .presentation .controls { grid-template-columns: 1fr; gap: 7px; margin: 14px 8px 8px; padding: 9px !important; }
+  .presentation .controls .group { justify-content: stretch; }
+  .presentation .controls .group .btn { flex: 1 1 auto; }
+  .presentation .controls .group:nth-child(2) { order: -1; }
+}
+@media(max-width:580px) {
+  .presentation .controls { bottom: max(5px, env(safe-area-inset-bottom)); border-radius: 16px; gap: 6px; }
+  .presentation .controls .group { gap: 6px; }
+  .presentation .controls .btn { min-height: 43px; padding: 9px 8px; font-size: .8rem; border-radius: 10px; }
+  .presentation .controls #prev,
+  .presentation .controls #next { flex: 1 1 calc(50% - 6px); }
+}
+
+</style>
+  <meta name="application-version" content="1.3.0-alpha6">
+</head><body><div class="app" id="app">
+<header class="top"><div class="brand"><div class="logo">✦</div><div><h1 id="appTitle">Question Presenter</h1><p id="appSubtitle">Question Presenter v1.3.0-alpha9 · Learn, think, discover</p></div></div><div class="top-actions"><button class="btn" id="resetSettings" title="Reset saved settings and filters">↺ Reset settings</button><button class="btn" id="present">⛶ Present</button></div></header>
+
+<div class="layout"><main class="surface presenter"><div id="view"><div class="empty"><div><div class="emptyicon">✦</div><h2>Ready to explore?</h2><p class="welcome-intro">Load a question bank or begin with the questions already available.</p><ol class="welcome-steps"><li><strong>Choose your questions:</strong> upload a CSV file or paste a published CSV URL in <em>Question file or URL</em>.</li><li><strong>Configure the quiz:</strong> filter by subject, grade, and topic, then set the start and end positions.</li><li><strong>Set your preferences:</strong> choose a learning mode, theme, timer, and voice options.</li><li><strong>Begin:</strong> press <strong>Start quiz</strong>. During the quiz, reveal answers, navigate between questions, or choose <strong>Present</strong> for a larger display.</li></ol><p class="welcome-tip">Tip: use <strong>Reset settings</strong> to clear saved preferences and return to the default settings.</p></div></div></div><div class="done hidden" id="done"><div class="completion-content"><div class="emptyicon">✓</div><h2>Wonderful work!</h2><p id="doneText">You completed the lesson.</p><p><strong id="doneCount">0</strong> questions · <strong id="elapsed">0:00</strong></p><section class="confidence-results" aria-labelledby="confidenceResultsTitle"><h3 id="confidenceResultsTitle">Your confidence check</h3><p class="section-help">Counts reflect the confidence choices you marked during the completed lesson.</p><div class="confidence-legend"><div class="confidence-stat confident-stat"><span class="confidence-symbol">😊</span><span><strong>I'm confident</strong><b id="countConfident">0</b></span></div><div class="confidence-stat unsure-stat"><span class="confidence-symbol">🤔</span><span><strong>Not sure</strong><b id="countUnsure">0</b></span></div><div class="confidence-stat help-stat"><span class="confidence-symbol">😕</span><span><strong>Need help</strong><b id="countHelp">0</b></span></div></div></section><h3 class="completion-next-title">What would you like to do next?</h3><div class="completion-actions completion-options"><div class="completion-option"><button class="btn primary" id="reviewCompleted">📖 Review questions and answers</button><p>Study the questions from this lesson at your own pace, revealing answers manually.</p></div><div class="completion-option"><button class="btn" id="reviewAll">📚 Review all filtered questions</button><p>Study every question matching your current lesson filters, beyond the completed range.</p></div><div class="completion-option"><button class="btn" id="again">↻ Replay lesson</button><p>Run the same lesson again with its original learning mode and timing settings.</p></div></div><section class="focus-review" aria-labelledby="focusReviewTitle"><h3 id="focusReviewTitle">Focus review — questions to revisit</h3><p class="section-help">Jump straight to questions you marked as needing more thought or support.</p><div class="completion-actions"><button class="btn" id="reviewUnsure">🤔 Review Not sure (<span id="reviewUnsureCount">0</span>)</button><button class="btn" id="reviewHelp">😕 Review Need help (<span id="reviewHelpCount">0</span>)</button></div><p id="focusReviewNote" class="section-help" aria-live="polite">Questions marked Not sure or Need help will appear here when available.</p></section></div></div></main></div><section class="start-panel"><button class="btn primary start-lesson" id="start">▶ Start quiz</button></section>
+<section class="surface setup setup-section"><h2>① Question file or URL</h2><p class="section-help">Upload a CSV from your device, or load a published CSV URL.</p><div class="source-grid"><div class="field"><label for="url">Published CSV URL (optional)</label><input id="url" placeholder="Paste a published Google Sheets CSV URL"></div><button class="btn" id="loadUrl">↻ Load URL</button><label class="btn file-label">📄 Choose CSV file<input id="csv" type="file" accept=".csv,text/csv"></label></div><div class="status source-status" id="sourceStatus" aria-live="polite">Six sample questions are ready. Load your own question bank for a full lesson.</div>
+<div class="csv-review hidden" id="csvReview" aria-labelledby="csvReviewTitle">
+  <h3 id="csvReviewTitle">CSV validation report</h3>
+  <p id="csvReviewIntro" class="csv-review-note">Review the CSV structure and row-level issues before replacing the current question bank.</p>
+  <div class="csv-summary" id="csvSummary" aria-live="polite"></div>
+  <ul class="csv-issues" id="csvIssues"></ul>
+  <div class="csv-preview-wrap"><table class="csv-preview"><thead><tr><th>CSV row</th><th>Question number</th><th>Question</th><th>Answer</th><th>Validation</th></tr></thead><tbody id="csvPreviewBody"></tbody></table></div>
+  <p class="csv-review-note" id="csvReviewNote"></p>
+  <div class="csv-review-actions"><button class="btn primary" id="acceptCsv" disabled>✓ Load valid questions</button><button class="btn" id="cancelCsv">Cancel and keep current question bank</button></div>
+  <p class="csv-review-note" id="csvReviewStatus" aria-live="polite"></p>
+</div></section>
+<section class="surface setup setup-section"><h2>② Choose questions</h2><p class="section-help">Subject and Grade columns are recommended, but optional. Filter the question bank, then choose the range to present.</p><div class="grid"><div class="field"><label for="subjectFilter">Subject</label><select id="subjectFilter"><option value="__all">All subjects</option></select></div><div class="field"><label for="gradeFilter">Grade</label><select id="gradeFilter"><option value="__all">All grades</option></select></div><div class="field"><label for="topicFilter">Question topic</label><select id="topicFilter"><option value="__all">All topics</option></select></div></div></section>
+<section class="surface setup setup-section range-panel"><h2>③ Question range</h2><div class="grid"><div class="field"><label for="rangeStart">Start position</label><input id="rangeStart" type="number" min="1" value="1"></div><div class="field"><label for="rangeEnd">End position</label><input id="rangeEnd" type="number" min="1" value="6"></div></div><div class="metadata-summary" id="metadataSummary" aria-live="polite">6 questions available · Science · Grade 3 · All topics</div></section>
+<section class="surface setup setup-section"><h2>④ Learning mode</h2><p class="section-help">Choose how questions and answers should be presented.</p><div class="field"><label for="mode">Learning mode</label><select id="mode"><option value="timed">Timed Quiz</option><option value="teacher">Teacher-Led</option><option value="self">Self-Paced</option><option value="revision">Revision (show answer)</option></select></div></section>
+<section class="surface setup setup-section start-options"><h2>⑤ Start options</h2><p class="section-help">Choose whether the quiz starts immediately or after a short countdown, and whether it opens in presentation mode.</p><div class="grid"><div class="field"><label for="startDelay">Delay before quiz starts (seconds)</label><input id="startDelay" type="number" min="0" max="120" step="1" value="0"><small class="section-help">Use 0 to start immediately, or set 3–10 seconds to prepare the class.</small></div><div class="field"><label for="startInPresent">Start quiz in presentation mode</label><select id="startInPresent"><option value="no">No — use normal view</option><option value="yes">Yes — use presentation view</option></select><small class="section-help">Presentation mode hides setup panels and enlarges the quiz display.</small></div></div></section>
+<section class="surface setup setup-section appearance-panel"><h2>⑥ Theme selection</h2><p class="section-help">Choose the display style for your classroom or study session.</p><div class="field"><label for="theme">Appearance</label><select id="theme"><option value="light">Classroom light</option><option value="ocean">Ocean</option><option value="dark">Dark</option><option value="candy">🍭 Candy Pop</option><option value="jungle">🌿 Jungle Adventure</option></select></div></section>
+<section class="surface setup setup-section timer-panel"><h2>⑧ Timer settings</h2><p class="section-help">Set how long questions appear and how long to pause before moving on.</p><div class="setting"><span>Question time</span><strong><span id="qLabel">15</span> sec</strong></div><div class="setting"><span>Minimum revealed time</span><strong><span id="aLabel">15</span> sec</strong></div><div class="grid"><div class="field"><label for="qSeconds">Question time (seconds)</label><input id="qSeconds" type="number" min="5" max="600" value="15"></div><div class="field"><label for="aSeconds">Minimum answer display (seconds)</label><input id="aSeconds" type="number" min="1" max="120" value="15"><small class="section-help">In Timed Quiz, keep the answer and explanation visible for at least this long before advancing.</small></div><div class="field"><label for="questionDelay">Pause between questions (seconds)</label><input id="questionDelay" type="number" min="0" max="10" step="0.5" value="1"><small class="section-help">After the answer phase, keep the current answer visible for a moment before the next question appears. Set 0 for no pause.</small></div></div><div class="field"><label for="learningPause">Pause after explanation (seconds)</label><input id="learningPause" type="number" min="0" max="30" step="0.5" value="2"><small class="section-help">In Timed Quiz, wait this long after the explanation before moving on.</small></div><div class="toggle tick-feature"><div><strong>🔔 Soft ticking sound</strong><small>Make the final seconds easier to notice during timed questions.</small></div><input id="tick" type="checkbox" aria-label="Enable soft ticking sound"></div></section>
+<section class="surface setup setup-section voice-panel"><h2>⑨ Voice &amp; reading</h2><p class="section-help">Choose whether questions and answers should be read aloud.</p><div class="grid"><div class="toggle"><label for="qVoice">Read questions aloud</label><input id="qVoice" type="checkbox"></div><div class="toggle"><label for="aVoice">Read answers aloud</label><input id="aVoice" type="checkbox"></div><div class="field"><label for="voice">Voice</label><select id="voice"><option value="">System default voice</option></select></div><div class="field"><label for="rate">Speaking speed <strong id="rateLabel">0.9×</strong></label><input id="rate" type="range" min=".6" max="1.4" step=".1" value=".9"></div><div class="field"><label for="explanationDelay">Pause before explanation (seconds)</label><input id="explanationDelay" type="number" min="0" max="10" step="0.5" value="1.5"><small class="section-help">A short pause after the answer gives the voice a natural break before reading the explanation.</small></div></div></section>
+<section class="surface setup setup-section quick-controls"><h2>⑩ Quick controls</h2><div class="grid"><div class="setting"><span>Space</span><strong>Pause / resume</strong></div><div class="setting"><span>← / →</span><strong>Previous / next</strong></div><div class="setting"><span>A</span><strong>Reveal answer</strong></div><div class="setting"><span>R</span><strong>Restart question</strong></div><div class="setting"><span>Status</span><strong id="status">Not started</strong></div></div></section>
+<section class="surface setup setup-section display-options"><h2>⑪ Show or hide quiz controls</h2><p class="section-help">Choose which controls and question labels appear during the quiz. These preferences are saved on this device.</p><div class="grid"><div class="toggle"><label for="showPrev">Previous button</label><input id="showPrev" type="checkbox" checked></div><div class="toggle"><label for="showNext">Next button</label><input id="showNext" type="checkbox" checked></div><div class="toggle"><label for="showPause">Pause / resume button</label><input id="showPause" type="checkbox" checked></div><div class="toggle"><label for="showRestart">Restart button</label><input id="showRestart" type="checkbox" checked></div><div class="toggle"><label for="showStop">Stop button</label><input id="showStop" type="checkbox" checked></div><div class="toggle"><label for="showReveal">Reveal answer button</label><input id="showReveal" type="checkbox" checked></div><div class="toggle"><label for="showReadQ">Read question button</label><input id="showReadQ" type="checkbox" checked></div><div class="toggle"><label for="showReadA">Read answer button</label><input id="showReadA" type="checkbox" checked></div><div class="toggle"><label for="showDifficulty">Difficulty label (Easy, Medium, etc.)</label><input id="showDifficulty" type="checkbox" checked></div></div></section>
+<p class="footer">Designed for classroom screens, tablets, and independent study · Settings saved on this device.</p></div>
+<script>
+(()=>{const $=id=>document.getElementById(id);const bankSample=[
+{number:"1",question:"What do living things need to stay alive?",answer:"Living things need air, water, food, and suitable conditions.",explanation:"These needs help living things get energy, grow, and stay alive.",topic:"Living Things",subject:"Science",grade:"Grade 3",difficulty:"Easy",qt:30,at:5},
+{number:"2",question:"Which part of a plant takes in water from the soil?",answer:"The roots.",explanation:"Roots anchor a plant and absorb water and minerals from the soil.",topic:"Plants",subject:"Science",grade:"Grade 3",difficulty:"Easy",qt:30,at:5},
+{number:"3",question:"Which organ pumps blood around our body?",answer:"The heart.",explanation:"The heart is a strong muscle that pumps blood through blood vessels.",topic:"Human Body",subject:"Science",grade:"Grade 3",difficulty:"Easy",qt:30,at:5},
+{number:"4",question:"What force can slow down a moving object when surfaces rub together?",answer:"Friction.",explanation:"Friction acts between touching surfaces and can slow movement.",topic:"Forces",subject:"Science",grade:"Grade 3",difficulty:"Medium",qt:30,at:5},
+{number:"5",question:"What do we call water changing into water vapour?",answer:"Evaporation.",explanation:"Heat can change liquid water into an invisible gas called water vapour.",topic:"Water",subject:"Science",grade:"Grade 3",difficulty:"Medium",qt:30,at:5},
+{number:"6",question:"Why do we see a shadow?",answer:"A shadow forms when an object blocks light.",explanation:"When an object blocks light, a darker shape appears behind it.",topic:"Light",subject:"Science",grade:"Grade 3",difficulty:"Medium",qt:30,at:5}];
+let bank=bankSample.slice(),bankTitle="Question Presenter",loadedSourceName="",clock=null,timerGeneration=0,deadline=0,left=30000,qDur=30000,aDur=5000,startAt=0,voices=[],audio=null,presenting=false,delayTimer=null,startDelaySequence=0,startPending=false,autoPresent=false,speechDelayTimer=null,speechDelaySequence=0,speechDelayEndsAt=0,speechDelayRemaining=0,speechDelayAction=null,speechSequence=0,questionDelayTimer=null,questionDelaySequence=0,questionDelayEndsAt=0,questionDelayRemaining=0,waitingBetweenQuestions=false;
+let confidenceByQuestion=new Map(),completedConfidenceByQuestion=new Map(),completedLessonList=[],completedFilteredList=[],activeLessonSnapshot=[],activeFilteredSnapshot=[],completedLessonMode="timed",sessionKind="lesson";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const clamp=(v,a,b,d)=>Number.isFinite(+v)?Math.max(a,Math.min(b,Math.round(+v))):d;
+// Reducer-authoritative lesson state. Timer and speech scheduling remain effects;
+// all reducer commits pass through dispatchLessonAction().
+let lessonState = {
+    schemaVersion: 1,
+    status: "idle",
+    mode: "timed",
+    sessionId: null,
+    questionSessionId: 0,
+    questions: [],
+    questionIndex: 0,
+    range: { start: 0, end: 0 },
+    question: { phase: "question", answerVisible: false, explanationVisible: false },
+    timer: { status: "idle", durationMs: 30000, remainingMs: 30000, deadline: null, generation: 0, ownerSessionId: null, ownerQuestionSessionId: null },
+    speech: { status: "idle", type: null, sequenceId: 0 },
+    delay: { type: null, remainingMs: 0, deadline: null },
+    checkpoint: { available: false, savedAt: null, snapshot: null },
+    timing: { startedAt: null, pausedAt: null, totalPausedMs: 0, finishedAt: null },
+    error: null
+};
+/* =========================================================
+   PURE REDUCER — AUTHORITATIVE LESSON STATE
+   Reducer transitions are pure. DOM, timer, and speech work stays
+   in effect functions; core lesson state is not mirrored in globals.
+========================================================= */
+const LESSON_TRANSITIONS = {
+    idle:      ["starting", "running", "stopped"],
+    starting:  ["starting", "running", "idle", "stopped"],
+    running:   ["starting", "paused", "stopped", "completed"],
+    paused:    ["starting", "running", "stopped", "completed"],
+    stopped:   ["starting", "running", "idle", "completed"],
+    completed: ["starting", "idle"]
+};
+function lessonReducer(state, action) {
+    if (!state || !action || typeof action.type !== "string") return state;
+    switch (action.type) {
+        // Phase 3: lifecycle decisions live here; this function has no effects.
+        case "LESSON/START":
+            if (!["idle", "stopped", "completed"].includes(state.status)) return state;
+            return { ...state, status: "starting", error: null,
+                checkpoint: { ...state.checkpoint, available: false, savedAt: null, snapshot: null },
+                question: { phase: "question", answerVisible: false, explanationVisible: false } };
+        case "LESSON/BEGIN":
+            if (state.status !== "starting") return state;
+            return { ...state, status: "running", error: null };
+        case "LESSON/PAUSE":
+            if (state.status !== "running") return state;
+            return { ...state, status: "paused", timer: { ...state.timer, status: state.timer.status === "running" ? "paused" : state.timer.status } };
+        case "LESSON/RESUME":
+            if (state.status !== "paused") return state;
+            return { ...state, status: "running", timer: { ...state.timer, status: state.timer.status === "paused" ? "running" : state.timer.status } };
+        case "LESSON/STOP":
+            if (!["starting", "running", "paused"].includes(state.status)) return state;
+            return { ...state, status: "stopped", timer: { ...state.timer, status: "idle" },
+                checkpoint: { ...state.checkpoint, available: (state.questions || []).length > 0, savedAt: action.savedAt || state.checkpoint.savedAt || null, snapshot: action.snapshot === undefined ? state.checkpoint.snapshot : action.snapshot } };
+        case "LESSON/CONTINUE":
+            if (state.status !== "stopped" || !(state.questions || []).length || !state.checkpoint.snapshot) return state;
+            return { ...state, status: "running", checkpoint: { ...state.checkpoint, available: false }, error: null };
+        case "LESSON/COMPLETE":
+            if (!["running", "paused"].includes(state.status) || !(state.questions || []).length || state.questionIndex !== state.questions.length - 1) return state;
+            return { ...state, status: "completed", question: { ...state.question, phase: "complete" },
+                timer: { ...state.timer, status: "idle", remainingMs: 0 },
+                checkpoint: { ...state.checkpoint, available: false, savedAt: null },
+                timing: { ...state.timing, finishedAt: action.finishedAt ?? state.timing.finishedAt ?? null } };
+        case "LESSON/CANCEL_START":
+            if (state.status !== "starting") return state;
+            return { ...state, status: "idle", timer: { ...state.timer, status: "idle" }, error: null };
+        case "LESSON/RESET":
+            if (!action.force && !["idle", "completed"].includes(state.status)) return state;
+            return { ...state, status: "idle", timer: { ...state.timer, status: "idle" },
+                checkpoint: { ...state.checkpoint, available: false, savedAt: null, snapshot: null }, error: null };
+        case "SESSION/SET_QUESTIONS": {
+            const questions = Array.isArray(action.questions) ? action.questions.slice() : [];
+            return { ...state, questions, questionIndex: 0,
+                questionSessionId: (state.questionSessionId || 0) + 1,
+                question: { phase: "question", answerVisible: false, explanationVisible: false },
+                checkpoint: { ...state.checkpoint, available: false, savedAt: null, snapshot: null } };
+        }
+        case "QUESTION/SET_INDEX": {
+            const max = Math.max(0, (state.questions || []).length - 1);
+            const index = Number(action.index);
+            if (!Number.isInteger(index) || index < 0 || index > max || !(state.questions || []).length) return state;
+            return { ...state, questionIndex: index };
+        }
+        case "QUESTION/NAVIGATE":
+        case "QUESTION/RESTART": {
+            const max = (state.questions || []).length - 1;
+            const index = action.type === "QUESTION/RESTART" ? state.questionIndex : Number(action.index);
+            if (!Number.isInteger(index) || index < 0 || index > max || max < 0) return state;
+            if (action.type === "QUESTION/RESTART" && state.questionIndex === index && state.question.phase === "question" && !state.question.answerVisible && !state.question.explanationVisible) return state;
+            return {
+                ...state,
+                questionIndex: index,
+                questionSessionId: (state.questionSessionId || 0) + 1,
+                question: { phase: "question", answerVisible: false, explanationVisible: false }
+            };
+        }
+        case "QUESTION/REVEAL":
+            if (!(state.questions || []).length || state.status === "idle" || state.status === "starting" || state.status === "stopped" || state.status === "completed" || state.question.answerVisible) return state;
+            return { ...state, question: { ...state.question, phase: "answer", answerVisible: true, explanationVisible: false } };
+        case "QUESTION/SET_VISIBILITY":
+            return { ...state, question: { ...state.question, answerVisible: Boolean(action.answerVisible), explanationVisible: Boolean(action.explanationVisible && action.answerVisible) } };
+        case "QUESTION/SET_PHASE":
+            if (!["question", "answer", "complete"].includes(action.phase)) return state;
+            return { ...state, question: { ...state.question, phase: action.phase } };
+        case "SESSION/SET_MODE":
+            if (!["timed", "teacher", "self", "revision"].includes(action.mode)) return state;
+            return { ...state, mode: action.mode };
+        case "SESSION/SET_IDENTITY":
+            return { ...state,
+                ...(Object.prototype.hasOwnProperty.call(action, "sessionId") ? { sessionId: action.sessionId } : {}),
+                ...(Number.isInteger(action.questionSessionId) && action.questionSessionId >= 0 ? { questionSessionId: action.questionSessionId } : {}) };
+        case "SESSION/ADVANCE_QUESTION":
+            return { ...state, questionSessionId: (state.questionSessionId || 0) + 1 };
+        case "TIMING/UPDATE":
+            return { ...state, timing: { ...state.timing, ...action.value } };
+        case "TIMER/UPDATE":
+            return { ...state, timer: { ...state.timer, ...action.value } };
+        case "TIMER/TICK":
+            if (state.status !== "running" || state.timer.status !== "running" ||
+                action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.generation !== state.timer.generation) return state;
+            return { ...state, timer: { ...state.timer, remainingMs: Math.max(0, Number(action.remainingMs) || 0) } };
+        case "TIMER/EXPIRE":
+            if (state.status !== "running" || state.timer.status !== "running" ||
+                action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.generation !== state.timer.generation) return state;
+            return { ...state, timer: { ...state.timer, status: "idle", remainingMs: 0, deadline: null } };
+        // Phase 5: speech state transitions are pure and reject stale effect events.
+        case "SPEECH/START":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                !Number.isInteger(action.sequenceId) || action.sequenceId < state.speech.sequenceId ||
+                !["running", "paused"].includes(state.status)) return state;
+            return { ...state, speech: { status: "speaking", type: action.speechType || null, sequenceId: action.sequenceId } };
+        case "SPEECH/PAUSE":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.sequenceId !== state.speech.sequenceId || state.speech.status !== "speaking") return state;
+            return { ...state, speech: { ...state.speech, status: "paused" } };
+        case "SPEECH/RESUME":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.sequenceId !== state.speech.sequenceId || state.speech.status !== "paused") return state;
+            return { ...state, speech: { ...state.speech, status: "speaking" } };
+        case "SPEECH/END":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.sequenceId !== state.speech.sequenceId) return state;
+            return { ...state, speech: { status: "idle", type: null, sequenceId: action.sequenceId } };
+        case "SPEECH/CANCEL":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                !Number.isInteger(action.sequenceId) || action.sequenceId < state.speech.sequenceId) return state;
+            return { ...state, speech: { status: "idle", type: null, sequenceId: action.sequenceId } };
+        case "SPEECH/ERROR":
+            if (action.sessionId !== state.sessionId || action.questionSessionId !== state.questionSessionId ||
+                action.sequenceId !== state.speech.sequenceId) return state;
+            return { ...state, speech: { status: "idle", type: null, sequenceId: action.sequenceId }, error: action.error || "SPEECH_ERROR" };
+        case "DELAY/UPDATE":
+            return { ...state, delay: { ...state.delay, ...action.value } };
+        case "CHECKPOINT/UPDATE":
+            return { ...state, checkpoint: { ...state.checkpoint, ...action.value } };
+        case "ERROR/SET":
+            return { ...state, error: action.error || null };
+        default:
+            return state;
+    }
+}
+/*
+ * Phase 6: the reducer is the sole owner of lesson/session fields.
+ * These accessors are a temporary source-compatibility seam for existing
+ * effect and rendering functions; they do not store a second copy of state.
+ */
+/* Phase 7: the only boundary allowed to commit reducer state. Effects may
+   dispatch actions, but must never assign lessonState directly. */
+function dispatchLessonAction(action, options = {}) {
+    if (!action || typeof action.type !== "string") return { accepted: false, state: lessonState };
+    const previous = lessonState;
+    const next = options.nextState || lessonReducer(previous, action);
+    if (next === previous) return { accepted: false, state: previous };
+    lessonState = next;
+    return { accepted: true, state: next, previous };
+}
+function applyLessonAction(action) {
+    return dispatchLessonAction(action).accepted;
+}
+/* Explicit selectors: reads of reducer-owned data should use these rather
+   than shadow variables or compatibility property accessors. */
+const selectLessonState = () => lessonState;
+const selectQuestions = () => lessonState.questions;
+const selectQuestionIndex = () => lessonState.questionIndex;
+const selectMode = () => lessonState.mode;
+const selectQuestion = () => lessonState.questions[lessonState.questionIndex] || null;
+const selectQuestionPhase = () => lessonState.question.phase;
+const selectAnswerVisible = () => lessonState.question.answerVisible;
+const selectExplanationVisible = () => lessonState.question.explanationVisible;
+const selectLessonStatus = () => lessonState.status;
+const selectIsRunning = () => lessonState.status === "running" || lessonState.status === "paused";
+const selectIsPaused = () => lessonState.status === "paused";
+const selectTimerState = () => lessonState.timer;
+const selectSpeechState = () => lessonState.speech;
+const selectCheckpoint = () => lessonState.checkpoint;
+function updateLessonTiming(value) { return applyLessonAction({ type: "TIMING/UPDATE", value }); }
+function updateLessonCheckpoint(value) { return applyLessonAction({ type: "CHECKPOINT/UPDATE", value }); }
+function setLessonIdentity(sessionId) { return applyLessonAction({ type: "SESSION/SET_IDENTITY", sessionId }); }
+function advanceQuestionSession() { return applyLessonAction({ type: "SESSION/ADVANCE_QUESTION" }); }
+function replaceQuestions(questions) { return applyLessonAction({ type: "SESSION/SET_QUESTIONS", questions }); }
+function setQuestionIndex(index) { return applyLessonAction({ type: "QUESTION/SET_INDEX", index: Number(index) }); }
+function setLearningMode(mode) { return applyLessonAction({ type: "SESSION/SET_MODE", mode }); }
+function setQuestionPhase(phase) { return applyLessonAction({ type: "QUESTION/SET_PHASE", phase }); }
+function setAnswerVisible(visible) { return applyLessonAction({ type: "QUESTION/SET_VISIBILITY", answerVisible: Boolean(visible), explanationVisible: Boolean(visible) && selectExplanationVisible() }); }
+function setExplanationVisible(visible) { return applyLessonAction({ type: "QUESTION/SET_VISIBILITY", answerVisible: selectAnswerVisible(), explanationVisible: Boolean(visible) }); }
+
+function syncEffectState() {
+    // Only effect-owned observations are synchronized here. Lesson identity,
+    // question selection, visibility, mode, and lifecycle are reducer-owned.
+    applyLessonAction({ type: "TIMER/UPDATE", value: {
+        status: clock ? "running" : (selectIsPaused() && selectMode() === "timed" ? "paused" : "idle"),
+        durationMs: selectQuestionPhase() === "answer" ? aDur : qDur,
+        remainingMs: Math.max(0, left), deadline: deadline || null,
+        generation: timerGeneration,
+        ownerSessionId: clock ? lessonState.sessionId : null,
+        ownerQuestionSessionId: clock ? lessonState.questionSessionId : null
+    }});
+    applyLessonAction({ type: "DELAY/UPDATE", value: {
+        type: speechDelayTimer ? "explanation" : (waitingBetweenQuestions ? "next-question" : (startPending ? "start" : null)),
+        remainingMs: speechDelayTimer ? Math.max(0, speechDelayRemaining) : (waitingBetweenQuestions ? Math.max(0, questionDelayRemaining) : 0),
+        deadline: speechDelayTimer ? (speechDelayEndsAt || null) : (waitingBetweenQuestions ? (questionDelayEndsAt || null) : null)
+    }});
+    const checkpointAvailable = selectQuestions().length > 0 && (lessonState.status === "stopped" || lessonState.status === "paused");
+    applyLessonAction({ type: "CHECKPOINT/UPDATE", value: {
+        available: checkpointAvailable,
+        savedAt: checkpointAvailable ? (lessonState.checkpoint.savedAt || new Date().toISOString()) : null
+    }});
+}
+function transitionLesson(nextStatus, options = {}) {
+    const current = lessonState.status;
+    let action;
+    if (nextStatus === "starting") action = { type: "LESSON/START" };
+    else if (nextStatus === "running" && current === "starting") action = { type: "LESSON/BEGIN" };
+    else if (nextStatus === "running" && current === "paused") action = { type: "LESSON/RESUME" };
+    else if (nextStatus === "running" && current === "stopped") action = { type: "LESSON/CONTINUE" };
+    else if (nextStatus === "paused") action = { type: "LESSON/PAUSE" };
+    else if (nextStatus === "stopped") action = { type: "LESSON/STOP", savedAt: new Date().toISOString() };
+    else if (nextStatus === "completed") action = { type: "LESSON/COMPLETE", finishedAt: lessonState.timing.finishedAt || Date.now() };
+    else if (nextStatus === "idle" && current === "starting") action = { type: "LESSON/CANCEL_START" };
+    else if (nextStatus === "idle") action = { type: "LESSON/RESET", force: Boolean(options.force) };
+    else {
+        if (!options.silent) console.warn(`No reducer transition mapped for: ${current} → ${nextStatus}`);
+        return false;
+    }
+    const result = dispatchLessonAction(action, { nextState: options.nextState });
+    if (!result.accepted) {
+        if (!options.silent) console.warn(`Rejected lesson transition: ${current} → ${nextStatus}`);
+        return false;
+    }
+    if (result.state.status !== "starting") startPending = false;
+    syncEffectState();
+    return true;
+}
+function isActiveLesson() {
+    return selectIsRunning();
+}
+const controlIds=['showPrev','showNext','showPause','showRestart','showStop','showReveal','showReadQ','showReadA','showDifficulty'];function controlPrefs(){return Object.fromEntries(controlIds.map(id=>[id,$(id).checked]))}function save(){try{localStorage.setItem("g3-presenter",JSON.stringify({theme:$('theme').value,mode:$('mode').value,startDelay:$('startDelay').value,startPresent:$('startInPresent').value,q:$('qSeconds').value,a:$('aSeconds').value,questionDelay:$('questionDelay').value,learningPause:$('learningPause').value,tick:$('tick').checked,qv:$('qVoice').checked,av:$('aVoice').checked,rate:$('rate').value,explanationDelay:$('explanationDelay').value,voice:$('voice').value,start:$('rangeStart').value,end:$('rangeEnd').value,controls:controlPrefs()}))}catch(e){}}function restore(){let s={};try{s=JSON.parse(localStorage.getItem('g3-presenter')||'{}')}catch(e){};[['theme','theme'],['mode','mode'],['startDelay','startDelay'],['startInPresent','startPresent'],['qSeconds','q'],['aSeconds','a'],['questionDelay','questionDelay'],['learningPause','learningPause'],['rangeStart','start'],['rangeEnd','end'],['rate','rate'],['explanationDelay','explanationDelay']].forEach(([id,k])=>{if(s[k]!==undefined&&s[k]!==null&&s[k]!=='')$(id).value=s[k]});$('tick').checked=!!s.tick;controlIds.forEach(id=>{if(s.controls&&typeof s.controls[id]==='boolean')$(id).checked=s.controls[id]});$('qVoice').checked=!!s.qv;$('aVoice').checked=!!s.av;$('rateLabel').textContent=Number($('rate').value).toFixed(1)+'×';applyTheme();labels();savedVoice=s.voice||''}let savedVoice='';function resetSettings(){if(!confirm('Reset all saved quiz settings and display options to their defaults? Your loaded question bank will be kept.'))return;invalidateLearningStage();learningStagePaused=false;clearQuestionDelay();if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;autoPresent=false;clearClock();cancelSpeech();try{localStorage.removeItem('g3-presenter')}catch(e){};setAnswerVisible(false);setQuestionPhase('question');left=15000;deadline=0;transitionLesson('idle',{silent:true,force:true});setLessonIdentity(null);advanceQuestionSession();applyLessonAction({type:"ERROR/SET",error:null});updateLessonCheckpoint({snapshot:null,savedAt:null});loadedSourceName='';bankTitle='Question Presenter';$('theme').value='light';$('mode').value='timed';$('startDelay').value='0';$('startInPresent').value='no';$('qSeconds').value='15';$('aSeconds').value='15';$('questionDelay').value='1';$('learningPause').value='2';$('tick').checked=false;$('qVoice').checked=false;$('aVoice').checked=false;$('rate').value='.9';$('explanationDelay').value='1.5';$('voice').value='';$('rangeStart').value='1';$('subjectFilter').value='__all';$('gradeFilter').value='__all';$('topicFilter').value='__all';controlIds.forEach(id=>$(id).checked=true);updateMetadataOptions();$('subjectFilter').value='__all';$('gradeFilter').value='__all';$('topicFilter').value='__all';updateTopicOptions();$('rangeStart').value='1';$('rangeEnd').value=filteredBank().length;applyTheme();labels();$('rateLabel').textContent='0.9×';$('status').textContent='Settings reset';$('sourceStatus').textContent='Question bank ready. Settings have been reset to defaults.';$('metadataSummary').textContent='';$('appTitle').textContent='Question Presenter';$('appSubtitle').textContent='Question Presenter · Learn, think, discover';document.title='Question Presenter v1.3.0-alpha9';$('view').innerHTML='<div class="empty"><div><div class="emptyicon">✦</div><h2>Ready to explore?</h2><p class="welcome-intro">Load a question bank, configure your preferences, then press Start quiz.</p><ol class="welcome-steps"><li>Load a CSV file or published CSV URL.</li><li>Choose a subject, grade, topic, and question range.</li><li>Configure learning mode, theme, timer, sound, and voice.</li><li>Press Start quiz when you are ready.</li></ol></div></div>';$('view').classList.remove('hidden');$('done').classList.add('hidden');save()}function questionMs(){return clamp($('qSeconds').value,5,600,15)*1000}function answerMs(){return clamp($('aSeconds').value,1,120,15)*1000}function labels(){$('qLabel').textContent=clamp($('qSeconds').value,5,600,15);$('aLabel').textContent=clamp($('aSeconds').value,1,120,15)}
+function parseCSV(s){
+  const result=parseCSVDetailed(s);
+  if(result.errors.length)throw new Error(result.errors[0].message);
+  return result.records.map(r=>r.cells).filter(r=>r.some(c=>String(c).trim()));
+}
+function parseCSVDetailed(input){
+  const text=String(input??'').replace(/^\uFEFF/,'');
+  const records=[];const errors=[];let emptyRows=0;let cells=[],cell='',quoted=false,afterQuote=false;
+  let line=1,rowStart=1,cellStartLine=1,recordHasContent=false;
+  const pushCell=()=>{cells.push(cell);cell='';afterQuote=false;cellStartLine=line};
+  const pushRecord=()=>{pushCell();if(cells.some(v=>String(v).trim()!==''))records.push({cells,line:rowStart});else emptyRows++;cells=[];recordHasContent=false;rowStart=line+1;cellStartLine=line+1};
+  for(let i=0;i<text.length;i++){
+    const ch=text[i],next=text[i+1];
+    if(quoted){
+      if(ch==='"'&&next==='"'){cell+='"';i++;}
+      else if(ch==='"'){quoted=false;afterQuote=true;}
+      else {cell+=ch;if(ch==='\n')line++;}
+      continue;
+    }
+    if(afterQuote&&ch!==','&&ch!=='\r'&&ch!=='\n'&&!/\s/.test(ch)){
+      errors.push({line,message:`Unexpected character after a closing quote on CSV row ${rowStart}.`});
+      // Recover by treating the character as unquoted content.
+      cell+=ch;afterQuote=false;recordHasContent=true;continue;
+    }
+    if(ch==='"'){
+      if(cell.trim()===''&&!afterQuote){cell='';quoted=true;recordHasContent=true;}
+      else {errors.push({line,message:`Unexpected quote in an unquoted field on CSV row ${rowStart}.`});cell+=ch;recordHasContent=true;}
+    } else if(ch===','){pushCell();recordHasContent=true;}
+    else if(ch==='\r'){
+      if(next==='\n')i++;
+      pushRecord();line++;rowStart=line;cellStartLine=line;
+    } else if(ch==='\n'){pushRecord();line++;rowStart=line;cellStartLine=line;}
+    else {cell+=ch;if(!/\s/.test(ch))recordHasContent=true;}
+  }
+  if(quoted)errors.push({line:rowStart,message:`Unclosed quoted field starting on or before CSV row ${rowStart}.`});
+  if(cell.length||cells.length||recordHasContent){cells.push(cell);if(cells.some(v=>String(v).trim()!==''))records.push({cells,line:rowStart});else emptyRows++;}
+  return {records,errors,lineCount:line,emptyRows};
+}
+function normalizeHeader(value){
+  return String(value??'').replace(/^\uFEFF/,'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ');
+}
+function validateCSVText(text,sourceName=''){
+  const parsed=parseCSVDetailed(text),records=parsed.records;
+  const report={sourceName,errors:[...parsed.errors],warnings:[],info:[],validRows:[],preview:[],critical:false,counts:{valid:0,invalid:0,warnings:0,duplicates:0,empty:parsed.emptyRows||0,numbering:0,width:0,duplicateHeaders:0},candidate:[],bankTitle:'Question Bank'};
+  if(!records.length){report.errors.push({line:1,message:'The file is empty or contains no non-empty CSV rows.'});report.critical=true;if(parsed.emptyRows)report.info.push(`${parsed.emptyRows} blank row(s) ignored.`);return report;}
+  const headers=records[0].cells.map(normalizeHeader);
+  const aliases={
+    num:['question number','number','no','question no','q no','id'],
+    q:['question','question text','question content','prompt'],
+    a:['answer','correct answer','answer text','solution'],
+    e:['explanation','why'],d:['difficulty','level'],t:['topic','category','question topic'],
+    sub:['subject','school subject','discipline'],gr:['grade','class','year','school grade'],
+    qt:['question time','question seconds','time'],at:['answer time','answer seconds'],
+    img:['image url','image','diagram url','picture url'],alt:['image alt','alt text','image description'],hint:['hint','clue']
+  };
+  const col={};for(const [key,names] of Object.entries(aliases))col[key]=headers.findIndex(h=>names.includes(h));
+  const duplicateHeaders=headers.filter((h,i)=>h&&headers.indexOf(h)!==i);
+  const duplicateHeaderGroups=[];
+  for(const [key,names] of Object.entries(aliases)){
+    const matched=[];
+    headers.forEach((header,index)=>{if(names.includes(header))matched.push({header,index});});
+    if(matched.length>1)duplicateHeaderGroups.push({key,headers:matched.map(x=>x.header),indexes:matched.map(x=>x.index)});
+  }
+  if(col.q<0)report.errors.push({line:records[0].line,message:'Required column “Question” is missing.'});
+  if(col.a<0)report.errors.push({line:records[0].line,message:'Required column “Answer” is missing.'});
+  if(duplicateHeaders.length||duplicateHeaderGroups.length){
+    const labels=[...new Set(duplicateHeaders)];
+    duplicateHeaderGroups.forEach(group=>labels.push(`${group.key}: ${group.headers.join(' / ')}`));
+    const uniqueLabels=[...new Set(labels)];
+    report.warnings.push({line:records[0].line,message:`Duplicate or equivalent header(s) detected: ${uniqueLabels.join(', ')}. The first matching column is used; remove or rename duplicates to avoid ambiguity.`});
+    report.counts.duplicateHeaders=uniqueLabels.length;
+    report.counts.warnings++;
+  }
+  if(col.num<0)report.info.push('No Question number column found; CSV row positions will be used as question identifiers.');
+  const optional=['Subject','Grade','Topic','Explanation','Hint','Image URL','Image Alt','Difficulty'];
+  const absent=optional.filter(label=>!headers.some(h=>(aliasesForLabel[label]||[normalizeHeader(label)]).includes(h)));
+  if(absent.length)report.info.push('Optional column(s) not found: '+absent.join(', ')+'. These features will remain empty or use app defaults.');
+  if(col.q<0||col.a<0){report.critical=true;report.preview=records.slice(1,11).map(r=>({line:r.line,num:'',question:r.cells[col.q]||'',answer:r.cells[col.a]||'',status:'Cannot validate: required header missing',kind:'invalid'}));return report;}
+  const data=records.slice(1);
+  const subjectIdx=col.sub,topicIdx=col.t,gradeIdx=col.gr;
+  const inferred=inferBankTitle(sourceName,records.map(r=>r.cells),subjectIdx,topicIdx,gradeIdx);
+  report.bankTitle=inferred.baseTitle||'Question Bank';
+  const inferredSubject=inferred.subject&&inferred.subject!=='Question Bank'?inferred.subject:'';
+  const inferredGrade=inferred.grade||'';
+  const numberSeen=new Map(),questionSeen=new Map();
+  let previousNumericNumber=null,previousNumericLine=null;
+  let emptyRows=parsed.emptyRows||0;
+  for(let idx=0;idx<data.length;idx++){
+    const rec=data[idx],cells=rec.cells;
+    if(!cells.some(v=>String(v).trim())){emptyRows++;continue;}
+    const val=k=>col[k]>=0?String(cells[col[k]]??'').trim():'';
+    const q=val('q'),a=val('a'),num=val('num');
+    const rowIssues=[];let kind='valid',invalidCounted=false;
+    if(col.num>=0&&!num)rowIssues.push({severity:'warning',message:`CSV row ${rec.line}: question number is missing.`});
+    if(num){
+      const numericNumber=/^\d+$/.test(num)?Number(num):null;
+      const numberKey=numericNumber===null?num:String(numericNumber);
+      if(numberSeen.has(numberKey))rowIssues.push({severity:'warning',message:`CSV row ${rec.line}: question number “${num}” duplicates CSV row ${numberSeen.get(numberKey)}.`});
+      else numberSeen.set(numberKey,rec.line);
+      if(numericNumber!==null&&Number.isSafeInteger(numericNumber)){
+        if(previousNumericNumber!==null&&numericNumber!==previousNumericNumber+1&&numericNumber!==previousNumericNumber){
+          const detail=numericNumber>previousNumericNumber?`numbering jumps from ${previousNumericNumber} to ${numericNumber}`:`numbering goes backwards from ${previousNumericNumber} to ${numericNumber}`;
+          rowIssues.push({severity:'warning',message:`CSV row ${rec.line}: ${detail}; check for missing or out-of-order question numbers.`});report.counts.numbering++;
+        }
+        previousNumericNumber=numericNumber;previousNumericLine=rec.line;
+      }
+    }
+    if(!q||!a){
+      kind='invalid';report.counts.invalid++;invalidCounted=true;
+      const missing=[];if(!q)missing.push('question text');if(!a)missing.push('answer text');
+      report.errors.push({line:rec.line,message:`CSV row ${rec.line} is skipped because ${missing.join(' and ')} ${missing.length===1?'is':'are'} missing.`});
+    }
+    const normalizedQ=q.toLocaleLowerCase().replace(/\s+/g,' ').trim();
+    if(normalizedQ){
+      if(questionSeen.has(normalizedQ)){rowIssues.push({severity:'warning',message:`CSV row ${rec.line}: question text may duplicate CSV row ${questionSeen.get(normalizedQ)}.`});report.counts.duplicates++;}
+      else questionSeen.set(normalizedQ,rec.line);
+    }
+    if(cells.length!==headers.length){
+      const delta=cells.length-headers.length;
+      const detail=delta>0?`${delta} extra cell(s)`:`${Math.abs(delta)} cell(s) missing`;
+      rowIssues.push({severity:'warning',message:`CSV row ${rec.line} has ${cells.length} cells but the header has ${headers.length} (${detail}). Check for an unquoted comma or a missing delimiter.${delta>0?' This row is skipped because extra cells could mean question or answer text was split and would otherwise be silently truncated.':' Missing trailing optional cells are treated as blank; rows missing required Question or Answer text are skipped.'}`});
+      report.counts.width++;
+      if(delta>0){kind='invalid';if(!invalidCounted){report.counts.invalid++;invalidCounted=true;}}
+    }
+    if(rowIssues.length){report.counts.warnings+=rowIssues.length;report.warnings.push(...rowIssues);}
+    if(kind==='valid'){
+      const subject=val('sub')||inferredSubject;
+      const grade=normalizeGrade(val('gr'))||inferredGrade;
+      let topic='';if(col.t>=0)topic=val('t')||(col.sub>=0?val('sub'):'');else if(col.sub>=0)topic=val('sub')||inferredSubject;
+      const qSeconds=Number($('qSeconds')?.value)||30, aSeconds=Number($('aSeconds')?.value)||5;
+      const question={number:num||String(idx+1),question:q,answer:a,explanation:val('e'),difficulty:val('d')||'Easy',topic,subject,grade,qt:clamp(val('qt')||qSeconds,5,600,30),at:clamp(val('at')||aSeconds,1,120,5),imageUrl:val('img'),imageAlt:val('alt'),hint:val('hint')};
+      report.validRows.push({line:rec.line,question,issues:rowIssues});
+      report.candidate.push(question);
+      report.counts.valid++;
+    }
+    report.preview.push({line:rec.line,num:num||'—',question:q,answer:a,status:kind==='invalid'?'Invalid — will be skipped':rowIssues.length?'Warning — check row':'Valid',kind:kind==='invalid'?'invalid':rowIssues.length?'warning':'valid'});
+  }
+  report.counts.empty=emptyRows;
+  if(emptyRows&&!report.info.some(message=>message.includes('blank row')))report.info.push(`${emptyRows} blank row(s) ignored.`);
+  if(!report.counts.valid){report.errors.push({line:0,message:'No usable question rows remain. Each loaded question must contain both Question and Answer text.'});report.critical=true;}
+  if(parsed.errors.length)report.critical=true;
+  if(report.errors.some(e=>e.message.includes('Required column')))report.critical=true;
+  report.preview=report.preview.slice(0,50);
+  return report;
+}
+const aliasesForLabel={
+  'Subject':['subject','school subject','discipline'],'Grade':['grade','class','year','school grade'],
+  'Topic':['topic','category','question topic'],'Explanation':['explanation','why'],
+  'Hint':['hint','clue'],'Image URL':['image url','image','diagram url','picture url'],
+  'Image Alt':['image alt','alt text','image description'],'Difficulty':['difficulty','level']
+};
+function inferBankTitle(sourceName, rows, subjectIndex, topicIndex, gradeIndex=-1){
+  let subject='',grade='';
+  if(subjectIndex>=0){for(let n=1;n<rows.length;n++){let value=String(rows[n][subjectIndex]||'').trim();if(value){subject=value;break;}}}
+  if(gradeIndex>=0){for(let n=1;n<rows.length;n++){let value=String(rows[n][gradeIndex]||'').trim();if(value){grade=normalizeGrade(value);break;}}}
+  const base=String(sourceName||'').split(/[?#]/)[0].split('/').pop().replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+  const gradeMatch=(base+' '+(sourceName||'')).match(/\b(grade|class|year)\s*[-_ ]?\s*(\d{1,2})\b|\bG\s*[-_ ]?\s*(\d{1,2})\b/i);
+  if(!grade&&gradeMatch)grade='Grade '+(gradeMatch[2]||gradeMatch[3]);
+  const known=[['Mathematics',/\b(math|maths|mathematics|algebra|arithmetic)\b/i],['English',/\b(english|language arts|literacy)\b/i],['Science',/\bscience\b/i],['Social Studies',/\b(social studies|social science)\b/i],['History',/\bhistory\b/i],['Geography',/\bgeography\b/i],['ICT',/\b(ict|computer|computing|technology)\b/i],['General Knowledge',/\b(general knowledge|gk|quiz)\b/i],['Health',/\b(health|wellbeing)\b/i],['Art',/\bart\b/i]];
+  let matched=known.find(([name,re])=>re.test(base));if(!subject&&matched)subject=matched[0];
+  if(!subject&&topicIndex>=0){const topicText=rows.slice(1).map(r=>String(r[topicIndex]||'')).join(' ');const hints=[['Mathematics',/\b(fractions?|addition|subtraction|multiplication|division|geometry|shapes|measurement|numbers?|place value|patterns?|algebra)\b/i],['English',/\b(grammar|nouns?|verbs?|adjectives?|punctuation|comprehension|vocabulary|spelling|pronouns?|sentences?)\b/i],['Science',/\b(plants?|living things|human body|forces?|matter|energy|light|sound|water cycle|animals?|habitats?|weather)\b/i],['Social Studies',/\b(community|citizenship|culture|maps?|government)\b/i]];let m=hints.find(([name,re])=>re.test(topicText));if(m)subject=m[0];}
+  if(!subject&&base)subject=base.replace(/\b(\d+\s*)?(questions?|question bank|bank|enriched|sample|data|csv|worksheet|worksheets)\b/ig,'').replace(/\b(grade|class|year)\s*\d+\b/ig,'').replace(/\s+/g,' ').trim();
+  if(!subject)subject='Question Bank';return {subject,grade,baseTitle:grade?`${grade} ${subject}`:subject};
+}
+function normalizeGrade(value){let v=String(value??'').trim();if(!v)return '';let m=v.match(/^(?:grade|class|year|g)\s*[- ]?\s*(\d{1,2})$/i);if(m)return 'Grade '+m[1];if(/^\d{1,2}$/.test(v))return 'Grade '+v;return v;}
+function parseBank(s,sourceName=''){
+  const report=validateCSVText(s,sourceName);
+  if(report.critical)throw new Error(report.errors[0]?.message||'CSV validation failed.');
+  if(!report.candidate.length)throw new Error('No complete question rows found.');
+  bankTitle=report.bankTitle||'Question Presenter';loadedSourceName=sourceName||'';updateAppTitle();
+  return report.candidate;
+}
+function metadataBank(){const subject=$('subjectFilter').value,grade=$('gradeFilter').value;return bank.filter(q=>(subject==='__all'||q.subject===subject)&&(grade==='__all'||q.grade===grade))}
+function updateAppTitle(){const subjects=[...new Set(bank.map(q=>String(q.subject||'').trim()).filter(Boolean))],grades=[...new Set(bank.map(q=>String(q.grade||'').trim()).filter(Boolean))];const sf=$('subjectFilter')?.value||'__all',gf=$('gradeFilter')?.value||'__all';let title=loadedSourceName?(bankTitle||'Question Bank'):'Question Presenter';if(!loadedSourceName){$('appTitle').textContent=title;document.title=title+' — Quiz';$('appSubtitle').textContent='Choose questions · Configure · Start quiz';return;}if(sf!=='__all'&&gf!=='__all')title=`${gf} ${sf}`;else if(sf!=='__all')title=grades.length>1?`${sf} · All Grades`:sf;else if(gf!=='__all')title=`${gf} · All Subjects`;else if(subjects.length===1&&grades.length===1)title=`${grades[0]} ${subjects[0]}`;else if(subjects.length>1&&grades.length>1)title='All Subjects · All Grades';else if(subjects.length>1)title=`All Subjects${grades.length===1?' · '+grades[0]:''}`;else if(grades.length>1)title='All Subjects · All Grades';$('appTitle').textContent=title;document.title=title+' — Question Presenter v1.3.0-alpha9';$('appSubtitle').textContent=loadedSourceName?'Question Presenter · '+loadedSourceName:'Question Presenter · Learn, think, discover'}
+function updateMetadataOptions(){const sf=$('subjectFilter'),gf=$('gradeFilter'),oldS=sf.value||'__all',oldG=gf.value||'__all';const subjects=[...new Set(bank.map(q=>String(q.subject||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));const grades=[...new Set(bank.map(q=>normalizeGrade(q.grade)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));sf.innerHTML='<option value="__all">All subjects'+(subjects.length?' ('+subjects.length+')':'')+'</option>'+subjects.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');gf.innerHTML='<option value="__all">All grades'+(grades.length?' ('+grades.length+')':'')+'</option>'+grades.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');sf.value=subjects.includes(oldS)?oldS:'__all';gf.value=grades.includes(oldG)?oldG:'__all';updateTopicOptions();updateAppTitle()}
+function updateTopicOptions(){const select=$('topicFilter'),old=select.value||'__all',eligible=metadataBank(),topics=[...new Set(eligible.map(q=>String(q.topic||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));select.innerHTML='<option value="__all">All topics ('+eligible.length+')</option>'+topics.map(t=>'<option value="'+esc(t)+'">'+esc(t)+'</option>').join('');select.disabled=topics.length===0;select.value=topics.includes(old)?old:'__all';updateRangeBounds()}
+function filteredBank(){const topic=$('topicFilter').value;const eligible=metadataBank();return topic==='__all'?eligible:eligible.filter(q=>String(q.topic||'General').trim()===topic)}
+function updateRangeBounds(){const count=filteredBank().length;const start=$('rangeStart'),end=$('rangeEnd');start.max=Math.max(1,count);end.max=Math.max(1,count);if(+start.value>count)start.value=1;if(+end.value>count||!+end.value)end.value=count||1;const topic=$('topicFilter').value;const subjects=[...new Set(bank.map(q=>String(q.subject||'').trim()).filter(Boolean))];const grades=[...new Set(bank.map(q=>normalizeGrade(q.grade)).filter(Boolean))];const subject=$('subjectFilter').value!=='__all'?$('subjectFilter').value:(subjects.length===1?subjects[0]:'All Subjects');const grade=$('gradeFilter').value!=='__all'?$('gradeFilter').value:(grades.length===1?grades[0]:'All Grades');const topicLabel=topic==='__all'?'All Topics':topic;$('metadataSummary').textContent=`${count} question${count===1?'':'s'} available · ${subject} · ${grade} · ${topicLabel}`;}
+function cur(){return selectQuestion()}
+
+/* Final compatibility-removal pass: no global state accessors remain. */
+/* v1.1.0 sequence coordinator: one generation owns all staged callbacks. */
+let learningStage = "thinking";
+let learningStageToken = 0;
+let learningTimerToken = 0;
+let learningStageTimer = null;
+let learningStageDeadline = 0;
+let learningStageRemaining = 0;
+let learningStageAction = null;
+let learningStagePaused = false;
+
+let hintVisible = false;
+let learnerConfidence = null;
+let sequenceCheckpoint = null;
+let pendingSpeechCompletion = null;
+let answerStageDeadline = 0;
+let answerStageRemainingMs = 0;
+function invalidateLearningStage(){
+    learningStageToken++;learningTimerToken++;pendingSpeechCompletion=null;
+    if(learningStageTimer){clearTimeout(learningStageTimer);learningStageTimer=null;}
+    learningStageDeadline=0;
+    learningStageAction=null;
+    learningStageRemaining=0;
+}
+function scheduleLearningStage(ms, action){
+    if(learningStageTimer){clearTimeout(learningStageTimer);learningStageTimer=null;}
+    learningStageRemaining=Math.max(0, Number(ms)||0);
+    learningStageAction=action;
+    const token=++learningTimerToken;
+    const context=captureAsyncContext({learningToken:token,stageToken:learningStageToken});
+    if(learningStagePaused || selectIsPaused()) return;
+    if(learningStageRemaining===0){
+        const run=learningStageAction;learningStageAction=null;
+        if(run && token===learningTimerToken && context.stageToken===learningStageToken && isAsyncContextCurrent(context)) run();
+        return;
+    }
+    learningStageDeadline=Date.now()+learningStageRemaining;
+    learningStageTimer=setTimeout(()=>{
+        if(token!==learningTimerToken || context.stageToken!==learningStageToken || !isAsyncContextCurrent(context)) return;
+        learningStageTimer=null;learningStageDeadline=0;learningStageRemaining=0;
+        const run=learningStageAction;learningStageAction=null;
+        if(run) run();
+    }, learningStageRemaining);
+}
+function safeImageUrl(value){
+    const raw=String(value||"").trim();
+    if(!raw) return "";
+    try { const u=new URL(raw, document.baseURI); return ["http:","https:"].includes(u.protocol) ? u.href : ""; }
+    catch(e){ return ""; }
+}
+function dispatchSpeechState(type, speechType=null, sequenceId=speechSequence, context=captureAsyncContext(), error=null){
+    const action={type,sessionId:context.sessionId,questionSessionId:context.questionSessionId,sequenceId,speechType,error};
+    return dispatchLessonAction(action).accepted;
+}
+function speechEffectIsCurrent(sequenceId, context){
+    return sequenceId===speechSequence && isAsyncContextCurrent(context,{requireUnpaused:false,requireRunning:false});
+}
+function speakStageText(text, type, token, done){
+    const content=String(text||"").trim();
+    if(!content || (type!=="question" && !$('aVoice').checked)){done();return;}
+    if(type==="question" && !$('qVoice').checked){done();return;}
+    if(!SpeechEffects.isSupported()){dispatchSpeechState("SPEECH/ERROR",type,speechSequence,captureAsyncContext(),"SPEECH_UNAVAILABLE");done();return;}
+    SpeechEffects.cancel();
+    const speechId=speechSequence, context=captureAsyncContext(), stageToken=learningStageToken;
+    let utterance;
+    try{utterance=makeUtterance(content);}catch(e){dispatchSpeechState("SPEECH/ERROR",type,speechId,context,"SPEECH_UNAVAILABLE");done();return;}
+    dispatchSpeechState("SPEECH/START",type,speechId,context);
+    let completed=false;
+    const finishSpeech=(failed=false)=>{
+        if(completed)return;completed=true;
+        if(!speechEffectIsCurrent(speechId,context)||token!==learningStageToken||stageToken!==learningStageToken)return;
+        if(failed)dispatchSpeechState("SPEECH/ERROR",type,speechId,context,"SPEECH_ERROR");
+        else dispatchSpeechState("SPEECH/END",type,speechId,context);
+        syncEffectState();
+        if(lessonState.status==="paused"){pendingSpeechCompletion=done;return;}
+        if(lessonState.status!=="running")return;
+        done();
+    };
+    utterance.onend=()=>finishSpeech(false);
+    utterance.onerror=e=>finishSpeech(!["canceled","interrupted"].includes(e.error));
+    try{SpeechEffects.speakUtterance(utterance);}catch(e){finishSpeech(true);}
+    syncEffectState();
+}
+function initialStageForMode(){return selectMode()==="timed"?"thinking":selectMode()==="teacher"?"awaiting-teacher":"awaiting-learner";}
+function setLearningStage(stage){
+    learningStage=stage;
+    const labels={
+      thinking:"Think about your answer…",
+      "answer-transition":"Revealing the answer…",
+      "answer-reading":"Reading the answer…",
+      "answer-hold":"Take a moment to remember the answer.",
+      "explanation-transition":"Let's understand why.",
+      "explanation-reading":"Reading the explanation…",
+      "learning-hold":"Take a moment to absorb what you learned.",
+      "awaiting-teacher":"Waiting for the teacher.",
+      "awaiting-learner":"Reveal the answer when you are ready.",
+      "question-complete":"Question complete."
+    };
+    const el=$('sequenceStatus');
+    if(el)el.textContent=labels[stage]||"";
+}
+function finishTimedAnswerStage(token){
+    if(token!==learningStageToken||lessonState.status!=="running")return;
+    const remaining=answerStageDeadline?Math.max(0,answerStageDeadline-Date.now()):Math.max(0,answerStageRemainingMs);
+    answerStageRemainingMs=remaining;
+    if(remaining<=0){answerStageDeadline=0;answerStageRemainingMs=0;scheduleNextQuestion();return;}
+    setLearningStage("learning-hold");
+    scheduleLearningStage(remaining,()=>{if(token!==learningStageToken||lessonState.status!=="running")return;answerStageDeadline=0;answerStageRemainingMs=0;scheduleNextQuestion();});
+}
+function runLearningHold(token, remainingMs=null){
+    setLearningStage("learning-hold");
+    const duration=remainingMs===null?clamp($('learningPause').value,0,30,2)*1000:Math.max(0,remainingMs);
+    scheduleLearningStage(duration,()=>{if(token!==learningStageToken||lessonState.status!=="running")return;setLearningStage("question-complete");finishTimedAnswerStage(token);});
+}
+function runExplanationSpeech(token){
+    const q=cur();if(token!==learningStageToken||lessonState.status!=="running")return;
+    if(!String(q&&q.explanation||"").trim()){runLearningHold(token);return;}
+    setLearningStage("explanation-reading");
+    speakStageText(q.explanation,"explanation",token,()=>{if(token!==learningStageToken||lessonState.status!=="running")return;runLearningHold(token);});
+}
+function runExplanationStage(token, transitionRemaining=null){
+    const q=cur();if(token!==learningStageToken||lessonState.status!=="running")return;
+    if(!String(q&&q.explanation||"").trim()){runLearningHold(token);return;}
+    setExplanationVisible(true);render();setLearningStage("explanation-transition");
+    scheduleLearningStage(transitionRemaining===null?600:Math.max(0,transitionRemaining),()=>runExplanationSpeech(token));
+}
+function runAnswerHold(token, remainingMs=null){
+    setLearningStage("answer-hold");
+    const duration=remainingMs===null?clamp($('explanationDelay').value,0,10,1.5)*1000:Math.max(0,remainingMs);
+    scheduleLearningStage(duration,()=>runExplanationStage(token));
+}
+function runTimedLearningSequence(){
+    invalidateLearningStage();const token=learningStageToken,q=cur();if(!q||lessonState.status!=="running")return;
+    setLearningStage("answer-transition");
+    scheduleLearningStage(600,()=>{if(token!==learningStageToken||lessonState.status!=="running")return;setLearningStage("answer-reading");speakStageText(q.answer,"answer",token,()=>{if(token!==learningStageToken||lessonState.status!=="running")return;runAnswerHold(token);});});
+}
+function resumeTimedSequence(sc){
+    const token=learningStageToken,stage=sc&&sc.stage||"answer-transition";
+    if(stage==="answer-reading"){
+        setLearningStage(stage);speakStageText(cur().answer,"answer",token,()=>runAnswerHold(token));
+    }else if(stage==="answer-hold")runAnswerHold(token,sc.remainingMs);
+    else if(stage==="explanation-transition"){
+        setExplanationVisible(true);render();setLearningStage(stage);scheduleLearningStage(sc.remainingMs||600,()=>runExplanationSpeech(token));
+    }else if(stage==="explanation-reading")runExplanationSpeech(token);
+    else if(stage==="learning-hold")runLearningHold(token,sc.remainingMs);
+    else if(stage==="question-complete")scheduleNextQuestion();
+    else runTimedLearningSequence();
+}
+function setConfidence(value){
+    if(!selectQuestions().length || selectAnswerVisible() || !["running","paused"].includes(lessonState.status))return;
+    learnerConfidence=value;
+    if(cur())confidenceByQuestion.set(cur(),value);
+    render();
+}
+
+
+/* =========================================================
+   TIMER ENGINE
+   Owns countdown scheduling and invalidates stale interval
+   callbacks. The small legacy adapters below keep the UI and
+   lesson lifecycle independent from timer implementation.
+========================================================= */
+/* Every delayed effect captures both lesson and question identity. A callback
+   may act only while the same session/question still owns that effect. */
+function captureAsyncContext(extra = {}) {
+    const state = selectLessonState();
+    return { sessionId: state.sessionId, questionSessionId: state.questionSessionId, ...extra };
+}
+function isAsyncContextCurrent(context, options = {}) {
+    const state = selectLessonState();
+    if (!context || context.sessionId !== state.sessionId || context.questionSessionId !== state.questionSessionId) return false;
+    if (context.generation !== undefined && context.generation !== timerGeneration) return false;
+    if (options.requireRunning !== false && lessonState.status !== "running") return false;
+    if (options.requireUnpaused !== false && selectIsPaused()) return false;
+    return true;
+}
+function dispatchTimerAction(type, context, remainingMs) {
+    return dispatchLessonAction({ type, sessionId: context.sessionId,
+        questionSessionId: context.questionSessionId, generation: context.generation, remainingMs }).accepted;
+}
+const TimerEngine = {
+    clear() {
+        timerGeneration++;
+        clearInterval(clock);
+        clock = null;
+        deadline = 0;
+        syncEffectState();
+    },
+    start(ms) {
+        if (!selectIsRunning() || selectIsPaused() || selectMode() !== "timed" || lessonState.status !== "running") return;
+        this.clear();
+        left = Math.max(0, Number(ms) || 0);
+        deadline = Date.now() + left;
+        draw();
+        const token = ++timerGeneration;
+        const context = captureAsyncContext({ generation: token });
+        clock = setInterval(() => {
+            if (token !== timerGeneration || !isAsyncContextCurrent(context)) return;
+            tick(context);
+        }, 100);
+        syncEffectState();
+    },
+    remaining() {
+        return deadline ? Math.max(0, deadline - Date.now()) : Math.max(0, left);
+    },
+    isActive() {
+        return clock !== null && deadline > 0 && selectIsRunning() && !selectIsPaused();
+    }
+};
+function clearClock(){TimerEngine.clear()}function clearSpeechDelay(){speechDelaySequence++;if(speechDelayTimer){clearTimeout(speechDelayTimer);speechDelayTimer=null}speechDelayEndsAt=0}function scheduleSpeechDelay(ms,action){clearSpeechDelay();speechDelayRemaining=Math.max(0,ms);speechDelayAction=action;const token=++speechDelaySequence;const context=captureAsyncContext({sequence:token,speechSequence});if(speechDelayRemaining<=0){speechDelayAction=null;if(isAsyncContextCurrent(context))action();return}speechDelayEndsAt=Date.now()+speechDelayRemaining;speechDelayTimer=setTimeout(()=>{if(token!==speechDelaySequence||context.speechSequence!==speechSequence||!isAsyncContextCurrent(context))return;speechDelayTimer=null;speechDelayEndsAt=0;speechDelayRemaining=0;const run=speechDelayAction;speechDelayAction=null;if(run)run();syncEffectState()},speechDelayRemaining);syncEffectState()}function cancelSpeechCore(){SpeechEffects.cancel();}function timerStart(ms){TimerEngine.start(ms)}function draw(){let r=$('ring');if(!r)return;let total=selectQuestionPhase()==='answer'?aDur:qDur;r.style.setProperty('--progress',Math.max(0,Math.min(1,left/total))*360+'deg');$('timerNumber').textContent=Math.ceil(left/1000);$('timerLabel').textContent=selectQuestionPhase()==='answer'?'next in':'seconds';r.classList.toggle('urgent',selectQuestionPhase()==='question'&&left<=5000&&left>0)}function scheduleNextQuestion(){const delay=Math.max(0,Math.min(10,Number($('questionDelay').value)||0))*1000;if(delay<=0){next();return}waitingBetweenQuestions=true;questionDelayRemaining=delay;runQuestionDelay()}function runQuestionDelay(){if(!waitingBetweenQuestions||selectIsPaused()||lessonState.status!=="running")return;clearTimeout(questionDelayTimer);const token=++questionDelaySequence;const context=captureAsyncContext({sequence:token});questionDelayEndsAt=Date.now()+questionDelayRemaining;syncEffectState();$('status').textContent='Next question in '+(questionDelayRemaining/1000).toFixed(1)+' seconds';questionDelayTimer=setTimeout(()=>{if(token!==questionDelaySequence||!isAsyncContextCurrent(context))return;questionDelayTimer=null;waitingBetweenQuestions=false;questionDelayRemaining=0;questionDelayEndsAt=0;next();syncEffectState()},questionDelayRemaining)}function clearQuestionDelay(){questionDelaySequence++;if(questionDelayTimer){clearTimeout(questionDelayTimer);questionDelayTimer=null}waitingBetweenQuestions=false;questionDelayEndsAt=0;questionDelayRemaining=0;syncEffectState()}function tick(context=captureAsyncContext({generation:timerGeneration})) { if(!selectIsRunning()||selectIsPaused()||!deadline||!isAsyncContextCurrent(context))return; left=Math.max(0,deadline-Date.now()); const accepted=dispatchTimerAction("TIMER/TICK",context,left); if(!accepted)return; draw();syncEffectState();let s=Math.ceil(left/1000);if($('tick').checked&&selectQuestionPhase()==='question'&&s<=10&&s>0&&tick.last!==s){tick.last=s;playTick()}if(left<=0){if(!dispatchTimerAction("TIMER/EXPIRE",context,0))return;clearClock();if(selectQuestionPhase()==='question'){reveal(false)}else scheduleNextQuestion()}}
+function render(){
+    const q=cur();
+    if(!q){return;}
+    $('done').classList.add('hidden');$('view').classList.remove('hidden');
+    const img=safeImageUrl(q.imageUrl);
+    const canHint=!!String(q.hint||"").trim();
+    const canExplain=!!String(q.explanation||"").trim();
+    const confidenceButtons=(!selectAnswerVisible() && ["teacher","self","revision"].includes(selectMode())) ? `
+      <div class="confidence-panel" aria-label="How confident are you?">
+        <strong>How confident are you?</strong>
+        <button class="btn confidence-btn" data-confidence="confident" aria-pressed="${learnerConfidence==="confident"}">😊 I'm confident</button>
+        <button class="btn confidence-btn" data-confidence="unsure" aria-pressed="${learnerConfidence==="unsure"}">🤔 Not sure</button>
+        <button class="btn confidence-btn" data-confidence="help" aria-pressed="${learnerConfidence==="help"}">😕 Need help</button>
+        ${learnerConfidence?`<span class="confidence-summary">Response saved on this device for this session.</span>`:""}
+      </div>` : "";
+    $('view').innerHTML=`
+      <div class="progress">
+        <div class="progressline"><span>Lesson progress</span><strong>Question ${selectQuestionIndex()+1} of ${selectQuestions().length}</strong></div>
+        <div class="track"><div class="fill" style="width:${(selectQuestionIndex()+1)/selectQuestions().length*100}%"></div></div>
+      </div>
+      <div class="qbody ${selectAnswerVisible()?'answer-visible':'question-visible'}">
+        <div class="pills"><span class="pill">Question ${esc(q.number)}</span>${q.topic?`<span class="pill">${esc(q.topic)}</span>`:''}${$('showDifficulty').checked?`<span class="pill gray">${esc(q.difficulty||'Easy')}</span>`:''}</div>
+        <div class="questionrow">
+          <div><p class="kicker">Question</p><h2 class="question">${esc(q.question)}</h2></div>
+          <div class="${selectMode()==='timed'&&!selectAnswerVisible()?'':'hidden'}"><div class="ring" id="ring"><div class="ringcontent"><span class="number" id="timerNumber">--</span><span class="label" id="timerLabel">seconds</span></div></div></div>
+        </div>
+        ${img?`<img class="question-media" src="${esc(img)}" alt="${esc(q.imageAlt||'Illustration related to the question')}" loading="lazy" onerror="this.hidden=true">`:""}
+        ${!selectAnswerVisible()?`<div class="thinking-banner"><span class="thinking-dot" aria-hidden="true"></span><div class="thinking-copy"><span id="thinkingLabel">${selectMode()==='timed'?'Think about your answer…':selectMode()==='teacher'?'Discuss the question with your class.':'Think it through, then reveal the answer when ready.'}</span>${selectMode()==='timed'?`<div class="thinking-progress"><span id="thinkingBar"></span></div>`:""}</div></div>`:""}
+        ${hintVisible&&canHint?`<div class="hint-panel" role="status"><strong>💡 Hint</strong><p>${esc(q.hint)}</p></div>`:""}
+        ${confidenceButtons}
+        ${selectAnswerVisible()?`<section class="answer"><h3>✓ Answer</h3><p>${esc(q.answer)}</p></section>${selectExplanationVisible()&&canExplain?`<section class="explanation"><h3>💡 Explanation</h3><p>${esc(q.explanation)}</p></section>`:''}`:''}
+        <p class="sequence-status" id="sequenceStatus" aria-live="polite"></p>
+      </div>
+      <div class="controls ${presenting&&window.__teacherToolbarCollapsed?'toolbar-collapsed':''}">
+        ${presenting?'<button class="btn" id="toolbarToggle" aria-expanded="'+(!window.__teacherToolbarCollapsed)+'">☰ Teacher controls</button>':''}
+        <div class="group"><button class="btn ${$('showPrev').checked?'':'hidden'}" id="prev" ${selectQuestionIndex()===0?'disabled':''}>← Previous</button><button class="btn ${$('showNext').checked?'':'hidden'}" id="next">${selectQuestionIndex()===selectQuestions().length-1?'Finish':'Next →'}</button></div>
+        <div class="group">
+          ${canHint&&!selectAnswerVisible()?`<button class="btn" id="hintBtn">💡 Show hint</button>`:""}
+          <button class="btn soft ${$('showReveal').checked?'':'hidden'}" id="reveal" ${selectAnswerVisible()?'disabled':''}>✓ Reveal answer</button>
+          ${selectAnswerVisible()&&canExplain&&!selectExplanationVisible()?`<button class="btn soft" id="showExplanation">💡 Show explanation</button>`:""}
+          <button class="btn ${$('showReadQ').checked?'':'hidden'}" id="readQ">🔊 Read question (R)</button>
+          <button class="btn ${selectAnswerVisible()&&$('showReadA').checked?'':'hidden'}" id="readA">🔊 Read answer</button>
+        </div>
+        <div class="group"><button class="btn ${$('showRestart').checked?'':'hidden'}" id="restartQ">↻ Restart</button><button class="btn ${$('showPause').checked?'':'hidden'}" id="pause" ${!selectIsRunning()?'disabled':''}>${selectIsPaused()?'▶ Resume':'Ⅱ Pause'}</button><button class="btn ${$('showStop').checked?'':'hidden'}" id="stop">■ Stop</button></div>
+      </div>`;
+    $('toolbarToggle')?.addEventListener('click',()=>{window.__teacherToolbarCollapsed=!window.__teacherToolbarCollapsed;render();});
+    $('prev')?.addEventListener('click',()=>dispatchLessonCommand('PREVIOUS_QUESTION'));
+    $('next')?.addEventListener('click',()=>dispatchLessonCommand('NEXT_QUESTION'));
+    $('reveal')?.addEventListener('click',()=>dispatchLessonCommand('REVEAL_ANSWER'));
+    $('readQ')?.addEventListener('click',()=>dispatchLessonCommand('READ_QUESTION'));
+    $('readA')?.addEventListener('click',()=>dispatchLessonCommand('READ_ANSWER'));
+    $('restartQ')?.addEventListener('click',()=>dispatchLessonCommand('RESTART_QUESTION'));
+    $('pause')?.addEventListener('click',()=>dispatchLessonCommand('PAUSE_TOGGLE'));
+    $('stop')?.addEventListener('click',()=>dispatchLessonCommand('STOP'));
+    $('hintBtn')?.addEventListener('click',()=>{hintVisible=true;render();});
+    $('showExplanation')?.addEventListener('click',()=>{setExplanationVisible(true);render();if($('aVoice').checked)speakStageText(cur().explanation,"explanation",learningStageToken,()=>{});});
+    document.querySelectorAll('[data-confidence]').forEach(btn=>btn.addEventListener('click',()=>setConfidence(btn.dataset.confidence)));
+    setLearningStage(learningStage||initialStageForMode());
+    draw();
+}
+
+function start(){if(startPending||["starting","running","paused"].includes(lessonState.status))return;
+// Validate the replacement lesson before cancelling the current one.
+const source=filteredBank();
+if(!source.length){$('sourceStatus').textContent='No questions match the current filters. Choose another subject, grade, or topic.';applyLessonAction({type:'ERROR/SET',error:'EMPTY_SELECTION'});return}
+let a=clamp($('rangeStart').value,1,source.length,1),b=clamp($('rangeEnd').value,1,source.length,source.length);
+if(a>b)[a,b]=[b,a];$('rangeStart').value=a;$('rangeEnd').value=b;
+const nextList=source.slice(a-1,b);
+if(!nextList.length){$('sourceStatus').textContent='Choose at least one question.';applyLessonAction({type:'ERROR/SET',error:'EMPTY_RANGE'});return}
+activeLessonSnapshot=nextList.slice();activeFilteredSnapshot=source.slice();completedLessonMode=$('mode').value;sessionKind='lesson';confidenceByQuestion=new Map();completedConfidenceByQuestion=new Map();completedLessonList=[];completedFilteredList=[];
+// Only after validation do we replace the current lesson session.
+invalidateLearningStage();learningStagePaused=false;clearClock();clearQuestionDelay();if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;cancelSpeech();
+replaceQuestions(nextList);setLearningMode($('mode').value);updateLessonCheckpoint({snapshot:null});setLessonIdentity((globalThis.crypto&&crypto.randomUUID)?crypto.randomUUID():('lesson-'+Date.now()+'-'+Math.random().toString(36).slice(2)));advanceQuestionSession();applyLessonAction({type:'ERROR/SET',error:null});
+const wantPresent=$('startInPresent').value==='yes';
+if(wantPresent){if(!presenting){presenting=true;$('app').classList.add('presentation');$('present').textContent='⛶ Exit present';autoPresent=true;if($('app').requestFullscreen)$('app').requestFullscreen().catch(()=>{})}}
+else if(presenting){presenting=false;$('app').classList.remove('presentation');$('present').textContent='⛶ Present';autoPresent=false;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}
+const delay=clamp($('startDelay').value,0,120,0);$('startDelay').value=delay;save();transitionLesson('starting');
+if(delay>0){startPending=true;const startToken=++startDelaySequence;const ends=Date.now()+delay*1000;const showCountdown=()=>{if(startToken!==startDelaySequence||lessonState.status!=='starting'||!startPending)return;const remaining=Math.max(0,Math.ceil((ends-Date.now())/1000));$('view').classList.remove('hidden');$('done').classList.add('hidden');$('view').innerHTML=`<div class="start-countdown"><div><div class="emptyicon">🚀</div><h2>Get ready!</h2><div class="count-number" aria-live="polite">${remaining}</div><p>Your quiz is about to begin. Get comfortable and prepare to think!</p><button class="btn" id="cancelStart">Cancel start</button></div></div>`;const cancel=$('cancelStart');if(cancel)cancel.onclick=cancelPendingStart;if(remaining<=0){clearInterval(delayTimer);delayTimer=null;startDelaySequence++;startPending=false;beginQuiz()}};showCountdown();delayTimer=setInterval(showCountdown,200);syncEffectState();return}
+beginQuiz();}function cancelPendingStart(){startDelaySequence++;if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;clearClock();cancelSpeech();transitionLesson('idle');$('status').textContent='Start cancelled';if(autoPresent){presenting=false;$('app').classList.remove('presentation');$('present').textContent='⛶ Present';autoPresent=false;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}$('view').classList.remove('hidden');$('done').classList.add('hidden');$('view').innerHTML='<div class="empty"><div><div class="emptyicon">✦</div><h2>Ready to explore?</h2><p>Start was cancelled. Adjust your options and press Start quiz when ready.</p></div></div>';syncEffectState();}function beginQuiz(){clearQuestionDelay();cancelSpeech();invalidateLearningStage();learningStageRemaining=0;learningStageAction=null;learningStagePaused=false;setExplanationVisible(false);hintVisible=false;setQuestionIndex(0);learnerConfidence=confidenceByQuestion.get(selectQuestions()[0])||null;learningStage=initialStageForMode();setAnswerVisible(false);setQuestionPhase('question');qDur=questionMs();aDur=answerMs();left=qDur;startAt=Date.now();updateLessonTiming({startedAt:startAt,pausedAt:null,totalPausedMs:0,finishedAt:null});advanceQuestionSession();transitionLesson('running');render();$('status').textContent='Quiz in progress';if(selectMode()==='timed')timerStart(qDur);if($('qVoice').checked)say(cur().question);save();syncEffectState();}function reveal(manual=true){if(!selectQuestions().length||selectAnswerVisible()||['idle','starting','stopped','completed'].includes(lessonState.status))return;cancelSpeech();setAnswerVisible(true);setQuestionPhase('answer');aDur=answerMs();if(selectMode()==='timed'&&selectIsRunning()&&!selectIsPaused()&&manual)timerStart(aDur);render();if($('aVoice').checked&&(manual||selectMode()==='revision')&&!selectIsPaused())speakAnswerExplanation();syncEffectState();}function next(){if(!selectQuestions().length||['idle','starting','stopped','completed'].includes(lessonState.status))return;clearQuestionDelay();cancelSpeech();if(selectQuestionIndex()>=selectQuestions().length-1){finish();return}clearClock();selectQuestionIndex()++;advanceQuestionSession();$('status').textContent=selectMode()==='revision'?'Reviewing answers':'Lesson in progress';setAnswerVisible(false);setQuestionPhase('question');qDur=questionMs();aDur=answerMs();left=qDur;render();if(selectMode()==='timed'&&selectIsRunning()&&!selectIsPaused())timerStart(qDur);if($('qVoice').checked&&!selectIsPaused())say(cur().question);syncEffectState();}function go(n){if(n<0||n>=selectQuestions().length||['idle','starting','stopped','completed'].includes(lessonState.status))return;clearQuestionDelay();clearClock();cancelSpeech();setQuestionIndex(n);advanceQuestionSession();setAnswerVisible(false);setQuestionPhase('question');qDur=questionMs();aDur=answerMs();left=qDur;render();if(selectMode()==='timed'&&selectIsRunning()&&!selectIsPaused())timerStart(qDur);if($('qVoice').checked&&!selectIsPaused())say(cur().question);syncEffectState();}function restart(){if(!selectQuestions().length||['idle','starting','stopped','completed'].includes(lessonState.status))return;clearQuestionDelay();clearClock();cancelSpeech();advanceQuestionSession();setAnswerVisible(false);setQuestionPhase('question');qDur=questionMs();aDur=answerMs();left=qDur;render();if(selectMode()==='timed'&&selectIsRunning()&&!selectIsPaused())timerStart(qDur);if($('qVoice').checked&&!selectIsPaused())say(cur().question);syncEffectState();}function pause(){if(selectMode()!=='timed'||!isActiveLesson())return;
+if(lessonState.status==='running'){
+    if(speechDelayTimer){speechDelayRemaining=Math.max(0,speechDelayEndsAt-Date.now());clearSpeechDelay()}
+    if(waitingBetweenQuestions){questionDelayRemaining=Math.max(0,questionDelayEndsAt-Date.now());clearTimeout(questionDelayTimer);questionDelayTimer=null;questionDelaySequence++;questionDelayEndsAt=0}
+    else {left=deadline?Math.max(0,deadline-Date.now()):left;clearClock()}
+    updateLessonTiming({pausedAt:Date.now()});transitionLesson('paused');
+    SpeechEffects.pause()
+    $('status').textContent='Paused';
+}else{
+    const now=Date.now();if(lessonState.timing.pausedAt)updateLessonTiming({totalPausedMs:lessonState.timing.totalPausedMs + now - lessonState.timing.pausedAt});updateLessonTiming({pausedAt:null});
+    transitionLesson('running');SpeechEffects.resume()
+    if(speechDelayAction)scheduleSpeechDelay(speechDelayRemaining,speechDelayAction);
+    if(waitingBetweenQuestions)runQuestionDelay();else if(selectMode()==='timed'&&left>0)timerStart(left);else if(selectMode()==='timed'&&left<=0)timerStart(selectQuestionPhase()==='answer'?aDur:qDur);
+    $('status').textContent='Lesson in progress';
+}
+render();draw();syncEffectState();}function stop(){if(lessonState.status==='completed'||lessonState.status==='idle')return;
+if(deadline)left=Math.max(0,deadline-Date.now());
+const pendingDelay=waitingBetweenQuestions?{type:'next-question',remainingMs:Math.max(0,questionDelayEndsAt-Date.now())}:(speechDelayTimer?{type:'explanation',remainingMs:Math.max(0,speechDelayEndsAt-Date.now())}:null);
+updateLessonCheckpoint({snapshot:{questionIndex:selectQuestionIndex(),phase:selectQuestionPhase(),revealed:selectAnswerVisible(),remainingMs:Math.max(0,left),pendingDelay,savedAt:new Date().toISOString()}});
+if(!lessonState.timing.pausedAt)updateLessonTiming({pausedAt:Date.now()});
+clearQuestionDelay();if(speechDelayTimer){clearTimeout(speechDelayTimer);speechDelayTimer=null}speechDelayEndsAt=0;
+startDelaySequence++;if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;clearClock();cancelSpeech();transitionLesson('stopped');$('status').textContent='Stopped';
+$('view').classList.remove('hidden');$('done').classList.add('hidden');
+$('view').innerHTML='<div class="empty"><div><div class="emptyicon">⏸</div><h2>Lesson stopped</h2><p>Your progress is preserved for this session. Continue from the current question when you are ready.</p><button class="btn primary" id="resume">Continue lesson</button></div></div>';$('resume').onclick=()=>dispatchLessonCommand('CONTINUE');syncEffectState();}function resume(){// This command is Continue from Stop, not Pause/Resume.
+if(lessonState.status!=='stopped'){if(!selectQuestions().length){start();return}return}
+if(!selectQuestions().length){start();return}const checkpoint=lessonState.checkpoint.snapshot;clearClock();cancelSpeech();if(checkpoint){setQuestionIndex(Math.max(0,Math.min(selectQuestions().length-1,checkpoint.questionIndex)));setQuestionPhase(checkpoint.phase==='complete'?'answer':checkpoint.phase);setAnswerVisible(Boolean(checkpoint.revealed));left=Math.max(0,checkpoint.remainingMs)}if(selectQuestionIndex()<0||selectQuestionIndex()>=selectQuestions().length)setQuestionIndex(0);const now=Date.now();if(lessonState.timing.pausedAt){updateLessonTiming({totalPausedMs:lessonState.timing.totalPausedMs + now - lessonState.timing.pausedAt});updateLessonTiming({pausedAt:null})}transitionLesson('running');updateLessonCheckpoint({snapshot:null});advanceQuestionSession();$('view').classList.remove('hidden');$('done').classList.add('hidden');render();$('status').textContent='Lesson in progress';if(checkpoint&&checkpoint.pendingDelay&&checkpoint.pendingDelay.type==='next-question'){waitingBetweenQuestions=true;questionDelayRemaining=checkpoint.pendingDelay.remainingMs;runQuestionDelay()}else if(selectMode()==='timed')timerStart(left>0?left:(selectQuestionPhase()==='answer'?aDur:qDur));const pendingExplanation=checkpoint&&checkpoint.pendingDelay&&checkpoint.pendingDelay.type==='explanation';if(pendingExplanation){const q=cur(),text=String(q&&q.explanation||'').trim(),delay=checkpoint.pendingDelay.remainingMs;if(text&&$('aVoice').checked)scheduleSpeechDelay(delay,()=>{if(cur()===q&&selectAnswerVisible()&&isActiveLesson()&&!selectIsPaused())say(text)})}else if(!(checkpoint&&checkpoint.pendingDelay&&checkpoint.pendingDelay.type==='next-question')){if($('qVoice').checked&&!selectAnswerVisible())say(cur().question);else if($('aVoice').checked&&selectAnswerVisible())speakAnswerExplanation()}save();syncEffectState();}function confidenceCounts(questionList,confidenceMap){const counts={confident:0,unsure:0,help:0};for(const q of questionList||[]){const value=confidenceMap.get(q);if(Object.prototype.hasOwnProperty.call(counts,value))counts[value]++;}return counts;}
+function updateCompletionSummary(){const counts=confidenceCounts(completedLessonList,completedConfidenceByQuestion);$('countConfident').textContent=counts.confident;$('countUnsure').textContent=counts.unsure;$('countHelp').textContent=counts.help;$('reviewUnsureCount').textContent=counts.unsure;$('reviewHelpCount').textContent=counts.help;$('reviewUnsure').disabled=counts.unsure===0;$('reviewHelp').disabled=counts.help===0;$('focusReviewNote').textContent=(counts.unsure+counts.help)===0?'No questions were marked Not sure or Need help during this lesson. You can use the confidence buttons during another lesson to build a focused review list.':`${counts.unsure+counts.help} question${counts.unsure+counts.help===1?'':'s'} marked Not sure or Need help are ready for focused review.`;}
+function finish(){const completionResult=dispatchLessonAction({type:'LESSON/COMPLETE',finishedAt:Date.now()});if(!completionResult.accepted)return;const completionCandidate=completionResult.state;invalidateLearningStage();learningStagePaused=false;answerStageDeadline=0;answerStageRemainingMs=0;clearClock();clearQuestionDelay();if(speechDelayTimer){clearTimeout(speechDelayTimer);speechDelayTimer=null}if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;cancelSpeech();setQuestionPhase('complete');advanceQuestionSession();const finishTime=Date.now();if(lessonState.timing.pausedAt){updateLessonTiming({totalPausedMs:lessonState.timing.totalPausedMs + finishTime - lessonState.timing.pausedAt});updateLessonTiming({pausedAt:null})}updateLessonTiming({finishedAt:finishTime});/* Completion was already committed through dispatchLessonAction. */syncEffectState();let sec=Math.max(0,Math.floor((finishTime-startAt-lessonState.timing.totalPausedMs)/1000));if(sessionKind==='lesson'){completedLessonList=(activeLessonSnapshot.length?activeLessonSnapshot:selectQuestions()).slice();completedFilteredList=(activeFilteredSnapshot.length?activeFilteredSnapshot:completedLessonList).slice();completedLessonMode=selectMode();completedConfidenceByQuestion=new Map(confidenceByQuestion);}updateCompletionSummary();$('view').classList.add('hidden');$('done').classList.remove('hidden');$('doneCount').textContent=(completedLessonList.length||selectQuestions().length);$('elapsed').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');$('doneText').textContent=`You explored ${completedLessonList.length||selectQuestions().length} ${bankTitle} questions. Keep learning and discovering!`;$('status').textContent='Session complete';syncEffectState();}
+function beginReviewSession(reviewList,description){if(!reviewList||!reviewList.length){$('focusReviewNote').textContent=description||'No questions are available for this review.';return}invalidateLearningStage();learningStagePaused=false;clearClock();clearQuestionDelay();if(delayTimer){clearInterval(delayTimer);delayTimer=null}startPending=false;cancelSpeech();sessionKind='review';confidenceByQuestion=new Map(completedConfidenceByQuestion);$('view').classList.remove('hidden');$('done').classList.add('hidden');setLearningMode('revision');$('mode').value='revision';replaceQuestions(reviewList.slice());setQuestionIndex(0);setAnswerVisible(false);setQuestionPhase('question');qDur=questionMs();aDur=answerMs();left=qDur;learnerConfidence=confidenceByQuestion.get(selectQuestions()[0])||null;setExplanationVisible(false);hintVisible=false;setLessonIdentity((globalThis.crypto&&crypto.randomUUID)?crypto.randomUUID():('review-'+Date.now()));advanceQuestionSession();updateLessonTiming({startedAt:Date.now(),pausedAt:null,totalPausedMs:0,finishedAt:null});startAt=lessonState.timing.startedAt;transitionLesson('starting');transitionLesson('running');render();$('status').textContent=description||'Reviewing answers';syncEffectState();}
+function repeatCompletedLesson(){if(!completedLessonList.length)return;const source=completedFilteredList.length?completedFilteredList:completedLessonList;const first=source.indexOf(completedLessonList[0])+1;const last=source.indexOf(completedLessonList[completedLessonList.length-1])+1;if(first>0&&last>=first){$('rangeStart').value=first;$('rangeEnd').value=last;}$('mode').value=completedLessonMode;setLearningMode(completedLessonMode);sessionKind='lesson';confidenceByQuestion=new Map();activeLessonSnapshot=completedLessonList.slice();activeFilteredSnapshot=source.slice();replaceQuestions(completedLessonList.slice());setQuestionIndex(0);setAnswerVisible(false);setQuestionPhase('question');setExplanationVisible(false);hintVisible=false;learnerConfidence=null;invalidateLearningStage();clearClock();clearQuestionDelay();cancelSpeech();updateLessonCheckpoint({snapshot:null});setLessonIdentity((globalThis.crypto&&crypto.randomUUID)?crypto.randomUUID():('lesson-'+Date.now()));advanceQuestionSession();transitionLesson('starting');beginQuiz();}
+/* Question actions are committed through dispatchLessonAction(); this layer
+   performs timer, speech, and DOM effects only after the reducer accepts them. */
+function commitQuestionAction(action) {
+    const previousState = lessonState;
+    const result = dispatchLessonAction(action);
+    return result.accepted;
+}
+/* All teacher toolbar buttons and keyboard shortcuts should enter through
+   this command gateway; reducer-driven question commands are dispatched here. */
+function dispatchLessonCommand(command, payload = {}) {
+    const beforeState = selectLessonState();
+    const before = selectLessonStatus();
+    const status = selectLessonStatus();
+    const runningCommands = new Set([
+        "PAUSE_TOGGLE", "REVEAL_ANSWER", "NEXT_QUESTION",
+        "PREVIOUS_QUESTION", "GO_TO_QUESTION", "RESTART_QUESTION",
+        "READ_QUESTION", "READ_ANSWER", "FINISH"
+    ]);
+    if (runningCommands.has(command) && !["running", "paused"].includes(status)) {
+        return { ok: false, reason: "LESSON_NOT_ACTIVE", status };
+    }
+    if (command === "CONTINUE" && status !== "stopped" && status !== "paused") {
+        return { ok: false, reason: "NO_CHECKPOINT_TO_CONTINUE", status };
+    }
+    switch (command) {
+        case "START": start(); break;
+        case "PAUSE_TOGGLE": pause(); break;
+        case "STOP": stop(); break;
+        case "CONTINUE": resume(); break;
+        case "REVEAL_ANSWER": reveal(true); break;
+        case "NEXT_QUESTION": next(); break;
+        case "PREVIOUS_QUESTION": go(selectQuestionIndex() - 1); break;
+        case "GO_TO_QUESTION": go(Number(payload.index)); break;
+        case "RESTART_QUESTION": restart(); break;
+        case "READ_QUESTION":
+            if (lessonState.status === "running" && !selectIsPaused() && cur()) say(cur().question);
+            break;
+        case "READ_ANSWER":
+            if (lessonState.status === "running" && !selectIsPaused() && selectAnswerVisible()) speakAnswerExplanation();
+            break;
+        case "FINISH": finish(); break;
+        default: return { ok: false, reason: "UNKNOWN_COMMAND", status: lessonState.status };
+    }
+    const afterState = selectLessonState();
+    return { ok: afterState !== beforeState || before !== selectLessonStatus() || command === "READ_QUESTION" || command === "READ_ANSWER", status: selectLessonStatus() };
+}
+function makeUtterance(text){if(!window.SpeechSynthesisUtterance)throw new Error('SpeechSynthesisUtterance is unavailable');let u=new SpeechSynthesisUtterance(text),v=voices.find(v=>v.voiceURI===$('voice').value);if(v)u.voice=v;u.rate=Number($('rate').value)||.9;return u}
+function speechIsCurrent(sequence,q,context=captureAsyncContext()){return sequence===speechSequence&&cur()===q&&isAsyncContextCurrent(context)&&!selectIsPaused()&&lessonState.status==='running'}
+const SpeechEffects={
+    isSupported(){return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance)},
+    speakUtterance(utterance){window.speechSynthesis.speak(utterance)},
+    cancel(){
+        speechSequence++;clearSpeechDelay();speechDelayRemaining=0;speechDelayAction=null;
+        if(window.speechSynthesis){try{window.speechSynthesis.cancel()}catch(e){}}
+        dispatchSpeechState("SPEECH/CANCEL",null,speechSequence,captureAsyncContext());
+        pendingSpeechCompletion=null;syncEffectState();
+    },
+    pause(){if(window.speechSynthesis){try{window.speechSynthesis.pause()}catch(e){}}dispatchSpeechState("SPEECH/PAUSE",null,speechSequence,captureAsyncContext());},
+    resume(){if(window.speechSynthesis){try{window.speechSynthesis.resume()}catch(e){}}dispatchSpeechState("SPEECH/RESUME",null,speechSequence,captureAsyncContext());},
+    say(text){
+        if(!String(text||'').trim()||selectIsPaused()||!isActiveLesson())return;
+        if(!this.isSupported()){dispatchSpeechState("SPEECH/ERROR",null,speechSequence,captureAsyncContext(),"SPEECH_UNAVAILABLE");syncEffectState();return;}
+        this.cancel();const sequence=speechSequence,q=cur(),context=captureAsyncContext();let utterance;
+        try{utterance=makeUtterance(text)}catch(e){dispatchSpeechState("SPEECH/ERROR",null,sequence,context,"SPEECH_UNAVAILABLE");syncEffectState();return;}
+        dispatchSpeechState("SPEECH/START",selectQuestionPhase()==='answer'?'answer':'question',sequence,context);
+        const complete=(failed=false)=>{if(!speechIsCurrent(sequence,q,{...context}) && !(sequence===speechSequence&&cur()===q&&isAsyncContextCurrent(context,{requireUnpaused:false})))return;
+            if(failed)dispatchSpeechState("SPEECH/ERROR",null,sequence,context,"SPEECH_ERROR");else dispatchSpeechState("SPEECH/END",null,sequence,context);syncEffectState();};
+        utterance.onend=()=>complete(false);utterance.onerror=e=>complete(!['canceled','interrupted'].includes(e.error));
+        this.speakUtterance(utterance);syncEffectState();
+    },
+    speakAnswerExplanation(){
+        if(selectIsPaused()||!isActiveLesson())return;
+        if(!this.isSupported()){dispatchSpeechState("SPEECH/ERROR",null,speechSequence,captureAsyncContext(),"SPEECH_UNAVAILABLE");syncEffectState();return;}
+        this.cancel();const sequence=speechSequence,q=cur(),context=captureAsyncContext();if(!q)return;
+        const answerText=String(q.answer||'').trim(),explanationText=String(q.explanation||'').trim();if(!answerText&&!explanationText)return;
+        const current=()=>sequence===speechSequence&&cur()===q&&isAsyncContextCurrent(context,{requireUnpaused:false,requireRunning:false})&&lessonState.status==='running'&&!selectIsPaused();
+        const speakPart=(content,type,onDone)=>{
+            if(!content||!current())return;
+            let u;try{u=makeUtterance(content)}catch(e){dispatchSpeechState("SPEECH/ERROR",type,sequence,context,"SPEECH_UNAVAILABLE");syncEffectState();return;}
+            dispatchSpeechState("SPEECH/START",type,sequence,context);syncEffectState();
+            const end=(failed=false)=>{if(!current())return;if(failed)dispatchSpeechState("SPEECH/ERROR",type,sequence,context,"SPEECH_ERROR");else dispatchSpeechState("SPEECH/END",type,sequence,context);syncEffectState();if(!failed&&onDone)onDone();};
+            u.onend=()=>end(false);u.onerror=e=>end(!['canceled','interrupted'].includes(e.error));this.speakUtterance(u);
+        };
+        const speakExplanation=()=>{if(current()&&explanationText)speakPart(explanationText,'explanation',null)};
+        if(answerText)speakPart(answerText,'answer',()=>{if(!explanationText)return;const delay=Math.max(0,Math.min(10,Number($('explanationDelay').value)||0))*1000;scheduleSpeechDelay(delay,speakExplanation)});else speakExplanation();
+    }
+};
+const SpeechEngine={cancel(){SpeechEffects.cancel()},say(text){SpeechEffects.say(text)},speakAnswerExplanation(){SpeechEffects.speakAnswerExplanation()},isSupported(){return SpeechEffects.isSupported()}};
+function cancelSpeech(){SpeechEngine.cancel()}function say(text){SpeechEngine.say(text)}function speakAnswerExplanation(){SpeechEngine.speakAnswerExplanation()}
+function getVoices(){if(!window.speechSynthesis)return;voices=speechSynthesis.getVoices();let s=$('voice'),old=s.value||savedVoice;s.innerHTML='<option value="">System default voice</option>';voices.forEach(v=>{let o=document.createElement('option');o.value=v.voiceURI;o.textContent=v.name+(v.lang?' · '+v.lang:'');s.appendChild(o)});if(voices.some(v=>v.voiceURI===old))s.value=old}function playTick(){try{let C=window.AudioContext||window.webkitAudioContext;if(!C)return;if(!audio)audio=new C();if(audio.state==='suspended')audio.resume();let o=audio.createOscillator(),g=audio.createGain();o.frequency.value=760;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.025,audio.currentTime+.006);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.055);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.06)}catch(e){}}
+let pendingCSVReport=null;
+let pendingCSVSource='';
+function renderCSVReport(report){
+  pendingCSVReport=report;
+  $('csvReview').classList.remove('hidden');
+  $('csvReviewTitle').textContent=report.critical?'CSV validation — action required':'CSV validation report';
+  $('csvReviewIntro').textContent=report.critical?'This file cannot be loaded yet. The current question bank has not been changed.':'Review the report and preview. Only valid rows will be imported; the existing question bank stays active until you confirm.';
+  const counts=report.counts;
+  $('csvSummary').innerHTML=
+    `<span class="csv-count good">${counts.valid} valid question${counts.valid===1?'':'s'}</span>`+
+    `<span class="csv-count ${counts.invalid?'bad':''}">${counts.invalid} invalid row${counts.invalid===1?'':'s'}</span>`+
+    `<span class="csv-count ${counts.warnings?'warn':''}">${counts.warnings} warning${counts.warnings===1?'':'s'}</span>`+
+    `<span class="csv-count ${counts.numbering?'warn':''}">${counts.numbering} numbering gap/order warning${counts.numbering===1?'':'s'}</span>`+
+    `<span class="csv-count ${counts.width?'warn':''}">${counts.width} row-width mismatch${counts.width===1?'':'es'}</span>`+
+    `<span class="csv-count ${counts.duplicateHeaders?'warn':''}">${counts.duplicateHeaders} duplicate-header issue${counts.duplicateHeaders===1?'':'s'}</span>`+
+    `<span class="csv-count">${counts.duplicates} possible duplicate question${counts.duplicates===1?'':'s'}</span>`+
+    `<span class="csv-count">${counts.empty} blank row${counts.empty===1?'':'s'} ignored</span>`+
+    `<span class="csv-count ${report.critical?'bad':''}">${report.critical?report.errors.length:0} critical error${report.critical&&report.errors.length!==1?'s':''}</span>`;
+  const issueItems=[];
+  report.errors.slice(0,12).forEach(e=>issueItems.push(`<li><strong>Error${e.line?` · row ${e.line}`:''}:</strong> ${esc(e.message)}</li>`));
+  report.warnings.slice(0,12).forEach(e=>issueItems.push(`<li><strong>Warning${e.line?` · row ${e.line}`:''}:</strong> ${esc(e.message)}</li>`));
+  report.info.slice(0,8).forEach(msg=>issueItems.push(`<li><strong>Info:</strong> ${esc(msg)}</li>`));
+  if(report.errors.length+report.warnings.length+report.info.length===0)issueItems.push('<li>No issues found. The CSV structure and question rows look good.</li>');
+  $('csvIssues').innerHTML=issueItems.join('');
+  $('csvPreviewBody').innerHTML=report.preview.map(r=>`<tr class="${r.kind==='invalid'?'row-invalid':r.kind==='warning'?'row-warning':''}"><td>${r.line}</td><td>${esc(r.num)}</td><td>${esc(r.question||'—')}</td><td>${esc(r.answer||'—')}</td><td>${esc(r.status)}</td></tr>`).join('');
+  const omitted=Math.max(0,report.counts.valid+report.counts.invalid-report.preview.length);
+  $('csvReviewNote').textContent=`Preview shows up to 50 data rows${omitted?`; ${omitted} additional row(s) are not shown`:''}. Missing optional columns are allowed. Potential duplicate questions, numbering gaps, duplicate headers, and row-width mismatches are reported rather than silently repaired.`;
+  $('acceptCsv').disabled=report.critical||report.candidate.length===0;
+  $('csvReviewStatus').textContent=report.critical?'Correct the CSV and select it again. Nothing has been imported.':`${report.candidate.length} valid question(s) are ready to import. Invalid rows will be skipped if you continue.`;
+  $('csvReview').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function beginCSVValidation(text,sourceName){
+  const report=validateCSVText(text,sourceName);
+  pendingCSVSource=sourceName||'';
+  renderCSVReport(report);
+  if(report.critical)$('sourceStatus').textContent='CSV validation failed. Your current question bank is unchanged.';
+  else $('sourceStatus').textContent=`Validation complete for ${sourceName||'CSV source'}. Confirm import to replace the current question bank.`;
+}
+function cancelCSVImport(){
+  pendingCSVReport=null;pendingCSVSource='';
+  $('csvReview').classList.add('hidden');
+  $('csvReviewStatus').textContent='';
+  $('csv').value='';
+  $('sourceStatus').textContent='Import cancelled. Your existing question bank has been kept.';
+}
+function commitCSVImport(){
+  const report=pendingCSVReport;
+  if(!report||report.critical||!report.candidate.length)return;
+  // Atomic commit: no app state is changed until the user confirms.
+  bank=report.candidate.slice();
+  bankTitle=report.bankTitle||'Question Bank';
+  loadedSourceName=pendingCSVSource||report.sourceName||'';
+  completedLessonList=[];completedFilteredList=[];completedConfidenceByQuestion=new Map();
+  $('subjectFilter').value='__all';$('gradeFilter').value='__all';$('topicFilter').value='__all';
+  updateMetadataOptions();
+  $('rangeStart').value=1;$('rangeEnd').value=filteredBank().length;
+  updateRangeBounds();updateAppTitle();
+  $('sourceStatus').textContent=`Loaded ${bank.length} validated question(s) from ${loadedSourceName||'CSV'}. ${report.counts.invalid?`${report.counts.invalid} invalid row(s) were skipped. `:''}${report.counts.warnings?`${report.counts.warnings} warning(s) remain for your attention.`:'No row warnings.'}`;
+  $('csvReviewStatus').textContent='Question bank imported successfully.';
+  $('csvReview').classList.add('hidden');
+  pendingCSVReport=null;pendingCSVSource='';
+  save();
+}
+async function loadURL(){
+  const url=$('url').value.trim();if(!url)return;
+  if(!/^https?:\/\//i.test(url)){$('sourceStatus').textContent='Enter a published HTTP or HTTPS CSV URL.';return;}
+  $('sourceStatus').textContent='Fetching CSV for validation…';
+  try{
+    const response=await fetch(url);
+    if(!response.ok)throw new Error(`The server returned HTTP ${response.status}.`);
+    const text=await response.text();
+    beginCSVValidation(text,url.split('/').pop()||'Published question bank');
+  }catch(error){
+    $('sourceStatus').textContent='Could not fetch this CSV URL. Check that it is published, uses HTTP/HTTPS, and allows browser access (CORS). Your current question bank is unchanged.';
+  }
+}
+function applyTheme(){document.body.classList.remove('theme-dark','theme-ocean','theme-candy','theme-jungle');if($('theme').value!=='light')document.body.classList.add('theme-'+$('theme').value);save()}
+
+/* v1.1.0 lifecycle overrides: staged reveal, pause/resume, navigation and completion. */
+function tick(context=captureAsyncContext({generation:timerGeneration})){
+    if(!selectIsRunning()||selectIsPaused()||!deadline||selectMode()!=="timed"||!isAsyncContextCurrent(context))return;
+    left=Math.max(0,deadline-Date.now());
+    if(!dispatchTimerAction("TIMER/TICK",context,left))return;
+    draw();syncEffectState();
+    const seconds=Math.ceil(left/1000);
+    if($('tick').checked&&selectQuestionPhase()==='question'&&seconds<=10&&seconds>0&&tick.last!==seconds){tick.last=seconds;playTick();}
+    const bar=$('thinkingBar');
+    if(bar&&selectQuestionPhase()==="question")bar.style.transform=`scaleX(${Math.max(0,Math.min(1,left/Math.max(1,qDur)))})`;
+    if(left<=0){if(!dispatchTimerAction("TIMER/EXPIRE",context,0))return;clearClock();if(selectQuestionPhase()==="question")reveal(false);else scheduleNextQuestion();}
+}
+function reveal(manual=true){
+    if(!selectQuestions().length||selectAnswerVisible()||["idle","starting","stopped","completed"].includes(lessonState.status))return;
+    if(selectMode()==="teacher" && !manual) return;
+    if(!commitQuestionAction({type:"QUESTION/REVEAL"}))return;
+    clearClock();invalidateLearningStage();cancelSpeech();
+    aDur=answerMs();answerStageRemainingMs=aDur;answerStageDeadline=selectMode()==="timed"?Date.now()+aDur:0;setExplanationVisible(false);hintVisible=false;
+    left=0;render();syncEffectState();
+    if(selectMode()==="timed" && lessonState.status==="running"){
+        runTimedLearningSequence();
+    } else {
+        setLearningStage(selectMode()==="teacher"?"awaiting-teacher":"answer-hold");
+        if($('aVoice').checked && manual){
+            const token=learningStageToken;
+            speakStageText(cur().answer,"answer",token,()=>{if(token===learningStageToken)setLearningStage(selectMode()==="teacher"?"awaiting-teacher":"answer-hold");});
+        }
+    }
+}
+function next(){
+    if(!selectQuestions().length||["idle","starting","stopped","completed"].includes(lessonState.status))return;
+    if(selectQuestionIndex()>=selectQuestions().length-1){finish();return;}
+    go(selectQuestionIndex()+1);
+}
+function go(n){
+    if(!selectQuestions().length||!Number.isInteger(Number(n))||n<0||n>=selectQuestions().length||["idle","starting","stopped","completed"].includes(lessonState.status))return;
+    if(!commitQuestionAction({type:"QUESTION/NAVIGATE",index:Number(n)}))return;
+    invalidateLearningStage();clearQuestionDelay();clearClock();cancelSpeech();
+    setExplanationVisible(false);hintVisible=false;learnerConfidence=confidenceByQuestion.get(selectQuestions()[selectQuestionIndex()])||null;learningStage=initialStageForMode();answerStageDeadline=0;answerStageRemainingMs=0;
+    qDur=questionMs();aDur=answerMs();left=qDur;waitingBetweenQuestions=false;
+    render();$('status').textContent=selectMode()==="revision"?"Reviewing answers":"Lesson in progress";
+    if(lessonState.status==="running"&&selectMode()==="timed")timerStart(qDur);
+    if(lessonState.status==="running"&&$('qVoice').checked)say(cur().question);
+    syncEffectState();
+}
+function restart(){
+    if(!selectQuestions().length||["idle","starting","stopped","completed"].includes(lessonState.status))return;
+    const wasPaused=selectIsPaused(), wasStopped=lessonState.status==="stopped";
+    if(!commitQuestionAction({type:"QUESTION/RESTART"})){
+        // Restarting an already pristine question is still a runtime reset (timer/sequence).
+        if(selectAnswerVisible()||selectQuestionPhase()!=="question"||selectExplanationVisible())return;
+        setQuestionIndex(lessonState.questionIndex);
+    }
+    invalidateLearningStage();clearQuestionDelay();clearClock();cancelSpeech();
+    hintVisible=false;learnerConfidence=confidenceByQuestion.get(selectQuestions()[selectQuestionIndex()])||null;learningStage=initialStageForMode();answerStageDeadline=0;answerStageRemainingMs=0;
+    qDur=questionMs();aDur=answerMs();left=qDur;waitingBetweenQuestions=false;
+    render();
+    if(!wasPaused&&!wasStopped&&selectMode()==="timed")timerStart(qDur);
+    if(!wasPaused&&!wasStopped&&$('qVoice').checked)say(cur().question);
+    syncEffectState();
+}
+function pause(){
+    if(!isActiveLesson())return;
+    if(lessonState.status==="running"){
+        if(speechDelayTimer){speechDelayRemaining=Math.max(0,speechDelayEndsAt-Date.now());clearSpeechDelay();}
+        if(waitingBetweenQuestions){questionDelayRemaining=Math.max(0,questionDelayEndsAt-Date.now());clearTimeout(questionDelayTimer);questionDelayTimer=null;questionDelaySequence++;questionDelayEndsAt=0;}
+        else if(deadline){left=Math.max(0,deadline-Date.now());clearClock();}
+        if(answerStageDeadline){answerStageRemainingMs=Math.max(0,answerStageDeadline-Date.now());answerStageDeadline=0;}
+        if(learningStageTimer){learningStageRemaining=Math.max(0,learningStageDeadline-Date.now());clearTimeout(learningStageTimer);learningStageTimer=null;learningStageDeadline=0;learningTimerToken++;}
+        learningStagePaused=true;
+        updateLessonTiming({pausedAt:Date.now()});transitionLesson("paused");
+        SpeechEffects.pause()
+        $('status').textContent="Paused";
+    }else{
+        const now=Date.now();if(lessonState.timing.pausedAt)updateLessonTiming({totalPausedMs:lessonState.timing.totalPausedMs + now - lessonState.timing.pausedAt});updateLessonTiming({pausedAt:null});
+        transitionLesson("running");learningStagePaused=false;if(selectAnswerVisible()&&selectMode()==="timed"&&answerStageRemainingMs>0)answerStageDeadline=Date.now()+answerStageRemainingMs;
+        SpeechEffects.resume()
+        if(pendingSpeechCompletion){const complete=pendingSpeechCompletion;pendingSpeechCompletion=null;complete();}
+        if(speechDelayAction)scheduleSpeechDelay(speechDelayRemaining,speechDelayAction);
+        if(waitingBetweenQuestions)runQuestionDelay();
+        else if(selectMode()==="timed"&&selectQuestionPhase()==="question"&&left>0)timerStart(left);
+        if(learningStageAction)scheduleLearningStage(learningStageRemaining,learningStageAction);
+        $('status').textContent="Lesson in progress";
+    }
+    render();draw();syncEffectState();
+}
+function stop(){
+    if(["completed","idle"].includes(lessonState.status))return;
+    if(deadline)left=Math.max(0,deadline-Date.now());
+    if(answerStageDeadline){answerStageRemainingMs=Math.max(0,answerStageDeadline-Date.now());answerStageDeadline=0;}
+    sequenceCheckpoint={
+        stage:learningStage,
+        remainingMs:learningStageTimer?Math.max(0,learningStageDeadline-Date.now()):learningStageRemaining,
+        answerStageRemainingMs,
+        revealed:selectAnswerVisible(),explanationVisible:selectExplanationVisible(),hintVisible,learnerConfidence,phase:selectQuestionPhase(),
+        questionIndex:selectQuestionIndex()
+    };
+    const pendingDelay=waitingBetweenQuestions?{type:"next-question",remainingMs:Math.max(0,questionDelayEndsAt-Date.now())}:
+        (speechDelayTimer?{type:"explanation",remainingMs:Math.max(0,speechDelayEndsAt-Date.now())}:null);
+    updateLessonCheckpoint({snapshot:{questionIndex:selectQuestionIndex(),phase:selectQuestionPhase(),revealed:selectAnswerVisible(),remainingMs:Math.max(0,left),pendingDelay,sequenceCheckpoint,savedAt:new Date().toISOString()}});
+    if(!lessonState.timing.pausedAt)updateLessonTiming({pausedAt:Date.now()});
+    invalidateLearningStage();clearQuestionDelay();clearSpeechDelay();startDelaySequence++;
+    if(delayTimer){clearInterval(delayTimer);delayTimer=null;}startPending=false;clearClock();cancelSpeech();
+    transitionLesson("stopped");$('status').textContent="Stopped";
+    $('view').classList.remove("hidden");$('done').classList.add("hidden");
+    $('view').innerHTML='<div class="empty"><div><div class="emptyicon">⏸</div><h2>Lesson stopped</h2><p>Your progress is preserved for this session. Continue from the current stage when you are ready.</p><button class="btn primary" id="resume">Continue lesson</button></div></div>';
+    $('resume').onclick=()=>dispatchLessonCommand("CONTINUE");syncEffectState();
+}
+function resume(){
+    if(lessonState.status==="paused"){pause();return;}
+    if(lessonState.status!=="stopped"){if(!selectQuestions().length)start();return;}
+    if(!selectQuestions().length){start();return;}
+    const cp=lessonState.checkpoint.snapshot||{};
+    clearClock();cancelSpeech();
+    if(cp.questionIndex!==undefined)setQuestionIndex(Math.max(0,Math.min(selectQuestions().length-1,cp.questionIndex)));
+    setQuestionPhase(cp.phase||"question");setAnswerVisible(!!cp.revealed);left=Math.max(0,cp.remainingMs||0);
+    const sc=cp.sequenceCheckpoint||sequenceCheckpoint;
+    if(sc){learningStage=sc.stage||"thinking";answerStageRemainingMs=Math.max(0,sc.answerStageRemainingMs||answerStageRemainingMs);setExplanationVisible(!!sc.explanationVisible);hintVisible=!!sc.hintVisible;learnerConfidence=sc.learnerConfidence||null;learningStageRemaining=Math.max(0,sc.remainingMs||0);}
+    const now=Date.now();if(lessonState.timing.pausedAt)updateLessonTiming({totalPausedMs:lessonState.timing.totalPausedMs + now - lessonState.timing.pausedAt});updateLessonTiming({pausedAt:null});
+    transitionLesson("running");learningStagePaused=false;if(selectAnswerVisible()&&selectMode()==="timed"&&answerStageRemainingMs>0)answerStageDeadline=Date.now()+answerStageRemainingMs;updateLessonCheckpoint({snapshot:null});updateLessonCheckpoint({savedAt:null});advanceQuestionSession();
+    $('view').classList.remove("hidden");$('done').classList.add("hidden");render();$('status').textContent="Lesson in progress";
+    if(waitingBetweenQuestions)runQuestionDelay();
+    else if(selectMode()==="timed"&&selectQuestionPhase()==="question"&&left>0)timerStart(left);
+    else if(selectAnswerVisible()&&selectMode()==="timed")resumeTimedSequence(sc);
+    else if(!selectAnswerVisible()&&selectMode()==="timed")timerStart(left||qDur);
+    else setLearningStage(selectMode()==="teacher"?"awaiting-teacher":"awaiting-learner");
+    save();syncEffectState();
+}
+
+$('start').onclick=()=>dispatchLessonCommand('START');$('resetSettings').onclick=resetSettings;$('loadUrl').onclick=loadURL;
+$('csv').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!/\.csv$/i.test(file.name)&&file.type!=='text/csv'){$('sourceStatus').textContent='Please choose a CSV file. Your current question bank is unchanged.';$('csv').value='';return;}try{const text=await file.text();beginCSVValidation(text,file.name);}catch(err){$('sourceStatus').textContent='Could not read the selected file. Your current question bank is unchanged.';}};
+$('acceptCsv').onclick=commitCSVImport;$('cancelCsv').onclick=cancelCSVImport;$('theme').onchange=applyTheme;$('subjectFilter').addEventListener('change',()=>{ $('topicFilter').value='__all';updateTopicOptions();updateAppTitle();$('rangeStart').value=1;$('rangeEnd').value=filteredBank().length;save()});$('gradeFilter').addEventListener('change',()=>{ $('topicFilter').value='__all';updateTopicOptions();updateAppTitle();$('rangeStart').value=1;$('rangeEnd').value=filteredBank().length;save()});$('topicFilter').addEventListener('change',()=>{updateRangeBounds();$('rangeStart').value=1;$('rangeEnd').value=filteredBank().length;save()});$('again').onclick=repeatCompletedLesson;$('reviewCompleted').onclick=()=>beginReviewSession(completedLessonList,'Reviewing completed lesson');$('reviewAll').onclick=()=>beginReviewSession(completedFilteredList,'Reviewing all filtered questions');$('reviewUnsure').onclick=()=>beginReviewSession(completedLessonList.filter(q=>completedConfidenceByQuestion.get(q)==='unsure'),'Reviewing questions marked Not sure');$('reviewHelp').onclick=()=>beginReviewSession(completedLessonList.filter(q=>completedConfidenceByQuestion.get(q)==='help'),'Reviewing questions marked Need help');$('present').onclick=()=>{autoPresent=false;presenting=!presenting;$('app').classList.toggle('presentation',presenting);$('present').textContent=presenting?'⛶ Exit present':'⛶ Present';if(presenting&&$('app').requestFullscreen)$('app').requestFullscreen().catch(()=>{});else if(!presenting&&document.fullscreenElement)document.exitFullscreen().catch(()=>{})};document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&presenting){presenting=false;$('app').classList.remove('presentation');$('present').textContent='⛶ Present'}});[...['mode','startDelay','startInPresent','qSeconds','aSeconds','questionDelay','learningPause','tick','qVoice','aVoice','voice','rate','explanationDelay','rangeStart','rangeEnd'],...controlIds].forEach(id=>$(id).addEventListener('change',()=>{if(id==='rangeStart'||id==='rangeEnd')updateRangeBounds();labels();save();if(controlIds.includes(id)&&selectQuestions().length)render();if((id==='qSeconds'||id==='aSeconds')&&selectIsRunning()&&selectMode()==='timed'&&!selectIsPaused()){if(id==='qSeconds'&&selectQuestionPhase()==='question'){qDur=questionMs();timerStart(qDur)}else if(id==='aSeconds'&&selectQuestionPhase()==='answer'){aDur=answerMs();timerStart(aDur)}}}));$('qSeconds').addEventListener('input',()=>{$('qLabel').textContent=clamp($('qSeconds').value,5,600,15)});$('aSeconds').addEventListener('input',()=>{$('aLabel').textContent=clamp($('aSeconds').value,1,120,15)});$('rate').oninput=()=>{$('rateLabel').textContent=Number($('rate').value).toFixed(1)+'×'};document.addEventListener('keydown',e=>{if(['input','select','textarea'].includes(e.target?.tagName?.toLowerCase())||e.target?.isContentEditable)return;if(!selectQuestions().length||!['running','paused'].includes(lessonState.status))return;if(e.code==='Space'){e.preventDefault();dispatchLessonCommand('PAUSE_TOGGLE')}else if(e.key==='ArrowRight')dispatchLessonCommand('NEXT_QUESTION');else if(e.key==='ArrowLeft')dispatchLessonCommand('PREVIOUS_QUESTION');else if(e.key==='Enter'){e.preventDefault();dispatchLessonCommand('REVEAL_ANSWER')}else if(e.key.toLowerCase()==='r')dispatchLessonCommand('READ_QUESTION');else if(e.key.toLowerCase()==='h'&&!selectAnswerVisible()){hintVisible=true;render()}else if(e.key.toLowerCase()==='e'&&selectAnswerVisible()&&cur()?.explanation){setExplanationVisible(true);render();if($('aVoice').checked)speakStageText(cur().explanation,'explanation',learningStageToken,()=>{})}});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&selectIsRunning()&&!selectIsPaused()&&deadline)tick()});restore();syncEffectState();updateMetadataOptions();updateAppTitle();getVoices();if(window.speechSynthesis)speechSynthesis.onvoiceschanged=getVoices;$('sourceStatus').textContent=`${bank.length} sample questions are ready. Load your own CSV for the full question bank.`;$('rangeStart').value=1;$('rangeEnd').value=filteredBank().length;
+})();
+</script></body></html>
